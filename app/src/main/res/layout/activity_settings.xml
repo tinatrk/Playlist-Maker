@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/settings_screen_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SettingsActivity"
+    android:id="@+id/settings_screen">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,10 +19,12 @@
         <ImageView
             android:layout_width="@dimen/setting_screen_title_size"
             android:layout_height="@dimen/setting_screen_title_size"
+            android:id="@+id/img_view_back_settings_screen"
             android:scaleType="center"
             android:src="@drawable/ic_arrow_back"
             app:tint="@color/settings_screen_text"
-            android:contentDescription="@string/arrow_back_button_desc"/>
+            android:contentDescription="@string/arrow_back_button_desc"
+            android:foreground="?attr/selectableItemBackground"/>
 
         <TextView
             android:layout_width="0dp"
@@ -54,7 +59,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/switch_mode"
             android:layout_gravity="center"
-            android:checked="false"
             app:thumbTint="@color/settings_screen_switch_thumb"
             app:trackTint="@color/settings_screen_switch_track"
             android:contentDescription="@string/switch_mode_desc"/>
