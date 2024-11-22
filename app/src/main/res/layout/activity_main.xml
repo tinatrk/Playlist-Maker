@@ -23,6 +23,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:id="@+id/btn_search"
         android:layout_marginTop="@dimen/main_screen_button_margin_top"
         android:layout_weight="1"
         android:backgroundTint="@color/main_screen_button_background"
@@ -36,11 +37,13 @@
         app:iconGravity="textStart"
         app:iconPadding="@dimen/main_screen_icon_padding"
         app:iconTint="@color/main_screen_text"
-        android:contentDescription="@string/search_button_desc"/>
+        android:contentDescription="@string/search_button_desc"
+        android:foreground="?attr/selectableItemBackground"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:id="@+id/btn_library"
         android:layout_marginTop="@dimen/main_screen_button_margin_top"
         android:layout_weight="1"
         android:backgroundTint="@color/main_screen_button_background"
@@ -54,11 +57,13 @@
         app:iconGravity="textStart"
         app:iconPadding="@dimen/main_screen_icon_padding"
         app:iconTint="@color/main_screen_text"
-        android:contentDescription="@string/library_button_desc"/>
+        android:contentDescription="@string/library_button_desc"
+        android:foreground="?attr/selectableItemBackground"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:id="@+id/btn_settings"
         android:layout_marginTop="@dimen/main_screen_button_margin_top"
         android:layout_marginBottom="28dp"
         android:layout_weight="1"
@@ -73,7 +78,8 @@
         app:iconGravity="textStart"
         app:iconPadding="@dimen/main_screen_icon_padding"
         app:iconTint="@color/main_screen_text"
-        android:contentDescription="@string/settings_button_desc"/>
+        android:contentDescription="@string/settings_button_desc"
+        android:foreground="?attr/selectableItemBackground"/>
 
 </LinearLayout>
 
