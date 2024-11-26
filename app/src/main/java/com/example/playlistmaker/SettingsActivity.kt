@@ -45,7 +45,7 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    private companion object{
+    private companion object {
         const val SAVE = "save"
     }
 }
