@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.playlistmaker"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.playlistmaker"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -33,6 +33,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildToolsVersion = "35.0.0"
 }
 
 dependencies {

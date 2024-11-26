@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/settings_screen_background"
+    android:orientation="vertical"
+    tools:context=".LibraryActivity"
+    android:id="@+id/library_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_margin="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/settings_screen_title_size"
+            android:layout_height="@dimen/settings_screen_title_size"
+            android:id="@+id/img_view_back_library_screen"
+            android:scaleType="center"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/settings_screen_text"
+            android:contentDescription="@string/arrow_back_button_desc"
+            android:foreground="?attr/selectableItemBackground"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/settings_screen_title_size"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:text="@string/library_button_text"
+            android:textColor="@color/settings_screen_text"
+            android:textSize="@dimen/title_text_size" />
+
+    </LinearLayout>
+</LinearLayout>

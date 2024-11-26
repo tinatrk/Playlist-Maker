@@ -1,19 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/main_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_screen_background"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/main_screen_padding_horizontal"
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="@dimen/main_screen_title_margin_top"
+        android:layout_marginBottom="@dimen/main_screen_title_margin_bottom"
+        android:letterSpacing="0"
+        android:text="@string/app_name"
+        android:textColor="@color/main_screen_title"
+        android:textSize="@dimen/title_text_size" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/btn_search"
+        android:layout_marginTop="@dimen/main_screen_button_margin_top"
+        android:layout_weight="1"
+        android:backgroundTint="@color/main_screen_button_background"
+        android:letterSpacing="0"
+        android:text="@string/search_button_text"
+        android:textAllCaps="false"
+        android:textColor="@color/main_screen_text"
+        android:textSize="@dimen/main_screen_text_size"
+        app:cornerRadius="@dimen/main_screen_corner_radius"
+        app:icon="@drawable/ic_search"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/main_screen_icon_padding"
+        app:iconTint="@color/main_screen_text"
+        android:contentDescription="@string/search_button_desc"
+        android:foreground="?attr/selectableItemBackground"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/btn_library"
+        android:layout_marginTop="@dimen/main_screen_button_margin_top"
+        android:layout_weight="1"
+        android:backgroundTint="@color/main_screen_button_background"
+        android:letterSpacing="0"
+        android:text="@string/library_button_text"
+        android:textAllCaps="false"
+        android:textColor="@color/main_screen_text"
+        android:textSize="@dimen/main_screen_text_size"
+        app:cornerRadius="@dimen/main_screen_corner_radius"
+        app:icon="@drawable/ic_library"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/main_screen_icon_padding"
+        app:iconTint="@color/main_screen_text"
+        android:contentDescription="@string/library_button_desc"
+        android:foreground="?attr/selectableItemBackground"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/btn_settings"
+        android:layout_marginTop="@dimen/main_screen_button_margin_top"
+        android:layout_marginBottom="28dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/main_screen_button_background"
+        android:letterSpacing="0"
+        android:text="@string/settings_button_text"
+        android:textAllCaps="false"
+        android:textColor="@color/main_screen_text"
+        android:textSize="@dimen/main_screen_text_size"
+        app:cornerRadius="@dimen/main_screen_corner_radius"
+        app:icon="@drawable/ic_settings"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/main_screen_icon_padding"
+        app:iconTint="@color/main_screen_text"
+        android:contentDescription="@string/settings_button_desc"
+        android:foreground="?attr/selectableItemBackground"/>
+
+</LinearLayout>
+
+
