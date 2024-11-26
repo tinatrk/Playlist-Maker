@@ -9,16 +9,17 @@
     tools:context=".SettingsActivity"
     android:id="@+id/settings_screen">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_margin="4dp"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/setting_screen_title_size"
-            android:layout_height="@dimen/setting_screen_title_size"
+            android:layout_width="@dimen/settings_screen_title_size"
+            android:layout_height="@dimen/settings_screen_title_size"
             android:id="@+id/img_view_back_settings_screen"
             android:scaleType="center"
             android:src="@drawable/ic_arrow_back"
@@ -28,7 +29,7 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="@dimen/setting_screen_title_size"
+            android:layout_height="@dimen/settings_screen_title_size"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:paddingHorizontal="12dp"
@@ -38,108 +39,61 @@
 
     </LinearLayout>
 
-    <LinearLayout
+
+    <androidx.appcompat.widget.SwitchCompat
         android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_screen_menu_item_height"
-        android:layout_marginStart="@dimen/setting_screen_menu_item_margin_start"
+        android:layout_height="@dimen/settings_screen_menu_item_height"
+        android:id="@+id/switch_mode"
+        android:layout_gravity="end"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="@dimen/setting_screen_menu_item_margin_end" >
+        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
+        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
+        android:text="@string/dark_mode"
+        android:textAllCaps="false"
+        android:textColor="@color/settings_screen_text"
+        android:textSize="@dimen/settings_screen_menu_item_text_size"
+        app:thumbTint="@color/settings_screen_switch_thumb"
+        app:trackTint="@color/settings_screen_switch_track"
+        android:contentDescription="@string/switch_mode_desc"
+        android:foreground="?attr/selectableItemBackground"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="@string/dark_mode"
-            android:textColor="@color/settings_screen_text"
-            android:textSize="@dimen/setting_screen_menu_item_text_size" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/switch_mode"
-            android:layout_gravity="center"
-            app:thumbTint="@color/settings_screen_switch_thumb"
-            app:trackTint="@color/settings_screen_switch_track"
-            android:contentDescription="@string/switch_mode_desc"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_screen_menu_item_height"
-        android:layout_marginStart="@dimen/setting_screen_menu_item_margin_start"
-        android:layout_marginEnd="@dimen/setting_screen_menu_item_margin_end"
+        android:layout_height="@dimen/settings_screen_menu_item_height"
+        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
+        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
+        android:text="@string/share_app"
+        android:textColor="@color/settings_screen_text"
+        android:textSize="@dimen/settings_screen_menu_item_text_size"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        app:drawableEndCompat="@drawable/ic_share"
+        app:drawableTint="@color/settings_screen_icons"
+        />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/share_app"
-            android:textColor="@color/settings_screen_text"
-            android:textSize="@dimen/setting_screen_menu_item_text_size" />
-
-        <ImageView
-            android:layout_width="@dimen/setting_screen_button_size"
-            android:layout_height="@dimen/setting_screen_button_size"
-            android:scaleType="center"
-            android:src="@drawable/ic_share"
-            app:tint="@color/settings_screen_icons"
-            android:contentDescription="@string/share_button_desc"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_screen_menu_item_height"
-        android:layout_marginStart="@dimen/setting_screen_menu_item_margin_start"
-        android:layout_marginEnd="@dimen/setting_screen_menu_item_margin_end"
+        android:layout_height="@dimen/settings_screen_menu_item_height"
+        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
+        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
+        android:text="@string/support"
+        android:textColor="@color/settings_screen_text"
+        android:textSize="@dimen/settings_screen_menu_item_text_size"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        app:drawableEndCompat="@drawable/ic_support"
+        app:drawableTint="@color/settings_screen_icons"
+        />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/support"
-            android:textColor="@color/settings_screen_text"
-            android:textSize="@dimen/setting_screen_menu_item_text_size" />
-
-        <ImageView
-            android:layout_width="@dimen/setting_screen_button_size"
-            android:layout_height="@dimen/setting_screen_button_size"
-            android:scaleType="center"
-            android:src="@drawable/ic_support"
-            app:tint="@color/settings_screen_icons"
-            android:contentDescription="@string/support_button_desc"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_screen_menu_item_height"
-        android:layout_marginStart="@dimen/setting_screen_menu_item_margin_start"
-        android:layout_marginEnd="@dimen/setting_screen_menu_item_margin_end"
+        android:layout_height="@dimen/settings_screen_menu_item_height"
+        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
+        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
+        android:text="@string/user_agreement"
+        android:textColor="@color/settings_screen_text"
+        android:textSize="@dimen/settings_screen_menu_item_text_size"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        app:drawableEndCompat="@drawable/ic_user_agreement"
+        app:drawableTint="@color/settings_screen_icons"
+        />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/user_agreement"
-            android:textColor="@color/settings_screen_text"
-            android:textSize="@dimen/setting_screen_menu_item_text_size" />
-
-        <ImageView
-            android:layout_width="@dimen/setting_screen_button_size"
-            android:layout_height="@dimen/setting_screen_button_size"
-            android:scaleType="center"
-            android:src="@drawable/ic_user_agreement"
-            app:tint="@color/settings_screen_icons"
-            android:contentDescription="@string/user_agreement_desc"/>
-
-    </LinearLayout>
 </LinearLayout>

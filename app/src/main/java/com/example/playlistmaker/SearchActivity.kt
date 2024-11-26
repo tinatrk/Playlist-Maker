@@ -21,8 +21,7 @@ class SearchActivity : AppCompatActivity() {
 
         val btnBack = findViewById<ImageView>(R.id.img_view_back_search_screen)
         btnBack.setOnClickListener{
-            val intent = Intent(this@SearchActivity, MainActivity::class.java)
-            startActivity(intent)
+            finish()
         }
     }
 }

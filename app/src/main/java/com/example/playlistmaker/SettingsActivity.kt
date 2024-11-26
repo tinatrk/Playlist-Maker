@@ -23,28 +23,29 @@ class SettingsActivity : AppCompatActivity() {
 
         val btnBack = findViewById<ImageView>(R.id.img_view_back_settings_screen)
         btnBack.setOnClickListener{
-            val intent = Intent(this@SettingsActivity, MainActivity::class.java)
-            startActivity(intent)
+            finish()
         }
 
         val themeSwitch = findViewById<SwitchCompat>(R.id.switch_mode)
-        val sharedPreferences = getSharedPreferences("save",MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(SAVE,MODE_PRIVATE)
         themeSwitch.setChecked(sharedPreferences.getBoolean("value",true))
 
         themeSwitch.setOnClickListener {
             if (themeSwitch.isChecked) {
-                val editor = getSharedPreferences("save", MODE_PRIVATE).edit()
-                editor.putBoolean("value", true)
-                editor.apply()
+                val editor = getSharedPreferences(SAVE, MODE_PRIVATE).edit()
+                    .putBoolean("value", true).apply()
                 themeSwitch.setChecked(true)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
-                val editor = getSharedPreferences("save", MODE_PRIVATE).edit()
-                editor.putBoolean("value", false)
-                editor.apply()
+                val editor = getSharedPreferences(SAVE, MODE_PRIVATE).edit()
+                    .putBoolean("value", false).apply()
                 themeSwitch.setChecked(false)
                 AppCompatDelegate.setDefaultNightMode (AppCompatDelegate.MODE_NIGHT_NO)
             }
         }
+    }
+
+    private companion object{
+        const val SAVE = "save"
     }
 }
