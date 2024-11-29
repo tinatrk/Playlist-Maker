@@ -12,7 +12,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_settings_screen"
         style="@style/ToolbarStyle"
-        app:title="@string/settings_button_text" />
+        app:title="@string/settings_button_text"
+        app:navigationIconTint="@color/text_normal"/>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_mode"

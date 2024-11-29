@@ -17,10 +17,10 @@
 
     <Button
         android:id="@+id/btn_search"
-        android:text="@string/search_button_text"
-        app:icon="@drawable/ic_search"
+        style="@style/BtnMainScreenStyle"
         android:contentDescription="@string/search_button_desc"
-        style="@style/BtnMainScreenStyle"/>
+        android:text="@string/search_button_text"
+        app:icon="@drawable/ic_search" />
 
     <Button
         android:id="@+id/btn_library"

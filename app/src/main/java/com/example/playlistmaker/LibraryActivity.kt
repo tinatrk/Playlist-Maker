@@ -3,7 +3,7 @@ package com.example.playlistmaker
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
