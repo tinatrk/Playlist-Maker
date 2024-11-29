@@ -8,16 +8,14 @@
     <color name="blue">#3772E7</color>
     <color name="light_blue">#9FBBF3</color>
 
+    <color name="text_normal">@color/black</color>
+    <color name="text_main_screen_title">@color/white</color>
+    <color name="text_main_screen">@color/dark_gray</color>
 
     <color name="main_screen_background">@color/blue</color>
-    <color name="main_screen_title">@color/white</color>
-    <color name="main_screen_text">@color/dark_gray</color>
     <color name="main_screen_button_background">@color/white</color>
 
-
     <color name="settings_screen_background">@color/white</color>
-    <color name="settings_screen_title">@color/black</color>
-    <color name="settings_screen_text">@color/black</color>
     <color name="settings_screen_icons">@color/gray</color>
     <color name="settings_screen_switch_thumb">@color/gray</color>
     <color name="settings_screen_switch_track">@color/light_gray</color>

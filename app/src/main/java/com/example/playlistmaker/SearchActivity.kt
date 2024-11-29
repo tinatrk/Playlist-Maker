@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
@@ -19,8 +20,8 @@ class SearchActivity : AppCompatActivity() {
             insets
         }
 
-        val btnBack = findViewById<ImageView>(R.id.img_view_back_search_screen)
-        btnBack.setOnClickListener{
+        val toolbar = findViewById<Toolbar>(R.id.toolbar_search_screen)
+        toolbar.setNavigationOnClickListener{
             finish()
         }
     }

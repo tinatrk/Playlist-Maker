@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
@@ -19,11 +20,6 @@ class SettingsActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
-        }
-
-        val btnBack = findViewById<ImageView>(R.id.img_view_back_settings_screen)
-        btnBack.setOnClickListener{
-            finish()
         }
 
         val themeSwitch = findViewById<SwitchCompat>(R.id.switch_mode)
@@ -43,6 +39,12 @@ class SettingsActivity : AppCompatActivity() {
                 AppCompatDelegate.setDefaultNightMode (AppCompatDelegate.MODE_NIGHT_NO)
             }
         }
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar_settings_screen)
+        toolbar.setNavigationOnClickListener{
+            finish()
+        }
+
     }
 
     private companion object {

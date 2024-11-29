@@ -3,6 +3,7 @@ package com.example.playlistmaker
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,8 +20,8 @@ class LibraryActivity : AppCompatActivity() {
             insets
         }
 
-        val btnBack = findViewById<ImageView>(R.id.img_view_back_library_screen)
-        btnBack.setOnClickListener{
+        val toolbar = findViewById<Toolbar>(R.id.toolbar_library_screen)
+        toolbar.setNavigationOnClickListener(){
             finish()
         }
     }
