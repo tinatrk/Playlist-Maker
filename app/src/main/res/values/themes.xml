@@ -7,6 +7,29 @@
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
 
+    <style name="Theme.MainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/blue_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/gray_900</item>
+
+        <item name="buttonStyle">@style/BtnMainScreenStyle</item>
+        <item name="toolbarStyle">@style/ToolbarStyleMainScreen</item>
+    </style>
+
+    <style name="Theme.NotMainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/gray_900</item>
+
+        <item name="drawableTint">@color/gray_400</item>
+        <item name="thumbTint">@color/gray_400</item>
+        <item name="trackTint">@color/gray_50</item>
+        <item name="android:textColor">@color/black</item>
+
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
+        <item name="android:textViewStyle">@style/MenuItemStyle</item>
+    </style>
+
 </resources>
 
 

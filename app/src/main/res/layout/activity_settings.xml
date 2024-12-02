@@ -3,42 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settings_screen"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/settings_screen_background"
-    android:orientation="vertical"
-    tools:context=".SettingsActivity">
+    tools:context=".SettingsActivity"
+    android:theme="@style/Theme.NotMainActivity"
+    style="@style/ScreenStyle">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_settings_screen"
-        style="@style/ToolbarStyle"
         app:title="@string/settings_button_text"
-        app:navigationIconTint="@color/text_normal"/>
+        style="?attr/toolbarStyle"
+        />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_mode"
-        style="@style/MenuItemStyle"
         android:layout_gravity="end"
         android:layout_marginTop="24dp"
         android:contentDescription="@string/switch_mode_desc"
-        android:text="@string/dark_mode" />
+        android:text="@string/dark_mode"
+        style="?attr/android:textViewStyle"/>
 
     <TextView
         android:id="@+id/share_app"
-        style="@style/MenuItemStyle"
         android:text="@string/share_app"
-        app:drawableEndCompat="@drawable/ic_share" />
+        app:drawableEndCompat="@drawable/ic_share"
+        style="?attr/android:textViewStyle"/>
 
     <TextView
         android:id="@+id/support"
-        style="@style/MenuItemStyle"
         android:text="@string/support"
-        app:drawableEndCompat="@drawable/ic_support" />
+        app:drawableEndCompat="@drawable/ic_support"
+        style="?attr/android:textViewStyle"/>
 
     <TextView
         android:id="@+id/user_agreement"
-        style="@style/MenuItemStyle"
         android:text="@string/user_agreement"
-        app:drawableEndCompat="@drawable/ic_user_agreement" />
+        app:drawableEndCompat="@drawable/ic_user_agreement"
+        style="?attr/android:textViewStyle"/>
 
 </LinearLayout>

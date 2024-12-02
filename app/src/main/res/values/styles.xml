@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MainScreenStyle">
+    <style name="ScreenStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/main_screen_background</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:paddingHorizontal">@dimen/main_screen_padding_horizontal</item>
+        <item name="android:background">?attr/colorPrimary</item>
     </style>
 
     <style name="BtnMainScreenStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
-        <item name="android:layout_marginTop">@dimen/main_screen_button_margin_top</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:backgroundTint">@color/main_screen_button_background</item>
+        <item name="android:layout_marginTop">@dimen/main_screen_button_margin_top</item>
+        <item name="android:layout_marginHorizontal">@dimen/main_screen_padding_horizontal</item>
         <item name="cornerRadius">@dimen/main_screen_corner_radius</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/main_screen_icon_padding</item>
-        <item name="iconTint">@color/text_main_screen</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
-        <item name="android:textAppearance">@style/TextMainScreenStyle</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:letterSpacing">@dimen/letter_spacing</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:gravity">center</item>
+        <item name="android:backgroundTint">?attr/colorSecondary</item>
+        <item name="iconTint">?attr/colorOnSecondary</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 
 
@@ -29,27 +35,30 @@
         <item name="android:layout_marginStart">@dimen/settings_screen_menu_item_margin_start</item>
         <item name="android:layout_marginEnd">@dimen/settings_screen_menu_item_margin_end</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="drawableTint">@color/settings_screen_icons</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
-        <item name="thumbTint">@color/settings_screen_switch_thumb</item>
-        <item name="trackTint">@color/settings_screen_switch_track</item>
         <item name="android:textAppearance">@style/TextStyleBase</item>
     </style>
 
-    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
+    <style name="ToolbarStyleMainScreen" parent="Widget.AppCompat.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/toolbar_height</item>
+        <item name="titleTextAppearance">@style/TextAppearance.Toolbar.Title</item>
+        <item name="titleTextColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="ToolbarStyleMainScreen">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/toolbar_height</item>
         <item name="navigationIcon">@drawable/ic_arrow_back</item>
-        <item name="navigationIconTint">@color/text_normal</item>
         <item name="contentInsetStartWithNavigation">0dp</item>
         <item name="titleMarginStart">@dimen/toolbar_title_margin_start</item>
         <item name="titleTextAppearance">@style/TextAppearance.Toolbar.Title</item>
+        <item name="navigationIconTint">?attr/colorOnPrimary</item>
     </style>
 
     <style name="TextAppearance.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <!--Any text styling can be done here-->
         <item name="android:textStyle">normal</item>
-        <item name="titleTextColor">@color/text_normal</item>
         <item name="android:letterSpacing">@dimen/letter_spacing</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/text_size_big</item>
@@ -58,26 +67,11 @@
 
     <style name="TextStyleBase">
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/text_normal</item>
         <item name="android:letterSpacing">@dimen/letter_spacing</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:gravity">start</item>
         <item name="android:textAllCaps">false</item>
-    </style>
-
-    <style name="TitleStyle" parent="TextStyleBase">
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textFontWeight">@dimen/fontWeightBig</item>
-        <item name="android:textSize">@dimen/text_size_big</item>
-    </style>
-
-    <style name="TitleMainScreenStyle" parent="TitleStyle">
-        <item name="android:textColor">@color/text_main_screen_title</item>
-    </style>
-
-    <style name="TextMainScreenStyle" parent="TitleStyle">
-        <item name="android:textColor">@color/text_main_screen</item>
     </style>
 
 </resources>
