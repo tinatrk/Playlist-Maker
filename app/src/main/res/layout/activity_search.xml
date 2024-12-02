@@ -2,16 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/settings_screen_background"
-    android:orientation="vertical"
     tools:context=".SearchActivity"
-    android:id="@+id/search_screen">
+    android:id="@+id/search_screen"
+    android:theme="@style/Theme.NotMainActivity"
+    style="@style/ScreenStyle">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_search_screen"
-        style="@style/ToolbarStyle"
-        app:title="@string/search_button_text" />
+        app:title="@string/search_button_text"
+        style="?attr/toolbarStyle"/>
 
 </LinearLayout>

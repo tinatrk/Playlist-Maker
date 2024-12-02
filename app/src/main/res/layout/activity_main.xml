@@ -4,30 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_screen"
     tools:context=".MainActivity"
-    style="@style/MainScreenStyle">
+    android:theme="@style/Theme.MainActivity"
+    style="@style/ScreenStyle"
+    >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/main_screen_title_margin_top"
-        android:layout_marginBottom="@dimen/main_screen_title_margin_bottom"
-        android:text="@string/app_name"
-        style="@style/TitleMainScreenStyle"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_settings_screen"
+        app:title="@string/app_name"
+        android:layout_marginBottom="8dp"
+        style="?attr/toolbarStyle"
         />
 
     <Button
         android:id="@+id/btn_search"
-        style="@style/BtnMainScreenStyle"
         android:contentDescription="@string/search_button_desc"
         android:text="@string/search_button_text"
-        app:icon="@drawable/ic_search" />
+        app:icon="@drawable/ic_search"
+        style="?attr/buttonStyle"/>
 
     <Button
         android:id="@+id/btn_library"
         android:text="@string/library_button_text"
         app:icon="@drawable/ic_library"
         android:contentDescription="@string/library_button_desc"
-        style="@style/BtnMainScreenStyle"/>
+        android:textAppearance="@style/TextStyleBase"
+        style="?attr/buttonStyle"/>
 
     <Button
         android:id="@+id/btn_settings"
@@ -35,7 +36,7 @@
         android:text="@string/settings_button_text"
         app:icon="@drawable/ic_settings"
         android:contentDescription="@string/settings_button_desc"
-        style="@style/BtnMainScreenStyle"/>
+        style="?attr/buttonStyle"/>
 
 </LinearLayout>
 
