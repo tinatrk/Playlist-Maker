@@ -22,19 +22,19 @@
         style="?attr/android:textViewStyle"/>
 
     <TextView
-        android:id="@+id/share_app"
+        android:id="@+id/tw_share_app"
         android:text="@string/share_app"
         app:drawableEndCompat="@drawable/ic_share"
         style="?attr/android:textViewStyle"/>
 
     <TextView
-        android:id="@+id/support"
+        android:id="@+id/tw_support"
         android:text="@string/support"
         app:drawableEndCompat="@drawable/ic_support"
         style="?attr/android:textViewStyle"/>
 
     <TextView
-        android:id="@+id/user_agreement"
+        android:id="@+id/tw_user_agreement"
         android:text="@string/user_agreement"
         app:drawableEndCompat="@drawable/ic_user_agreement"
         style="?attr/android:textViewStyle"/>
