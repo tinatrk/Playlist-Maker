@@ -24,17 +24,17 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val themeSwitch = findViewById<SwitchCompat>(R.id.switch_mode)
-        val sharedPreferences = getSharedPreferences(SAVE,MODE_PRIVATE)
-        themeSwitch.setChecked(sharedPreferences.getBoolean("value",true))
+        val sharedPreferences = getSharedPreferences(PREFERENCES_FILE_NAME_SAVE,MODE_PRIVATE)
+        themeSwitch.setChecked(sharedPreferences.getBoolean("value",false))
 
         themeSwitch.setOnClickListener {
             if (themeSwitch.isChecked) {
-                getSharedPreferences(SAVE, MODE_PRIVATE).edit()
+                getSharedPreferences(PREFERENCES_FILE_NAME_SAVE, MODE_PRIVATE).edit()
                     .putBoolean("value", true).apply()
                 themeSwitch.setChecked(true)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
-                getSharedPreferences(SAVE, MODE_PRIVATE).edit()
+                getSharedPreferences(PREFERENCES_FILE_NAME_SAVE, MODE_PRIVATE).edit()
                     .putBoolean("value", false).apply()
                 themeSwitch.setChecked(false)
                 AppCompatDelegate.setDefaultNightMode (AppCompatDelegate.MODE_NIGHT_NO)
@@ -53,7 +53,7 @@ class SettingsActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_TEXT, R.string.share_app_link)
                 type = "text/plain"
             }
-            val shareIntent = Intent.createChooser(sendIntent, getString(R.string.intent_chooser_title))
+            val shareIntent = Intent.createChooser(sendIntent, null)
             startActivity(shareIntent)
         }
 
@@ -77,6 +77,6 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private companion object {
-        const val SAVE = "save"
+        const val PREFERENCES_FILE_NAME_SAVE = "save"
     }
 }
