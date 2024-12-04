@@ -19,7 +19,7 @@
         android:id="@+id/btn_search"
         android:contentDescription="@string/search_button_desc"
         android:text="@string/search_button_text"
-        app:icon="@drawable/ic_search"
+        app:icon="@drawable/ic_search_24"
         style="?attr/buttonStyle"/>
 
     <Button
