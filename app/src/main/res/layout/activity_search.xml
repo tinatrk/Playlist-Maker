@@ -2,14 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".SearchActivity"
     android:id="@+id/search_screen"
     android:theme="@style/Theme.NotMainActivity"
-    style="@style/ScreenStyle">
+    style="@style/ScreenStyle"
+    tools:context=".SearchActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_search_screen"
-        app:title="@string/search_button_text"
-        style="?attr/toolbarStyle"/>
+        style="?attr/toolbarStyle"
+        app:title="@string/search_button_text" />
+
+    <LinearLayout
+        android:id="@+id/container_search_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/screen_padding_horizontal"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autofillHints="@string/search_line_desc"
+            android:background="@drawable/search_line_background"
+            android:drawableStart="@drawable/ic_search_16"
+            android:drawablePadding="@dimen/icon_padding"
+            android:drawableTint="@color/gray_400"
+            android:gravity="center_vertical"
+            android:hint="@string/search_line_default"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
+            android:paddingVertical="@dimen/edit_text_padding_vertical"
+            android:textAppearance="@style/TextStyleBase"
+            android:textColorHint="@color/gray_400"/>
+
+        <ImageView
+            android:id="@+id/clearIcon_searchLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_close_24"
+            android:visibility="gone"
+            android:contentDescription="@string/edit_text_btn_close_desc"/>
+    </LinearLayout>
 
 </LinearLayout>

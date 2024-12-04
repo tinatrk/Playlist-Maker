@@ -6,12 +6,12 @@
     <dimen name="fontWeightBig">500</dimen>
     <dimen name="fontWeightNormal">400</dimen>
 
-    <dimen name="main_screen_padding_horizontal">16dp</dimen>
+    <dimen name="screen_padding_horizontal">16dp</dimen>
     <dimen name="main_screen_title_margin_top">14dp</dimen>
     <dimen name="main_screen_title_margin_bottom">24dp</dimen>
     <dimen name="main_screen_button_margin_top">16dp</dimen>
     <dimen name="main_screen_corner_radius">16dp</dimen>
-    <dimen name="main_screen_icon_padding">8dp</dimen>
+    <dimen name="icon_padding">8dp</dimen>
 
     <dimen name="settings_screen_title_size">48dp</dimen>
     <dimen name="settings_screen_button_size">48dp</dimen>
@@ -21,6 +21,10 @@
 
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="toolbar_title_margin_start">8dp</dimen>
+
+    <dimen name="edit_text_padding_horizontal">12dp</dimen>
+    <dimen name="edit_text_padding_vertical">8.5dp</dimen>
+    <dimen name="edit_text_corner_radius">8dp</dimen>
 
 
 </resources>
