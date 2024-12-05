@@ -20,14 +20,15 @@
     <style name="Theme.NotMainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/white</item>
         <item name="colorOnPrimary">@color/gray_900</item>
+        <item name="colorSecondary">@color/gray_50</item>
+        <item name="colorOnSecondary">@color/gray_400</item>
 
-        <item name="drawableTint">@color/gray_400</item>
         <item name="thumbTint">@color/gray_400</item>
         <item name="trackTint">@color/gray_50</item>
-        <item name="android:textColor">@color/black</item>
 
         <item name="toolbarStyle">@style/ToolbarStyle</item>
         <item name="android:textViewStyle">@style/MenuItemStyle</item>
+        <item name="android:editTextStyle">@style/EditTextStyle</item>
     </style>
 
 </resources>

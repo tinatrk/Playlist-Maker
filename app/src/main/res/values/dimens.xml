@@ -23,7 +23,7 @@
     <dimen name="toolbar_title_margin_start">8dp</dimen>
 
     <dimen name="edit_text_padding_horizontal">12dp</dimen>
-    <dimen name="edit_text_padding_vertical">8.5dp</dimen>
+    <dimen name="edit_text_height">36dp</dimen>
     <dimen name="edit_text_corner_radius">8dp</dimen>
 
 

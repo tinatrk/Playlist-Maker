@@ -21,31 +21,24 @@
         android:orientation="horizontal">
 
         <EditText
+            android:id="@+id/search_line"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/edit_text_height"
             android:layout_weight="1"
             android:autofillHints="@string/search_line_desc"
-            android:background="@drawable/search_line_background"
             android:drawableStart="@drawable/ic_search_16"
-            android:drawablePadding="@dimen/icon_padding"
-            android:drawableTint="@color/gray_400"
-            android:gravity="center_vertical"
             android:hint="@string/search_line_default"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
-            android:paddingVertical="@dimen/edit_text_padding_vertical"
-            android:textAppearance="@style/TextStyleBase"
-            android:textColorHint="@color/gray_400"/>
+            style="?attr/android:editTextStyle"/>
 
         <ImageView
-            android:id="@+id/clearIcon_searchLine"
+            android:id="@+id/clearIcon_search_line"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/ic_close_24"
             android:visibility="gone"
-            android:contentDescription="@string/edit_text_btn_close_desc"/>
+            android:contentDescription="@string/edit_text_btn_close_desc"
+            app:tint="?attr/colorOnPrimary"/>
     </LinearLayout>
 
 </LinearLayout>
