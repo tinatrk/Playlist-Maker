@@ -3,8 +3,6 @@
     <dimen name="text_size_big">22sp</dimen>
     <dimen name="text_size_normal">16sp</dimen>
     <dimen name="letter_spacing">0</dimen>
-    <dimen name="fontWeightBig">500</dimen>
-    <dimen name="fontWeightNormal">400</dimen>
 
     <dimen name="screen_padding_horizontal">16dp</dimen>
     <dimen name="main_screen_title_margin_top">14dp</dimen>

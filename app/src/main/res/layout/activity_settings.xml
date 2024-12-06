@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settings_screen"
-    tools:context=".SettingsActivity"
-    android:theme="@style/Theme.NotMainActivity"
-    style="@style/ScreenStyle">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SettingsActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_settings_screen"
         app:title="@string/settings_button_text"
-        style="?attr/toolbarStyle"
+        style="@style/ToolbarWithIconColorStyle"
         />
 
     <androidx.appcompat.widget.SwitchCompat
@@ -19,24 +20,24 @@
         android:layout_marginTop="24dp"
         android:contentDescription="@string/switch_mode_desc"
         android:text="@string/dark_mode"
-        style="?attr/android:textViewStyle"/>
+        style="@style/MenuItemColorStyle"/>
 
     <TextView
         android:id="@+id/tw_share_app"
         android:text="@string/share_app"
         app:drawableEndCompat="@drawable/ic_share"
-        style="?attr/android:textViewStyle"/>
+        style="@style/MenuItemColorStyle"/>
 
     <TextView
         android:id="@+id/tw_support"
         android:text="@string/support"
         app:drawableEndCompat="@drawable/ic_support"
-        style="?attr/android:textViewStyle"/>
+        style="@style/MenuItemColorStyle"/>
 
     <TextView
         android:id="@+id/tw_user_agreement"
         android:text="@string/user_agreement"
         app:drawableEndCompat="@drawable/ic_user_agreement"
-        style="?attr/android:textViewStyle"/>
+        style="@style/MenuItemColorStyle"/>
 
 </LinearLayout>

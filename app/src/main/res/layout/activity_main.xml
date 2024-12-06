@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_screen"
-    tools:context=".MainActivity"
-    android:theme="@style/Theme.MainActivity"
-    style="@style/ScreenStyle"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_settings_screen"
         app:title="@string/app_name"
         android:layout_marginBottom="8dp"
-        style="?attr/toolbarStyle"
+        style="@style/ToolbarColorStyle"
         />
 
     <Button
@@ -20,15 +20,14 @@
         android:contentDescription="@string/search_button_desc"
         android:text="@string/search_button_text"
         app:icon="@drawable/ic_search_24"
-        style="?attr/buttonStyle"/>
+        style="@style/BtnMainScreenColorStyle"/>
 
     <Button
         android:id="@+id/btn_library"
         android:text="@string/library_button_text"
         app:icon="@drawable/ic_library"
         android:contentDescription="@string/library_button_desc"
-        android:textAppearance="@style/TextStyleBase"
-        style="?attr/buttonStyle"/>
+        style="@style/BtnMainScreenColorStyle"/>
 
     <Button
         android:id="@+id/btn_settings"
@@ -36,7 +35,7 @@
         android:text="@string/settings_button_text"
         app:icon="@drawable/ic_settings"
         android:contentDescription="@string/settings_button_desc"
-        style="?attr/buttonStyle"/>
+        style="@style/BtnMainScreenColorStyle"/>
 
 </LinearLayout>
 

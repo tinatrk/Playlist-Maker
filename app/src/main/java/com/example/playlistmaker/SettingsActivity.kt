@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
@@ -24,8 +25,12 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val themeSwitch = findViewById<SwitchCompat>(R.id.switch_mode)
-        val sharedPreferences = getSharedPreferences(PREFERENCES_FILE_NAME_SAVE,MODE_PRIVATE)
-        themeSwitch.setChecked(sharedPreferences.getBoolean("value",false))
+        when (getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES ->
+                themeSwitch.setChecked(true)
+            Configuration.UI_MODE_NIGHT_NO ->
+                themeSwitch.setChecked(false)
+        }
 
         themeSwitch.setOnClickListener {
             if (themeSwitch.isChecked) {
@@ -50,7 +55,7 @@ class SettingsActivity : AppCompatActivity() {
         btnShareApp.setOnClickListener{
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, R.string.share_app_link)
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_link))
                 type = "text/plain"
             }
             val shareIntent = Intent.createChooser(sendIntent, null)
