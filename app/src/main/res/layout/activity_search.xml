@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/search_screen"
-    android:theme="@style/Theme.NotMainActivity"
-    style="@style/ScreenStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SearchActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_search_screen"
-        style="?attr/toolbarStyle"
-        app:title="@string/search_button_text" />
+        app:title="@string/search_button_text"
+        style="@style/ToolbarWithIconColorStyle"/>
 
     <LinearLayout
         android:id="@+id/container_search_line"
@@ -22,13 +23,10 @@
 
         <EditText
             android:id="@+id/search_line"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/edit_text_height"
-            android:layout_weight="1"
             android:autofillHints="@string/search_line_desc"
             android:drawableStart="@drawable/ic_search_16"
             android:hint="@string/search_line_default"
-            style="?attr/android:editTextStyle"/>
+            style="@style/EditTextColorStyle"/>
 
         <ImageView
             android:id="@+id/clearIcon_search_line"

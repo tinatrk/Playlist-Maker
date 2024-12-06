@@ -17,7 +17,7 @@
     <string name="support_button_desc">Написать в поддержку</string>
     <string name="user_agreement_desc">Открыть пользовательское соглашение</string>
 
-    <string name="share_app_link">https://practicum.yandex.ru/android-developer/?from=catalog</string>
+    <string name="share_app_link">https://practicum.yandex.ru/android-developer/</string>
     <string name="support_target_mail">tatjana.solov2014@yandex.ru</string>
     <string name="support_subject_mail">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="support_message_mail">Спасибо разработчикам и разработчицам за крутое приложение!</string>

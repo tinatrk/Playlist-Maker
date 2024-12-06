@@ -9,12 +9,11 @@
 
     <style name="Theme.MainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/gray_900</item>
-        <item name="colorSecondary">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/white</item>
         <item name="colorOnSecondary">@color/gray_900</item>
 
-        <item name="buttonStyle">@style/BtnMainScreenStyle</item>
-        <item name="toolbarStyle">@style/ToolbarStyleMainScreen</item>
+        <item name="android:background">?attr/colorPrimary</item>
     </style>
 
     <style name="Theme.NotMainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -23,12 +22,9 @@
         <item name="colorSecondary">@color/white</item>
         <item name="colorOnSecondary">@color/gray_900</item>
 
+        <item name="android:background">?attr/colorPrimary</item>
         <item name="thumbTint">@color/blue_700</item>
         <item name="trackTint">@color/blue_200</item>
-
-        <item name="toolbarStyle">@style/ToolbarStyle</item>
-        <item name="android:textViewStyle">@style/MenuItemStyle</item>
-        <item name="android:editTextStyle">@style/EditTextStyle</item>
     </style>
 
 </resources>

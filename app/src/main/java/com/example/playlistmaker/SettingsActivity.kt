@@ -50,7 +50,7 @@ class SettingsActivity : AppCompatActivity() {
         btnShareApp.setOnClickListener{
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, R.string.share_app_link)
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_link))
                 type = "text/plain"
             }
             val shareIntent = Intent.createChooser(sendIntent, null)

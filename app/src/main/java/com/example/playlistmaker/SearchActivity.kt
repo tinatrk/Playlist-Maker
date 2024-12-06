@@ -8,7 +8,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -16,6 +15,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class SearchActivity : AppCompatActivity() {
+
+    private var searchLineText = STRING_DEF_VALUE
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,7 +37,7 @@ class SearchActivity : AppCompatActivity() {
         val clearButton = findViewById<ImageView>(R.id.clearIcon_search_line)
 
         clearButton.setOnClickListener {
-            searchLine.setText("")
+            searchLine.setText(STRING_DEF_VALUE)
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(searchLine.windowToken, 0)
             searchLine.clearFocus()
@@ -48,6 +50,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
+                searchLineText = s.toString()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -65,4 +68,22 @@ class SearchActivity : AppCompatActivity() {
             View.VISIBLE
         }
     }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        searchLineText = savedInstanceState.getString(SEARCH_LINE_TEXT, STRING_DEF_VALUE)
+        val searchLine = findViewById<EditText>(R.id.search_line)
+        searchLine.setText(searchLineText)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(SEARCH_LINE_TEXT, searchLineText)
+    }
+
+    private companion object{
+        const val SEARCH_LINE_TEXT = "SEARCH_LINE_TEXT"
+        const val STRING_DEF_VALUE = ""
+    }
+
 }
