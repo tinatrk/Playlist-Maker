@@ -6,10 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SearchActivity">
+    tools:context=".SearchActivity"
+    style="@style/ScreenStyle">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_search_screen"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
         app:title="@string/search_button_text"
         style="@style/ToolbarWithIconColorStyle"/>
 
@@ -22,6 +25,8 @@
 
         <EditText
             android:id="@+id/search_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
             android:autofillHints="@string/search_line_desc"
             android:drawableStart="@drawable/ic_search_16"
             android:hint="@string/search_line_default"

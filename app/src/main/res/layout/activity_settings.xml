@@ -6,36 +6,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SettingsActivity">
+    tools:context=".SettingsActivity"
+    style="@style/ScreenStyle">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_settings_screen"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
         app:title="@string/settings_button_text"
         style="@style/ToolbarWithIconColorStyle"
         />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_mode"
-        android:layout_gravity="end"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_screen_menu_item_height"
+        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
+        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
         android:layout_marginTop="24dp"
         android:contentDescription="@string/switch_mode_desc"
         android:text="@string/dark_mode"
-        style="@style/MenuItemColorStyle"/>
+        style="@style/SwitchColorStyle"/>
 
     <TextView
         android:id="@+id/tw_share_app"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_screen_menu_item_height"
+        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
+        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
         android:text="@string/share_app"
         app:drawableEndCompat="@drawable/ic_share"
         style="@style/MenuItemColorStyle"/>
 
     <TextView
         android:id="@+id/tw_support"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_screen_menu_item_height"
+        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
+        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
         android:text="@string/support"
         app:drawableEndCompat="@drawable/ic_support"
         style="@style/MenuItemColorStyle"/>
 
     <TextView
         android:id="@+id/tw_user_agreement"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_screen_menu_item_height"
+        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
+        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
         android:text="@string/user_agreement"
         app:drawableEndCompat="@drawable/ic_user_agreement"
         style="@style/MenuItemColorStyle"/>

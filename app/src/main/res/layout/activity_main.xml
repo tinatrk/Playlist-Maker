@@ -6,10 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    style="@style/ScreenStyle">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_settings_screen"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
         app:title="@string/app_name"
         android:layout_marginBottom="8dp"
         style="@style/ToolbarColorStyle"
@@ -17,6 +20,11 @@
 
     <Button
         android:id="@+id/btn_search"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/main_screen_button_margin_top"
+        android:layout_marginHorizontal="@dimen/screen_padding_horizontal"
         android:contentDescription="@string/search_button_desc"
         android:text="@string/search_button_text"
         app:icon="@drawable/ic_search_24"
@@ -24,6 +32,11 @@
 
     <Button
         android:id="@+id/btn_library"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/main_screen_button_margin_top"
+        android:layout_marginHorizontal="@dimen/screen_padding_horizontal"
         android:text="@string/library_button_text"
         app:icon="@drawable/ic_library"
         android:contentDescription="@string/library_button_desc"
@@ -31,6 +44,11 @@
 
     <Button
         android:id="@+id/btn_settings"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/main_screen_button_margin_top"
+        android:layout_marginHorizontal="@dimen/screen_padding_horizontal"
         android:layout_marginBottom="28dp"
         android:text="@string/settings_button_text"
         app:icon="@drawable/ic_settings"

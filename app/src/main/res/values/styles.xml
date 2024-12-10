@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="ScreenStyle">
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
     <style name="ToolbarBaseStyle" parent="Widget.AppCompat.Toolbar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/toolbar_height</item>
         <item name="titleTextAppearance">@style/TextAppearance.Toolbar.Title</item>
     </style>
 
@@ -31,11 +33,6 @@
 
 
     <style name="BtnMainScreenBaseStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginTop">@dimen/main_screen_button_margin_top</item>
-        <item name="android:layout_marginHorizontal">@dimen/screen_padding_horizontal</item>
         <item name="cornerRadius">@dimen/main_screen_corner_radius</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/icon_padding</item>
@@ -56,10 +53,6 @@
 
 
     <style name="MenuItemBaseStyle" parent="Widget.AppCompat.TextView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/settings_screen_menu_item_height</item>
-        <item name="android:layout_marginStart">@dimen/settings_screen_menu_item_margin_start</item>
-        <item name="android:layout_marginEnd">@dimen/settings_screen_menu_item_margin_end</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:textAppearance">@style/TextBaseStyle</item>
@@ -68,6 +61,12 @@
     <style name="MenuItemColorStyle" parent="MenuItemBaseStyle">
         <item name="drawableTint">?attr/colorOnSecondary</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="SwitchColorStyle" parent="MenuItemColorStyle">
+        <item name="thumbTint">@color/gray_400</item>
+        <item name="trackTint">@color/gray_50</item>
+        <item name="android:layout_gravity">end</item>
     </style>
 
 
@@ -82,8 +81,6 @@
 
 
     <style name="EditTextBaseStyle" parent="Widget.AppCompat.EditText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/edit_text_height</item>
         <item name="android:drawablePadding">@dimen/icon_padding</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:inputType">text</item>
