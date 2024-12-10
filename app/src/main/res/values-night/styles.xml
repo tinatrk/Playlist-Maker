@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MenuItemColorStyle" parent="MenuItemBaseStyle">
+        <item name="drawableTint">?attr/colorOnPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="SwitchColorStyle" parent="MenuItemColorStyle">
+        <item name="thumbTint">@color/blue_700</item>
+        <item name="trackTint">@color/blue_200</item>
+    </style>
+
+    <style name="EditTextColorStyle" parent="EditTextBaseStyle">
+        <item name="android:textColorHint">?attr/colorOnSecondary</item>
+        <item name="android:drawableTint">?attr/colorOnSecondary</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
+</resources>

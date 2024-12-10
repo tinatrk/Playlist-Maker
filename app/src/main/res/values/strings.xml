@@ -16,4 +16,15 @@
     <string name="share_button_desc">Поделиться приложением</string>
     <string name="support_button_desc">Написать в поддержку</string>
     <string name="user_agreement_desc">Открыть пользовательское соглашение</string>
+
+    <string name="share_app_link">https://practicum.yandex.ru/android-developer/</string>
+    <string name="support_target_mail">tatjana.solov2014@yandex.ru</string>
+    <string name="support_subject_mail">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="support_message_mail">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="user_agreement_link">https://yandex.ru/legal/practicum_offer/</string>
+
+    <string name="search_line_default">Поиск</string>
+    <string name="search_line_desc">Ввести трек или исполнителя</string>
+    <string name="edit_text_btn_close_desc">Очистить строку ввода</string>
+
 </resources>
