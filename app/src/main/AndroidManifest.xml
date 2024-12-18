@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -18,15 +18,15 @@
             android:name=".SearchActivity"
             android:exported="false"
             android:theme="@style/Theme.NotMainActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".LibraryActivity"
             android:exported="false"
-            android:theme="@style/Theme.NotMainActivity"/>
+            android:theme="@style/Theme.NotMainActivity" />
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
-            android:theme="@style/Theme.NotMainActivity"/>
+            android:theme="@style/Theme.NotMainActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -15,4 +15,13 @@
         <item name="android:drawableTint">?attr/colorOnSecondary</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
+
+    <style name="TextSmallColorStyle" parent="TextSmallStyle">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="drawableTint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="IconBaseStyle">
+        <item name="android:tint">?attr/colorOnPrimary</item>
+    </style>
 </resources>

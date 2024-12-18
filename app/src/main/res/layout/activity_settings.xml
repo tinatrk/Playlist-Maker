@@ -20,10 +20,10 @@
         android:id="@+id/switch_mode"
         style="@style/SwitchColorStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_screen_menu_item_height"
-        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
+        android:layout_height="@dimen/selection_item_height"
+        android:layout_marginStart="@dimen/margin_horizontal_big"
+        android:layout_marginTop="@dimen/margin_top_big"
+        android:layout_marginEnd="@dimen/margin_horizontal_normal"
         android:contentDescription="@string/switch_mode_desc"
         android:text="@string/dark_mode" />
 
@@ -31,9 +31,9 @@
         android:id="@+id/tw_share_app"
         style="@style/MenuItemColorStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_screen_menu_item_height"
-        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
-        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
+        android:layout_height="@dimen/selection_item_height"
+        android:layout_marginStart="@dimen/margin_horizontal_big"
+        android:layout_marginEnd="@dimen/margin_horizontal_normal"
         android:text="@string/share_app"
         app:drawableEndCompat="@drawable/ic_share" />
 
@@ -41,9 +41,9 @@
         android:id="@+id/tw_support"
         style="@style/MenuItemColorStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_screen_menu_item_height"
-        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
-        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
+        android:layout_height="@dimen/selection_item_height"
+        android:layout_marginStart="@dimen/margin_horizontal_big"
+        android:layout_marginEnd="@dimen/margin_horizontal_normal"
         android:text="@string/support"
         app:drawableEndCompat="@drawable/ic_support" />
 
@@ -51,10 +51,10 @@
         android:id="@+id/tw_user_agreement"
         style="@style/MenuItemColorStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_screen_menu_item_height"
-        android:layout_marginStart="@dimen/settings_screen_menu_item_margin_start"
-        android:layout_marginEnd="@dimen/settings_screen_menu_item_margin_end"
+        android:layout_height="@dimen/selection_item_height"
+        android:layout_marginStart="@dimen/margin_horizontal_big"
+        android:layout_marginEnd="@dimen/margin_horizontal_normal"
         android:text="@string/user_agreement"
-        app:drawableEndCompat="@drawable/ic_user_agreement" />
+        app:drawableEndCompat="@drawable/ic_arrow_forward" />
 
 </LinearLayout>

@@ -26,5 +26,7 @@
     <string name="search_line_default">Поиск</string>
     <string name="search_line_desc">Ввести трек или исполнителя</string>
     <string name="edit_text_btn_close_desc">Очистить строку ввода</string>
+    
+    <string name="artist_art_desc">Обложка трека</string>
 
 </resources>
