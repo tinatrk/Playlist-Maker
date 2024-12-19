@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="MenuItemColorStyle" parent="MenuItemBaseStyle">
         <item name="drawableTint">?attr/colorOnPrimary</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>

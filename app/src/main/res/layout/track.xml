@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            tools:text="Yesterday (Remastered 2009)" />
+            tools:text="Yesterday (Remastered 2009) Yesterday (Remastered 2009)" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                tools:text="The Beatles" />
+                tools:text="The Beatles The Beatles The Beatles The Beatles The Beatles" />
 
             <TextView
                 android:id="@+id/track_time"

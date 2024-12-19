@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.widget.ImageView
 import android.text.TextWatcher
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +13,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
 
@@ -62,6 +63,25 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         searchLine.addTextChangedListener(textWatcher)
+
+        val tracks: ArrayList<Track> = arrayListOf(
+            Track(getString(R.string.track_name_1), getString(R.string.track_artist_name_1),
+                getString(R.string.track_time_1), getString(R.string.track_art_link_1)),
+            Track(getString(R.string.track_name_2), getString(R.string.track_artist_name_2),
+                getString(R.string.track_time_2), getString(R.string.track_art_link_2)),
+            Track(getString(R.string.track_name_3), getString(R.string.track_artist_name_3),
+            getString(R.string.track_time_3), getString(R.string.track_art_link_3)),
+            Track(getString(R.string.track_name_4), getString(R.string.track_artist_name_4),
+                getString(R.string.track_time_4), getString(R.string.track_art_link_4)),
+            Track(getString(R.string.track_name_5), getString(R.string.track_artist_name_5),
+                getString(R.string.track_time_5), getString(R.string.track_art_link_5))
+        )
+
+        val recyclerView = findViewById<RecyclerView>(R.id.recycler_track_list)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
+            false)
+        val trackAdapter: TrackAdapter = TrackAdapter(tracks)
+        recyclerView.adapter = trackAdapter
 
     }
 
