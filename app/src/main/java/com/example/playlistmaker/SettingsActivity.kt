@@ -28,6 +28,7 @@ class SettingsActivity : AppCompatActivity() {
         when (getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES ->
                 themeSwitch.setChecked(true)
+
             Configuration.UI_MODE_NIGHT_NO ->
                 themeSwitch.setChecked(false)
         }
@@ -42,17 +43,17 @@ class SettingsActivity : AppCompatActivity() {
                 getSharedPreferences(PREFERENCES_FILE_NAME_SAVE, MODE_PRIVATE).edit()
                     .putBoolean("value", false).apply()
                 themeSwitch.setChecked(false)
-                AppCompatDelegate.setDefaultNightMode (AppCompatDelegate.MODE_NIGHT_NO)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
         }
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar_settings_screen)
-        toolbar.setNavigationOnClickListener{
+        toolbar.setNavigationOnClickListener {
             finish()
         }
 
         val btnShareApp = findViewById<TextView>(R.id.tw_share_app)
-        btnShareApp.setOnClickListener{
+        btnShareApp.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_link))
@@ -63,19 +64,24 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val btnSupport = findViewById<TextView>(R.id.tw_support)
-        btnSupport.setOnClickListener{
+        btnSupport.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             supportIntent.data = Uri.parse("mailto:")
-            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_target_mail)))
+            supportIntent.putExtra(
+                Intent.EXTRA_EMAIL,
+                arrayOf(getString(R.string.support_target_mail))
+            )
             supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_subject_mail))
             supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.support_message_mail))
             startActivity(supportIntent)
         }
 
         val btnUserAgreement = findViewById<TextView>(R.id.tw_user_agreement)
-        btnUserAgreement.setOnClickListener{
-            val userAgreementIntent = Intent(Intent.ACTION_VIEW,
-                Uri.parse(getString(R.string.user_agreement_link)))
+        btnUserAgreement.setOnClickListener {
+            val userAgreementIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(getString(R.string.user_agreement_link))
+            )
             startActivity(userAgreementIntent)
         }
 

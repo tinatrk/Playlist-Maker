@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="MenuItemColorStyle" parent="MenuItemBaseStyle">
         <item name="drawableTint">?attr/colorOnPrimary</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
@@ -14,5 +15,14 @@
         <item name="android:textColorHint">?attr/colorOnSecondary</item>
         <item name="android:drawableTint">?attr/colorOnSecondary</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="TextSmallColorStyle" parent="TextSmallStyle">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="drawableTint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="IconBaseStyle">
+        <item name="android:tint">?attr/colorOnPrimary</item>
     </style>
 </resources>
