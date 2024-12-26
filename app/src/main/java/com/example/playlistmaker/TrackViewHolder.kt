@@ -21,8 +21,7 @@ class TrackViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         trackName.text = model.trackName
         trackArtistName.text = model.artistName
         trackTime.text = model.trackTime
-        val cornerRadiusDp = (itemView.resources.getDimension(R.dimen.corner_radius_small) /
-                itemView.resources.displayMetrics.density).toInt()
+        val cornerRadiusDp = (itemView.resources.getDimension(R.dimen.corner_radius_small)).toInt()
         Glide.with(itemView)
             .load(model.artworkUrl100)
             .centerCrop()

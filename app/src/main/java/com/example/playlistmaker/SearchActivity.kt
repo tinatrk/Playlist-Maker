@@ -64,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
         }
         searchLine.addTextChangedListener(textWatcher)
 
-        val tracks: ArrayList<Track> = arrayListOf(
+        val tracks: List<Track> = listOf(
             Track(getString(R.string.track_name_1), getString(R.string.track_artist_name_1),
                 getString(R.string.track_time_1), getString(R.string.track_art_link_1)),
             Track(getString(R.string.track_name_2), getString(R.string.track_artist_name_2),
