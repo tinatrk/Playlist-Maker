@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/track"
+    style="@style/ScreenStyle"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/selection_item_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/track_art"
+        style="@style/ScreenStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/icon_indentation_big"
+        android:contentDescription="@string/artist_art_desc"
+        tools:src="@drawable/ic_placeholder" />
+
+    <LinearLayout
+        style="@style/ScreenStyle"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/margin_horizontal_small">
+
+        <TextView
+            android:id="@+id/track_name"
+            style="@style/MenuItemColorStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Yesterday (Remastered 2009) Yesterday (Remastered 2009)" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/track_artist"
+                style="@style/TextSmallColorStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="The Beatles The Beatles The Beatles The Beatles The Beatles" />
+
+            <TextView
+                android:id="@+id/track_time"
+                style="@style/TextSmallColorStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:drawableStartCompat="@drawable/ic_text_delimiter"
+                tools:text="2:35" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        style="@style/IconBaseStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_horizontal_normal"
+        android:src="@drawable/ic_arrow_forward" />
+</LinearLayout>

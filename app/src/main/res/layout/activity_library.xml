@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/library_screen"
+    style="@style/ScreenStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LibraryActivity"
-    style="@style/ScreenStyle">
+    tools:context=".LibraryActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_library_screen"
+        style="@style/ToolbarWithIconColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        app:title="@string/library_button_text"
-        style="@style/ToolbarWithIconColorStyle"/>
+        app:title="@string/library_button_text" />
 </LinearLayout>
