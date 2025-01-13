@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_size_big">22sp</dimen>
-    <dimen name="text_size_normal">16sp</dimen>
-    <dimen name="text_size_small">11sp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_19">19sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_11">11sp</dimen>
     <dimen name="letter_spacing">0</dimen>
 
     <dimen name="selection_item_height">61dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="edit_text_height">36dp</dimen>
 
-    <dimen name="margin_horizontal_small">8dp</dimen>
-    <dimen name="margin_horizontal_normal">12dp</dimen>
-    <dimen name="margin_horizontal_big">16dp</dimen>
+    <dimen name="margin_horizontal_8">8dp</dimen>
+    <dimen name="margin_horizontal_12">12dp</dimen>
+    <dimen name="margin_horizontal_16">16dp</dimen>
+    <dimen name="margin_horizontal_24">24dp</dimen>
 
-    <dimen name="margin_bottom_small">8dp</dimen>
-    <dimen name="margin_bottom_big">28dp</dimen>
+    <dimen name="margin_bottom_8">8dp</dimen>
+    <dimen name="margin_bottom_28">28dp</dimen>
 
-    <dimen name="margin_top_small">8dp</dimen>
-    <dimen name="margin_top_normal">16dp</dimen>
-    <dimen name="margin_top_big">24dp</dimen>
+    <dimen name="margin_top_8">8dp</dimen>
+    <dimen name="margin_top_16">16dp</dimen>
+    <dimen name="margin_top_24">24dp</dimen>
+    <dimen name="margin_top_102">102dp</dimen>
 
-    <dimen name="corner_radius_small">2dp</dimen>
-    <dimen name="corner_radius_normal">8dp</dimen>
-    <dimen name="corner_radius_big">16dp</dimen>
+    <dimen name="corner_radius_2">2dp</dimen>
+    <dimen name="corner_radius_8">8dp</dimen>
+    <dimen name="corner_radius_16">16dp</dimen>
+    <dimen name="corner_radius_54">54dp</dimen>
 
-    <dimen name="icon_indentation_small">8dp</dimen>
-    <dimen name="icon_indentation_normal">10dp</dimen>
-    <dimen name="icon_indentation_big">13dp</dimen>
+    <dimen name="icon_indentation_8">8dp</dimen>
+    <dimen name="icon_indentation_10">10dp</dimen>
+    <dimen name="icon_indentation_13">13dp</dimen>
 
 
 </resources>

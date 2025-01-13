@@ -21,9 +21,9 @@
         style="@style/SwitchColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"
-        android:layout_marginStart="@dimen/margin_horizontal_big"
-        android:layout_marginTop="@dimen/margin_top_big"
-        android:layout_marginEnd="@dimen/margin_horizontal_normal"
+        android:layout_marginStart="@dimen/margin_horizontal_16"
+        android:layout_marginTop="@dimen/margin_top_24"
+        android:layout_marginEnd="@dimen/margin_horizontal_12"
         android:contentDescription="@string/switch_mode_desc"
         android:text="@string/dark_mode" />
 
@@ -32,8 +32,8 @@
         style="@style/MenuItemColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"
-        android:layout_marginStart="@dimen/margin_horizontal_big"
-        android:layout_marginEnd="@dimen/margin_horizontal_normal"
+        android:layout_marginStart="@dimen/margin_horizontal_16"
+        android:layout_marginEnd="@dimen/margin_horizontal_12"
         android:text="@string/share_app"
         app:drawableEndCompat="@drawable/ic_share" />
 
@@ -42,8 +42,8 @@
         style="@style/MenuItemColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"
-        android:layout_marginStart="@dimen/margin_horizontal_big"
-        android:layout_marginEnd="@dimen/margin_horizontal_normal"
+        android:layout_marginStart="@dimen/margin_horizontal_16"
+        android:layout_marginEnd="@dimen/margin_horizontal_12"
         android:text="@string/support"
         app:drawableEndCompat="@drawable/ic_support" />
 
@@ -52,8 +52,8 @@
         style="@style/MenuItemColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"
-        android:layout_marginStart="@dimen/margin_horizontal_big"
-        android:layout_marginEnd="@dimen/margin_horizontal_normal"
+        android:layout_marginStart="@dimen/margin_horizontal_16"
+        android:layout_marginEnd="@dimen/margin_horizontal_12"
         android:text="@string/user_agreement"
         app:drawableEndCompat="@drawable/ic_arrow_forward" />
 

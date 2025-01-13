@@ -17,7 +17,7 @@
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 
-    <style name="TextSmallColorStyle" parent="TextSmallStyle">
+    <style name="TextRegular11ColorStyle" parent="TextRegular11BaseStyle">
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="drawableTint">?attr/colorOnPrimary</item>
     </style>
