@@ -58,8 +58,9 @@
                 style="@style/TextRegular11ColorStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                tools:text="2:35"
                 app:drawableStartCompat="@drawable/ic_text_delimiter"
-                tools:text="2:35" />
+                app:drawableSize="@dimen/icon_indentation_13"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.widget.ImageView
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -33,14 +34,12 @@ class SearchActivity : AppCompatActivity() {
     private var searchLineHasFocus: Boolean = false
     private var isResponseDisplayed: Boolean = false
 
-    private val baseUrlITunesSearchApi = "https://itunes.apple.com"
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrlITunesSearchApi)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    private val trackService = retrofit.create(TrackApi::class.java)
+    private lateinit var baseUrlITunesSearchApi: String
+    private lateinit var retrofit: Retrofit
+    private lateinit var trackService: TrackApi
+    private lateinit var trackAdapter:TrackAdapter
+
     private val tracks: MutableList<Track> = mutableListOf()
-    private val trackAdapter = TrackAdapter()
 
     private lateinit var searchLine: EditText
     private lateinit var trackRecyclerView: RecyclerView
@@ -57,6 +56,13 @@ class SearchActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        baseUrlITunesSearchApi = getString(R.string.base_url_itunes_search_api)
+        retrofit = Retrofit.Builder()
+            .baseUrl(baseUrlITunesSearchApi)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        trackService = retrofit.create(TrackApi::class.java)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar_search_screen)
         searchLine = findViewById(R.id.search_line)
@@ -89,7 +95,7 @@ class SearchActivity : AppCompatActivity() {
             searchLine.clearFocus()
             tracks.clear()
             trackAdapter.notifyDataSetChanged()
-            showErrorMessage("", "", false)
+            showErrorMessage("", false)
             isResponseDisplayed = false
         }
 
@@ -111,6 +117,7 @@ class SearchActivity : AppCompatActivity() {
 
         trackRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
             false)
+        trackAdapter = TrackAdapter()
         trackAdapter.tracks = tracks
         trackRecyclerView.adapter = trackAdapter
 
@@ -120,7 +127,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun showErrorMessage(message: String, additionalText: String, isConnectionError: Boolean){
+    private fun showErrorMessage(message: String, isConnectionError: Boolean){
         if (message.isNotEmpty()){
             if (isConnectionError){
                 showErrorImage(R.drawable.ic_placeholder_bad_connection_lm,
@@ -137,9 +144,6 @@ class SearchActivity : AppCompatActivity() {
             }
             tracks.clear()
             trackAdapter.notifyDataSetChanged()
-            if (additionalText.isNotEmpty()){
-                Toast.makeText(this, additionalText, Toast.LENGTH_LONG).show()
-            }
         } else{
             errorImage.visibility = View.GONE
             errorMessage.visibility = View.GONE
@@ -168,20 +172,17 @@ class SearchActivity : AppCompatActivity() {
                             tracks.clear()
                             tracks.addAll(response.body()?.results!!)
                             trackAdapter.notifyDataSetChanged()
-                            showErrorMessage("", "", false)
+                            showErrorMessage("", false)
                         }else{
-                            showErrorMessage(getString(R.string.message_nothing_found),
-                                "", false)
+                            showErrorMessage(getString(R.string.message_nothing_found), false)
                         }
                     } else{
-                        showErrorMessage(getString(R.string.message_bad_connection),
-                            response.code().toString(), true)
+                        showErrorMessage(getString(R.string.message_bad_connection),true)
                     }
                 }
 
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable){
-                    showErrorMessage(getString(R.string.message_bad_connection),
-                        t.message.toString(), true)
+                    showErrorMessage(getString(R.string.message_bad_connection), true)
                 }
             })
     }
