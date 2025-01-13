@@ -162,7 +162,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchTrack(){
         trackService
-            .searchTracks(searchLine.text.toString())
+            .searchTracks(searchLine.text.toString().trim())
             .enqueue(object: Callback<TrackResponse>{
                 override fun onResponse(call: Call<TrackResponse>,
                                         response: Response<TrackResponse>
