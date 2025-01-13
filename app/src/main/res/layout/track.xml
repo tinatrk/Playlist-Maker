@@ -12,11 +12,12 @@
     <ImageView
         android:id="@+id/track_art"
         style="@style/ScreenStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/track_art_size"
+        android:layout_height="@dimen/track_art_size"
         android:layout_marginStart="@dimen/icon_indentation_13"
         android:contentDescription="@string/artist_art_desc"
-        tools:src="@drawable/ic_placeholder" />
+        tools:src="@drawable/ic_placeholder"
+        android:scaleType="centerCrop"/>
 
     <LinearLayout
         style="@style/ScreenStyle"

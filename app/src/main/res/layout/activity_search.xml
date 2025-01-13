@@ -30,7 +30,9 @@
             android:layout_height="@dimen/edit_text_height"
             android:autofillHints="@string/search_line_desc"
             android:drawableStart="@drawable/ic_search_16"
-            android:hint="@string/search_line_default" />
+            android:hint="@string/search_line_default"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <ImageView
             android:id="@+id/clearIcon_search_line"
@@ -58,30 +60,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal" >
             <ImageView
-                android:id="@+id/iw_placeholder_search"
+                android:id="@+id/iw_error_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:src="@drawable/ic_placeholder_bad_connection_lm"
                 android:backgroundTint="@color/gray_900"
-                android:layout_marginTop="@dimen/margin_top_102"/>
+                android:layout_marginTop="@dimen/margin_top_102"
+                android:visibility="gone"/>
             <TextView
-                android:id="@+id/tw_placeholder_search"
+                android:id="@+id/tw_error_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="@string/message_something_went_wrong"
+                tools:text="@string/message_bad_connection"
                 style="@style/TextMedium19ColorStyle"
                 android:layout_marginTop="@dimen/margin_top_16"
                 android:layout_marginHorizontal="@dimen/margin_horizontal_24"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:visibility="gone"/>
             <Button
-                android:id="@+id/btn_placeholder_search"
+                android:id="@+id/btn_error_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_top_24"
-                tools:text="Обновить"
-                style="@style/BtnUpdateColorStyle"/>
+                android:text="@string/update"
+                style="@style/BtnUpdateColorStyle"
+                android:visibility="gone"/>
         </LinearLayout>
     </FrameLayout>
 

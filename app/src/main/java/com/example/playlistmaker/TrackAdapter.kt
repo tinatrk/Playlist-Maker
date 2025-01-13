@@ -3,7 +3,9 @@ package com.example.playlistmaker
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class TrackAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
+    var tracks: MutableList<Track> = mutableListOf()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         return TrackViewHolder(parent)
     }
