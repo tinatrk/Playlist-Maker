@@ -16,7 +16,7 @@
         android:layout_height="@dimen/toolbar_height"
         app:title="@string/settings_button_text" />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch_mode"
         style="@style/SwitchColorStyle"
         android:layout_width="match_parent"

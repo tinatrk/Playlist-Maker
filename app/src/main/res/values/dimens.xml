@@ -7,10 +7,10 @@
     <dimen name="text_size_11">11sp</dimen>
     <dimen name="letter_spacing">0</dimen>
 
-    <dimen name="selection_item_height">61dp</dimen>
+    <dimen name="selection_item_height">60dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="edit_text_height">36dp</dimen>
-    <dimen name="track_art_size">45dp</dimen>
+    <dimen name="track_art_size">44dp</dimen>
 
     <dimen name="margin_horizontal_8">8dp</dimen>
     <dimen name="margin_horizontal_12">12dp</dimen>

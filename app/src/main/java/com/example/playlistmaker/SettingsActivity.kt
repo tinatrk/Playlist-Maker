@@ -1,17 +1,15 @@
 package com.example.playlistmaker
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +22,12 @@ class SettingsActivity : AppCompatActivity() {
             insets
         }
 
-        val themeSwitch = findViewById<SwitchCompat>(R.id.switch_mode)
-        when (getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+        val themeSwitch = findViewById<SwitchMaterial>(R.id.switch_mode)
+        themeSwitch.isChecked = (applicationContext as App) .isDarkTheme
+        themeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            (applicationContext as App) .switchTheme(isChecked)
+        }
+        /*when (getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES ->
                 themeSwitch.setChecked(true)
 
@@ -45,7 +47,7 @@ class SettingsActivity : AppCompatActivity() {
                 themeSwitch.setChecked(false)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
-        }
+        }*/
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar_settings_screen)
         toolbar.setNavigationOnClickListener {
