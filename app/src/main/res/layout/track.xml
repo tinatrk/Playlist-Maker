@@ -16,8 +16,8 @@
         android:layout_height="@dimen/track_art_size"
         android:layout_marginStart="@dimen/icon_indentation_13"
         android:contentDescription="@string/artist_art_desc"
-        tools:src="@drawable/ic_placeholder"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_placeholder" />
 
     <LinearLayout
         style="@style/ScreenStyle"
@@ -58,9 +58,9 @@
                 style="@style/TextRegular11ColorStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="2:35"
+                app:drawableSize="@dimen/icon_indentation_13"
                 app:drawableStartCompat="@drawable/ic_text_delimiter"
-                app:drawableSize="@dimen/icon_indentation_13"/>
+                tools:text="2:35" />
         </LinearLayout>
     </LinearLayout>
 

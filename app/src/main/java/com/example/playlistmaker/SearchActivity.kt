@@ -4,16 +4,14 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
-import android.widget.ImageView
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -34,10 +32,8 @@ class SearchActivity : AppCompatActivity() {
     private var searchLineHasFocus: Boolean = false
     private var isResponseDisplayed: Boolean = false
 
-    private lateinit var baseUrlITunesSearchApi: String
-    private lateinit var retrofit: Retrofit
     private lateinit var trackService: TrackApi
-    private lateinit var trackAdapter:TrackAdapter
+    private lateinit var trackAdapter: TrackAdapter
 
     private val tracks: MutableList<Track> = mutableListOf()
 
@@ -57,8 +53,8 @@ class SearchActivity : AppCompatActivity() {
             insets
         }
 
-        baseUrlITunesSearchApi = getString(R.string.base_url_itunes_search_api)
-        retrofit = Retrofit.Builder()
+        val baseUrlITunesSearchApi = getString(R.string.base_url_itunes_search_api)
+        val retrofit = Retrofit.Builder()
             .baseUrl(baseUrlITunesSearchApi)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -72,15 +68,16 @@ class SearchActivity : AppCompatActivity() {
         errorMessage = findViewById(R.id.tw_error_search)
         errorBtn = findViewById(R.id.btn_error_search)
 
-        toolbar.setNavigationOnClickListener{
+        toolbar.setNavigationOnClickListener {
             finish()
         }
 
-        searchLine.setOnFocusChangeListener { _, hasFocus -> searchLineHasFocus = hasFocus}
+        searchLine.setOnFocusChangeListener { _, hasFocus -> searchLineHasFocus = hasFocus }
         searchLine.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack()
-                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                val inputMethodManager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.hideSoftInputFromWindow(searchLine.windowToken, 0)
                 searchLine.clearFocus()
                 true
@@ -90,7 +87,8 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             searchLine.setText(STRING_DEF_VALUE)
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(searchLine.windowToken, 0)
             searchLine.clearFocus()
             tracks.clear()
@@ -115,8 +113,10 @@ class SearchActivity : AppCompatActivity() {
         }
         searchLine.addTextChangedListener(textWatcher)
 
-        trackRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
-            false)
+        trackRecyclerView.layoutManager = LinearLayoutManager(
+            this, LinearLayoutManager.VERTICAL,
+            false
+        )
         trackAdapter = TrackAdapter()
         trackAdapter.tracks = tracks
         trackRecyclerView.adapter = trackAdapter
@@ -127,31 +127,35 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun showErrorMessage(message: String, isConnectionError: Boolean){
-        if (message.isNotEmpty()){
-            if (isConnectionError){
-                showErrorImage(R.drawable.ic_placeholder_bad_connection_lm,
-                    R.drawable.ic_placeholder_bad_connection_dm)
+    private fun showErrorMessage(message: String, isConnectionError: Boolean) {
+        if (message.isNotEmpty()) {
+            if (isConnectionError) {
+                showErrorImage(
+                    R.drawable.ic_placeholder_bad_connection_lm,
+                    R.drawable.ic_placeholder_bad_connection_dm
+                )
                 errorMessage.text = getString(R.string.message_bad_connection)
                 errorMessage.visibility = View.VISIBLE
                 errorBtn.visibility = View.VISIBLE
-            }else{
-                showErrorImage(R.drawable.ic_placeholder_nothing_found_lm,
-                    R.drawable.ic_placeholder_nothing_found_dm)
+            } else {
+                showErrorImage(
+                    R.drawable.ic_placeholder_nothing_found_lm,
+                    R.drawable.ic_placeholder_nothing_found_dm
+                )
                 errorMessage.text = getString(R.string.message_nothing_found)
                 errorMessage.visibility = View.VISIBLE
                 errorBtn.visibility = View.GONE
             }
             tracks.clear()
             trackAdapter.notifyDataSetChanged()
-        } else{
+        } else {
             errorImage.visibility = View.GONE
             errorMessage.visibility = View.GONE
             errorBtn.visibility = View.GONE
         }
     }
 
-    private fun showErrorImage(imageIdLightMode: Int, imageIdDarkMode: Int){
+    private fun showErrorImage(imageIdLightMode: Int, imageIdDarkMode: Int) {
         when (getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> errorImage.setImageResource(imageIdDarkMode)
 
@@ -160,28 +164,29 @@ class SearchActivity : AppCompatActivity() {
         errorImage.visibility = View.VISIBLE
     }
 
-    private fun searchTrack(){
+    private fun searchTrack() {
         trackService
             .searchTracks(searchLine.text.toString().trim())
-            .enqueue(object: Callback<TrackResponse>{
-                override fun onResponse(call: Call<TrackResponse>,
-                                        response: Response<TrackResponse>
-                ){
-                    if (response.code() == 200){
-                        if (response.body()?.results?.isNotEmpty() == true){
+            .enqueue(object : Callback<TrackResponse> {
+                override fun onResponse(
+                    call: Call<TrackResponse>,
+                    response: Response<TrackResponse>
+                ) {
+                    if (response.code() == 200) {
+                        if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.clear()
                             tracks.addAll(response.body()?.results!!)
                             trackAdapter.notifyDataSetChanged()
                             showErrorMessage("", false)
-                        }else{
+                        } else {
                             showErrorMessage(getString(R.string.message_nothing_found), false)
                         }
-                    } else{
-                        showErrorMessage(getString(R.string.message_bad_connection),true)
+                    } else {
+                        showErrorMessage(getString(R.string.message_bad_connection), true)
                     }
                 }
 
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable){
+                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     showErrorMessage(getString(R.string.message_bad_connection), true)
                 }
             })
@@ -194,7 +199,7 @@ class SearchActivity : AppCompatActivity() {
         searchLine.setText(searchLineText)
         if (searchLineText.isNotEmpty()) searchTrack()
         searchLineHasFocus = savedInstanceState.getBoolean(SEARCH_LINE_HAS_FOCUS, false)
-        if (searchLineHasFocus){
+        if (searchLineHasFocus) {
             searchLine.setSelection(searchLine.length())
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.showSoftInput(searchLine, InputMethodManager.SHOW_IMPLICIT)
@@ -210,7 +215,7 @@ class SearchActivity : AppCompatActivity() {
         outState.putBoolean(IS_RESPONSE_DISPLAYED, isResponseDisplayed)
     }
 
-    private companion object{
+    private companion object {
         const val SEARCH_LINE_TEXT = "SEARCH_LINE_TEXT"
         const val STRING_DEF_VALUE = ""
         const val SEARCH_LINE_HAS_FOCUS = "SEARCH_LINE_HAS_FOCUS"
