@@ -12,10 +12,11 @@
     <ImageView
         android:id="@+id/track_art"
         style="@style/ScreenStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/icon_indentation_big"
+        android:layout_width="@dimen/track_art_size"
+        android:layout_height="@dimen/track_art_size"
+        android:layout_marginStart="@dimen/icon_indentation_13"
         android:contentDescription="@string/artist_art_desc"
+        android:scaleType="centerCrop"
         tools:src="@drawable/ic_placeholder" />
 
     <LinearLayout
@@ -25,7 +26,7 @@
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/margin_horizontal_small">
+        android:paddingHorizontal="@dimen/margin_horizontal_8">
 
         <TextView
             android:id="@+id/track_name"
@@ -44,7 +45,7 @@
 
             <TextView
                 android:id="@+id/track_artist"
-                style="@style/TextSmallColorStyle"
+                style="@style/TextRegular11ColorStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -54,9 +55,10 @@
 
             <TextView
                 android:id="@+id/track_time"
-                style="@style/TextSmallColorStyle"
+                style="@style/TextRegular11ColorStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:drawableSize="@dimen/icon_indentation_13"
                 app:drawableStartCompat="@drawable/ic_text_delimiter"
                 tools:text="2:35" />
         </LinearLayout>
@@ -66,6 +68,6 @@
         style="@style/IconBaseStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_horizontal_normal"
+        android:layout_marginEnd="@dimen/margin_horizontal_12"
         android:src="@drawable/ic_arrow_forward" />
 </LinearLayout>

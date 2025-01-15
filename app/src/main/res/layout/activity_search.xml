@@ -20,8 +20,8 @@
         android:id="@+id/container_search_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/edit_text_height"
-        android:layout_marginHorizontal="@dimen/margin_horizontal_big"
-        android:layout_marginTop="@dimen/margin_top_small">
+        android:layout_marginHorizontal="@dimen/margin_horizontal_16"
+        android:layout_marginTop="@dimen/margin_top_8">
 
         <EditText
             android:id="@+id/search_line"
@@ -30,15 +30,17 @@
             android:layout_height="@dimen/edit_text_height"
             android:autofillHints="@string/search_line_desc"
             android:drawableStart="@drawable/ic_search_16"
-            android:hint="@string/search_line_default" />
+            android:hint="@string/search_line_default"
+            android:imeOptions="actionDone"
+            android:singleLine="true" />
 
         <ImageView
             android:id="@+id/clearIcon_search_line"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="@dimen/icon_indentation_normal"
-            android:layout_marginEnd="@dimen/icon_indentation_normal"
+            android:layout_marginTop="@dimen/icon_indentation_10"
+            android:layout_marginEnd="@dimen/icon_indentation_10"
             android:backgroundTint="?attr/colorSecondary"
             android:contentDescription="@string/edit_text_btn_close_desc"
             android:src="@drawable/ic_clear"
@@ -46,10 +48,51 @@
             app:tint="?attr/colorOnSecondary" />
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_track_list"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_normal" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_track_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_16" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iw_error_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top_102"
+                android:backgroundTint="@color/gray_900"
+                android:visibility="gone"
+                tools:src="@drawable/ic_placeholder_bad_connection_lm" />
+
+            <TextView
+                android:id="@+id/tw_error_search"
+                style="@style/TextMedium19ColorStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_horizontal_24"
+                android:layout_marginTop="@dimen/margin_top_16"
+                android:gravity="center"
+                android:visibility="gone"
+                tools:text="@string/message_bad_connection" />
+
+            <Button
+                android:id="@+id/btn_error_search"
+                style="@style/BtnUpdateColorStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top_24"
+                android:text="@string/update"
+                android:visibility="gone" />
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>
