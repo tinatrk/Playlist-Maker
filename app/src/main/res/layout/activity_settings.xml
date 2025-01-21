@@ -10,14 +10,14 @@
     tools:context=".SettingsActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_settings_screen"
+        android:id="@+id/toolbar_settings"
         style="@style/ToolbarWithIconColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         app:title="@string/settings_button_text" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_mode"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_mode_settings"
         style="@style/SwitchColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"
@@ -28,7 +28,7 @@
         android:text="@string/dark_mode" />
 
     <TextView
-        android:id="@+id/tw_share_app"
+        android:id="@+id/tw_share_app_setting"
         style="@style/MenuItemColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"
@@ -38,7 +38,7 @@
         app:drawableEndCompat="@drawable/ic_share" />
 
     <TextView
-        android:id="@+id/tw_support"
+        android:id="@+id/tw_support_settings"
         style="@style/MenuItemColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"
@@ -48,7 +48,7 @@
         app:drawableEndCompat="@drawable/ic_support" />
 
     <TextView
-        android:id="@+id/tw_user_agreement"
+        android:id="@+id/tw_user_agreement_settings"
         style="@style/MenuItemColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"

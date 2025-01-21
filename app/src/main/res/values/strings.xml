@@ -61,4 +61,7 @@
 
     <string name="base_url_itunes_search_api">https://itunes.apple.com</string>
 
+    <string name="history_title">Вы искали</string>
+    <string name="history_clear_btn">Очистить историю</string>
+
 </resources>

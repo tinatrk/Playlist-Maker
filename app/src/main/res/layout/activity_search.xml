@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/edit_text_height"
         android:layout_marginHorizontal="@dimen/margin_horizontal_16"
-        android:layout_marginTop="@dimen/margin_top_8">
+        android:layout_marginVertical="@dimen/margin_top_8">
 
         <EditText
             android:id="@+id/search_line"
@@ -48,17 +48,51 @@
             app:tint="?attr/colorOnSecondary" />
     </FrameLayout>
 
+    <LinearLayout
+        android:id="@+id/wg_history_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/TextMedium19ColorStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal_16"
+            android:layout_marginTop="@dimen/margin_top_42"
+            android:layout_marginBottom="@dimen/margin_bottom_20"
+            android:text="@string/history_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rw_history_list_search"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_clear_history_search"
+            style="@style/BtnSearchScreenColorStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_top_24"
+            android:layout_marginBottom="@dimen/margin_bottom_16"
+            android:text="@string/history_clear_btn" />
+    </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_track_list"
+            android:id="@+id/rw_track_list_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_top_16" />
 
         <LinearLayout
+            android:id="@+id/wg_error_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
@@ -70,7 +104,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_top_102"
                 android:backgroundTint="@color/gray_900"
-                android:visibility="gone"
                 tools:src="@drawable/ic_placeholder_bad_connection_lm" />
 
             <TextView
@@ -81,17 +114,16 @@
                 android:layout_marginHorizontal="@dimen/margin_horizontal_24"
                 android:layout_marginTop="@dimen/margin_top_16"
                 android:gravity="center"
-                android:visibility="gone"
                 tools:text="@string/message_bad_connection" />
 
             <Button
                 android:id="@+id/btn_error_search"
-                style="@style/BtnUpdateColorStyle"
+                style="@style/BtnSearchScreenColorStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_top_24"
                 android:text="@string/update"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </LinearLayout>
     </FrameLayout>
 

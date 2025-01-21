@@ -7,10 +7,10 @@
     <dimen name="text_size_11">11sp</dimen>
     <dimen name="letter_spacing">0</dimen>
 
-    <dimen name="selection_item_height">61dp</dimen>
+    <dimen name="selection_item_height">60dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="edit_text_height">36dp</dimen>
-    <dimen name="track_art_size">45dp</dimen>
+    <dimen name="track_art_size">44dp</dimen>
 
     <dimen name="margin_horizontal_8">8dp</dimen>
     <dimen name="margin_horizontal_12">12dp</dimen>
@@ -18,11 +18,14 @@
     <dimen name="margin_horizontal_24">24dp</dimen>
 
     <dimen name="margin_bottom_8">8dp</dimen>
+    <dimen name="margin_bottom_16">16dp</dimen>
+    <dimen name="margin_bottom_20">20dp</dimen>
     <dimen name="margin_bottom_28">28dp</dimen>
 
     <dimen name="margin_top_8">8dp</dimen>
     <dimen name="margin_top_16">16dp</dimen>
     <dimen name="margin_top_24">24dp</dimen>
+    <dimen name="margin_top_42">42dp</dimen>
     <dimen name="margin_top_102">102dp</dimen>
 
     <dimen name="corner_radius_2">2dp</dimen>
