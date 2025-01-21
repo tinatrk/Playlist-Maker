@@ -22,39 +22,18 @@ class SettingsActivity : AppCompatActivity() {
             insets
         }
 
-        val themeSwitch = findViewById<SwitchMaterial>(R.id.switch_mode)
+        val themeSwitch = findViewById<SwitchMaterial>(R.id.switch_mode_settings)
         themeSwitch.isChecked = (applicationContext as App) .isDarkTheme
         themeSwitch.setOnCheckedChangeListener { _, isChecked ->
             (applicationContext as App) .switchTheme(isChecked)
         }
-        /*when (getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES ->
-                themeSwitch.setChecked(true)
 
-            Configuration.UI_MODE_NIGHT_NO ->
-                themeSwitch.setChecked(false)
-        }
-
-        themeSwitch.setOnClickListener {
-            if (themeSwitch.isChecked) {
-                getSharedPreferences(PREFERENCES_FILE_NAME_SAVE, MODE_PRIVATE).edit()
-                    .putBoolean("value", true).apply()
-                themeSwitch.setChecked(true)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                getSharedPreferences(PREFERENCES_FILE_NAME_SAVE, MODE_PRIVATE).edit()
-                    .putBoolean("value", false).apply()
-                themeSwitch.setChecked(false)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }*/
-
-        val toolbar = findViewById<Toolbar>(R.id.toolbar_settings_screen)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar_settings)
         toolbar.setNavigationOnClickListener {
             finish()
         }
 
-        val btnShareApp = findViewById<TextView>(R.id.tw_share_app)
+        val btnShareApp = findViewById<TextView>(R.id.tw_share_app_setting)
         btnShareApp.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
@@ -65,7 +44,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(shareIntent)
         }
 
-        val btnSupport = findViewById<TextView>(R.id.tw_support)
+        val btnSupport = findViewById<TextView>(R.id.tw_support_settings)
         btnSupport.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             supportIntent.data = Uri.parse("mailto:")
@@ -78,7 +57,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(supportIntent)
         }
 
-        val btnUserAgreement = findViewById<TextView>(R.id.tw_user_agreement)
+        val btnUserAgreement = findViewById<TextView>(R.id.tw_user_agreement_settings)
         btnUserAgreement.setOnClickListener {
             val userAgreementIntent = Intent(
                 Intent.ACTION_VIEW,
@@ -87,9 +66,5 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(userAgreementIntent)
         }
 
-    }
-
-    private companion object {
-        const val PREFERENCES_FILE_NAME_SAVE = "save"
     }
 }

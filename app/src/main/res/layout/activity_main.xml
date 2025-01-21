@@ -10,7 +10,7 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_settings_screen"
+        android:id="@+id/toolbar_main"
         style="@style/ToolbarColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
@@ -18,7 +18,7 @@
         app:title="@string/app_name" />
 
     <Button
-        android:id="@+id/btn_search"
+        android:id="@+id/btn_search_main"
         style="@style/BtnMainScreenColorStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -30,7 +30,7 @@
         app:icon="@drawable/ic_search_24" />
 
     <Button
-        android:id="@+id/btn_library"
+        android:id="@+id/btn_library_main"
         style="@style/BtnMainScreenColorStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -42,7 +42,7 @@
         app:icon="@drawable/ic_library" />
 
     <Button
-        android:id="@+id/btn_settings"
+        android:id="@+id/btn_settings_main"
         style="@style/BtnMainScreenColorStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"

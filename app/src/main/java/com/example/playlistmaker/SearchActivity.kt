@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -34,14 +35,18 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var trackService: TrackApi
     private lateinit var trackAdapter: TrackAdapter
+    private lateinit var historyAdapter: TrackAdapter
 
     private val tracks: MutableList<Track> = mutableListOf()
 
     private lateinit var searchLine: EditText
     private lateinit var trackRecyclerView: RecyclerView
+    private lateinit var wgErrorSearch: LinearLayout
     private lateinit var errorImage: ImageView
     private lateinit var errorMessage: TextView
     private lateinit var errorBtn: Button
+
+    private lateinit var searchHistory: SearchHistory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +54,13 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.search_screen)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
+            val bottomPadding = if (ime.bottom != 0) {
+                ime.bottom
+            } else {
+                systemBars.bottom
+            }
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, bottomPadding)
             insets
         }
 
@@ -62,35 +73,48 @@ class SearchActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar_search_screen)
         searchLine = findViewById(R.id.search_line)
-        trackRecyclerView = findViewById(R.id.recycler_track_list)
-        val clearButton = findViewById<ImageView>(R.id.clearIcon_search_line)
+        trackRecyclerView = findViewById(R.id.rw_track_list_search)
+        val clearETButton = findViewById<ImageView>(R.id.clearIcon_search_line)
+        wgErrorSearch = findViewById(R.id.wg_error_search)
         errorImage = findViewById(R.id.iw_error_search)
         errorMessage = findViewById(R.id.tw_error_search)
         errorBtn = findViewById(R.id.btn_error_search)
+
+        searchHistory = SearchHistory((applicationContext as App).sharedPrefs)
+        val clearHistoryBtn = findViewById<Button>(R.id.btn_clear_history_search)
+        val rwHistory = findViewById<RecyclerView>(R.id.rw_history_list_search)
+        val wgHistory = findViewById<LinearLayout>(R.id.wg_history_search)
+        historyAdapter = TrackAdapter { saveTrack(it) }
+        historyAdapter.tracks = searchHistory.getSearchHistoryTracks().toMutableList()
+        rwHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        rwHistory.adapter = historyAdapter
+
 
         toolbar.setNavigationOnClickListener {
             finish()
         }
 
-        searchLine.setOnFocusChangeListener { _, hasFocus -> searchLineHasFocus = hasFocus }
+
+        searchLine.setOnFocusChangeListener { _, hasFocus ->
+            searchLineHasFocus = hasFocus
+            wgHistory.visibility =
+                if (hasFocus && searchLine.text.isEmpty() && historyAdapter.tracks.size != 0)
+                    View.VISIBLE
+                else View.GONE
+        }
         searchLine.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack()
-                val inputMethodManager =
-                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                inputMethodManager?.hideSoftInputFromWindow(searchLine.windowToken, 0)
-                searchLine.clearFocus()
+                clearFocusEditText()
+                isResponseDisplayed = true
                 true
             }
             false
         }
 
-        clearButton.setOnClickListener {
+        clearETButton.setOnClickListener {
             searchLine.setText(STRING_DEF_VALUE)
-            val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(searchLine.windowToken, 0)
-            searchLine.clearFocus()
+            clearFocusEditText()
             tracks.clear()
             trackAdapter.notifyDataSetChanged()
             showErrorMessage("", false)
@@ -98,13 +122,15 @@ class SearchActivity : AppCompatActivity() {
         }
 
         val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // empty
-            }
-
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.isVisible = !s.isNullOrEmpty()
+                clearETButton.isVisible = !s.isNullOrEmpty()
                 searchLineText = s.toString()
+                wgHistory.visibility = if (searchLine.hasFocus() && s?.isEmpty() == true &&
+                    historyAdapter.tracks.size != 0
+                ) View.VISIBLE
+                else View.GONE
+                wgErrorSearch.visibility = View.GONE
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -113,13 +139,26 @@ class SearchActivity : AppCompatActivity() {
         }
         searchLine.addTextChangedListener(textWatcher)
 
+
+        clearHistoryBtn.setOnClickListener {
+            searchHistory.clearSearchHistory()
+            historyAdapter.tracks.clear()
+            historyAdapter.notifyDataSetChanged()
+            wgHistory.visibility = View.GONE
+            clearFocusEditText()
+        }
+
+
         trackRecyclerView.layoutManager = LinearLayoutManager(
             this, LinearLayoutManager.VERTICAL,
             false
         )
-        trackAdapter = TrackAdapter()
+        trackAdapter = TrackAdapter {
+            saveTrack(it)
+        }
         trackAdapter.tracks = tracks
         trackRecyclerView.adapter = trackAdapter
+
 
         errorBtn.setOnClickListener {
             searchTrack()
@@ -135,7 +174,7 @@ class SearchActivity : AppCompatActivity() {
                     R.drawable.ic_placeholder_bad_connection_dm
                 )
                 errorMessage.text = getString(R.string.message_bad_connection)
-                errorMessage.visibility = View.VISIBLE
+                wgErrorSearch.visibility = View.VISIBLE
                 errorBtn.visibility = View.VISIBLE
             } else {
                 showErrorImage(
@@ -143,15 +182,13 @@ class SearchActivity : AppCompatActivity() {
                     R.drawable.ic_placeholder_nothing_found_dm
                 )
                 errorMessage.text = getString(R.string.message_nothing_found)
-                errorMessage.visibility = View.VISIBLE
+                wgErrorSearch.visibility = View.VISIBLE
                 errorBtn.visibility = View.GONE
             }
             tracks.clear()
             trackAdapter.notifyDataSetChanged()
         } else {
-            errorImage.visibility = View.GONE
-            errorMessage.visibility = View.GONE
-            errorBtn.visibility = View.GONE
+            wgErrorSearch.visibility = View.GONE
         }
     }
 
@@ -161,7 +198,6 @@ class SearchActivity : AppCompatActivity() {
 
             Configuration.UI_MODE_NIGHT_NO -> errorImage.setImageResource(imageIdLightMode)
         }
-        errorImage.visibility = View.VISIBLE
     }
 
     private fun searchTrack() {
@@ -192,12 +228,25 @@ class SearchActivity : AppCompatActivity() {
             })
     }
 
+    private fun saveTrack(track: Track) {
+        searchHistory.saveTrack(track)
+        historyAdapter.tracks = searchHistory.getSearchHistoryTracks().toMutableList()
+        historyAdapter.notifyDataSetChanged()
+        clearFocusEditText()
+    }
+
+    private fun clearFocusEditText() {
+        val inputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        inputMethodManager?.hideSoftInputFromWindow(searchLine.windowToken, 0)
+        searchLine.clearFocus()
+    }
+
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         searchLineText = savedInstanceState.getString(SEARCH_LINE_TEXT, STRING_DEF_VALUE)
         val searchLine = findViewById<EditText>(R.id.search_line)
         searchLine.setText(searchLineText)
-        if (searchLineText.isNotEmpty()) searchTrack()
         searchLineHasFocus = savedInstanceState.getBoolean(SEARCH_LINE_HAS_FOCUS, false)
         if (searchLineHasFocus) {
             searchLine.setSelection(searchLine.length())
