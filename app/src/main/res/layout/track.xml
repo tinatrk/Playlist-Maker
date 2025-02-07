@@ -14,10 +14,10 @@
         style="@style/ScreenStyle"
         android:layout_width="@dimen/track_art_size"
         android:layout_height="@dimen/track_art_size"
-        android:layout_marginStart="@dimen/icon_indentation_13"
+        android:layout_marginStart="@dimen/indentation_13"
         android:contentDescription="@string/artist_art_desc"
         android:scaleType="centerCrop"
-        tools:src="@drawable/ic_placeholder" />
+        tools:src="@drawable/ic_placeholder_45" />
 
     <LinearLayout
         style="@style/ScreenStyle"
@@ -26,11 +26,11 @@
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/margin_horizontal_8">
+        android:paddingHorizontal="@dimen/indentation_8">
 
         <TextView
             android:id="@+id/track_name"
-            style="@style/MenuItemColorStyle"
+            style="@style/MenuItemColorOnSecondaryStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -45,7 +45,7 @@
 
             <TextView
                 android:id="@+id/track_artist"
-                style="@style/TextRegular11ColorStyle"
+                style="@style/TextRegular11ColorOnSecondaryStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -55,11 +55,11 @@
 
             <TextView
                 android:id="@+id/track_time"
-                style="@style/TextRegular11ColorStyle"
+                style="@style/TextRegular11ColorOnSecondaryStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:drawableSize="@dimen/icon_indentation_13"
-                app:drawableStartCompat="@drawable/ic_text_delimiter"
+                app:drawableSize="@dimen/indentation_13"
+                app:drawableStartCompat="@drawable/ic_text_delimiter_13"
                 tools:text="2:35" />
         </LinearLayout>
     </LinearLayout>
@@ -68,6 +68,6 @@
         style="@style/IconBaseStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_horizontal_12"
-        android:src="@drawable/ic_arrow_forward" />
+        android:layout_marginEnd="@dimen/indentation_12"
+        android:src="@drawable/ic_arrow_forward_24" />
 </LinearLayout>

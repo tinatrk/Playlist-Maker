@@ -33,7 +33,7 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
-        val btnShareApp = findViewById<TextView>(R.id.tw_share_app_setting)
+        val btnShareApp = findViewById<TextView>(R.id.tv_share_app_setting)
         btnShareApp.setOnClickListener {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
@@ -44,7 +44,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(shareIntent)
         }
 
-        val btnSupport = findViewById<TextView>(R.id.tw_support_settings)
+        val btnSupport = findViewById<TextView>(R.id.tv_support_settings)
         btnSupport.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             supportIntent.data = Uri.parse("mailto:")
@@ -57,7 +57,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(supportIntent)
         }
 
-        val btnUserAgreement = findViewById<TextView>(R.id.tw_user_agreement_settings)
+        val btnUserAgreement = findViewById<TextView>(R.id.tv_user_agreement_settings)
         btnUserAgreement.setOnClickListener {
             val userAgreementIntent = Intent(
                 Intent.ACTION_VIEW,

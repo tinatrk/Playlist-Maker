@@ -11,7 +11,7 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_settings"
-        style="@style/ToolbarWithIconColorStyle"
+        style="@style/ToolbarWithIconColorOnPrimaryStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         app:title="@string/settings_button_text" />
@@ -21,40 +21,40 @@
         style="@style/SwitchColorStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"
-        android:layout_marginStart="@dimen/margin_horizontal_16"
-        android:layout_marginTop="@dimen/margin_top_24"
-        android:layout_marginEnd="@dimen/margin_horizontal_12"
+        android:layout_marginStart="@dimen/indentation_16"
+        android:layout_marginTop="@dimen/indentation_24"
+        android:layout_marginEnd="@dimen/indentation_12"
         android:contentDescription="@string/switch_mode_desc"
         android:text="@string/dark_mode" />
 
     <TextView
-        android:id="@+id/tw_share_app_setting"
-        style="@style/MenuItemColorStyle"
+        android:id="@+id/tv_share_app_setting"
+        style="@style/MenuItemColorOnSecondaryStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"
-        android:layout_marginStart="@dimen/margin_horizontal_16"
-        android:layout_marginEnd="@dimen/margin_horizontal_12"
+        android:layout_marginStart="@dimen/indentation_16"
+        android:layout_marginEnd="@dimen/indentation_12"
         android:text="@string/share_app"
-        app:drawableEndCompat="@drawable/ic_share" />
+        app:drawableEndCompat="@drawable/ic_share_24" />
 
     <TextView
-        android:id="@+id/tw_support_settings"
-        style="@style/MenuItemColorStyle"
+        android:id="@+id/tv_support_settings"
+        style="@style/MenuItemColorOnSecondaryStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"
-        android:layout_marginStart="@dimen/margin_horizontal_16"
-        android:layout_marginEnd="@dimen/margin_horizontal_12"
+        android:layout_marginStart="@dimen/indentation_16"
+        android:layout_marginEnd="@dimen/indentation_12"
         android:text="@string/support"
-        app:drawableEndCompat="@drawable/ic_support" />
+        app:drawableEndCompat="@drawable/ic_support_24" />
 
     <TextView
-        android:id="@+id/tw_user_agreement_settings"
-        style="@style/MenuItemColorStyle"
+        android:id="@+id/tv_user_agreement_settings"
+        style="@style/MenuItemColorOnSecondaryStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/selection_item_height"
-        android:layout_marginStart="@dimen/margin_horizontal_16"
-        android:layout_marginEnd="@dimen/margin_horizontal_12"
+        android:layout_marginStart="@dimen/indentation_16"
+        android:layout_marginEnd="@dimen/indentation_12"
         android:text="@string/user_agreement"
-        app:drawableEndCompat="@drawable/ic_arrow_forward" />
+        app:drawableEndCompat="@drawable/ic_arrow_forward_24" />
 
 </LinearLayout>
