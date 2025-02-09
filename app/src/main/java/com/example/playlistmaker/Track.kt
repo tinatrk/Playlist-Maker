@@ -23,15 +23,18 @@ data class Track(
         null
     }
 
-    fun getTrackYear(): String? = if (releaseDate != null) {
-        val regex = RELEASE_DATE_REGEX.toRegex()
-        regex.find(releaseDate)?.value
-    } else null
+    fun getTrackYear(): String?{
+        val parser = SimpleDateFormat(INPUT_DATE_FORMAT, Locale.getDefault())
+        val date = releaseDate?.let { parser.parse(it) } ?: return null
+        val formatter = SimpleDateFormat(YEAR_FORMAT, Locale.getDefault())
+        return formatter.format(date)
+    }
 
 
     private companion object {
         const val TRACK_TIME_FORMAT = "mm:ss"
-        const val RELEASE_DATE_REGEX = "[1-2][0-9][0-9][0-9]"
+        const val INPUT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        const val YEAR_FORMAT = "yyyy"
         const val COVER_DELIMITER = '/'
         const val COVER_REPLACEMENT = "512x512bb.jpg"
     }

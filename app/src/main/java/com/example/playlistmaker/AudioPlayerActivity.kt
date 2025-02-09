@@ -50,24 +50,23 @@ class AudioPlayerActivity : AppCompatActivity() {
         val btnPlay: ImageButton = findViewById(R.id.ibtn_play_player)
 
         val cornerRadiusDp = (this.resources.getDimension(R.dimen.corner_radius_8)).toInt()
-        if (track != null) {
-            Glide.with(this)
-                .load(track.getCoverArtwork() ?: "")
+        Glide.with(this)
+                .load(track?.getCoverArtwork() ?: "")
                 .centerInside()
                 .transform(RoundedCorners(cornerRadiusDp))
                 .placeholder(R.drawable.ic_placeholder_45)
                 .into(trackCoverV)
 
-            trackNameV.text = track.trackName ?: getString(R.string.message_nothing_found)
-            trackArtistV.text = track.artistName ?: getString(R.string.message_nothing_found)
-            trackDurationV.text = track.getTrackTime() ?: getString(R.string.message_nothing_found)
+            trackNameV.text = track?.trackName ?: getString(R.string.message_nothing_found)
+            trackArtistV.text = track?.artistName ?: getString(R.string.message_nothing_found)
+            trackDurationV.text = track?.getTrackTime() ?: getString(R.string.message_nothing_found)
             trackReleaseDataV.text =
-                track.getTrackYear() ?: getString(R.string.message_nothing_found)
-            trackGenreV.text = track.primaryGenreName ?: getString(R.string.message_nothing_found)
-            trackCountryV.text = track.country ?: getString(R.string.message_nothing_found)
+                track?.getTrackYear() ?: getString(R.string.message_nothing_found)
+            trackGenreV.text = track?.primaryGenreName ?: getString(R.string.message_nothing_found)
+            trackCountryV.text = track?.country ?: getString(R.string.message_nothing_found)
             trackCurrentTimeV.text = getString(R.string.track_current_time_placeholder)
 
-            if (track.collectionName != null) {
+            if (track?.collectionName != null) {
                 trackAlbumV.text = track.collectionName
                 trackAlbumV.visibility = View.VISIBLE
                 trackTitleAlbumV.visibility = View.VISIBLE
@@ -75,22 +74,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                 trackAlbumV.visibility = View.GONE
                 trackTitleAlbumV.visibility = View.GONE
             }
-        } else {
-            Glide.with(this)
-                .load("")
-                .centerInside()
-                .transform(RoundedCorners(cornerRadiusDp))
-                .placeholder(R.drawable.ic_placeholder_45)
-                .into(trackCoverV)
-            trackNameV.text = getString(R.string.message_nothing_found)
-            trackArtistV.text = getString(R.string.message_nothing_found)
-            trackDurationV.text = getString(R.string.message_nothing_found)
-            trackAlbumV.visibility = View.GONE
-            trackTitleAlbumV.visibility = View.GONE
-            trackReleaseDataV.text = getString(R.string.message_nothing_found)
-            trackGenreV.text = getString(R.string.message_nothing_found)
-            trackCountryV.text = getString(R.string.message_nothing_found)
-        }
+
 
     }
 }
