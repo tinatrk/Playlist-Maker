@@ -64,4 +64,16 @@
     <string name="history_title">Вы искали</string>
     <string name="history_clear_btn">Очистить историю</string>
 
+    <string name="track_duration_title">Длительность</string>
+    <string name="track_album_title">Альбом</string>
+    <string name="track_year_title">Год</string>
+    <string name="track_genre_title">Жанр</string>
+    <string name="track_country_title">Страна</string>
+    <string name="track_current_time_placeholder">0:30</string>
+    <string name="track_cover_desc">Обложка трека</string>
+    <string name="btn_add_track_to_playlist_desc">Добавить трек в плейлист</string>
+    <string name="btn_add_track_to_favourite_desc">Добавить трек в избранное</string>
+    <string name="btn_play_desc">Начать/остановить воспроизведение трека</string>
+
+
 </resources>

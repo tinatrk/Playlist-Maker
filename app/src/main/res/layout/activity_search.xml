@@ -11,7 +11,7 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_search_screen"
-        style="@style/ToolbarWithIconColorStyle"
+        style="@style/ToolbarWithIconColorOnPrimaryStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         app:title="@string/search_button_text" />
@@ -20,8 +20,8 @@
         android:id="@+id/container_search_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/edit_text_height"
-        android:layout_marginHorizontal="@dimen/margin_horizontal_16"
-        android:layout_marginVertical="@dimen/margin_top_8">
+        android:layout_marginHorizontal="@dimen/indentation_16"
+        android:layout_marginVertical="@dimen/indentation_8">
 
         <EditText
             android:id="@+id/search_line"
@@ -39,33 +39,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="@dimen/icon_indentation_10"
-            android:layout_marginEnd="@dimen/icon_indentation_10"
+            android:layout_marginTop="@dimen/indentation_10"
+            android:layout_marginEnd="@dimen/indentation_12"
             android:backgroundTint="?attr/colorSecondary"
             android:contentDescription="@string/edit_text_btn_close_desc"
-            android:src="@drawable/ic_clear"
+            android:src="@drawable/ic_clear_16"
             android:visibility="gone"
             app:tint="?attr/colorOnSecondary" />
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/wg_history_search"
+        android:id="@+id/vg_history_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone">
 
         <TextView
-            style="@style/TextMedium19ColorStyle"
+            style="@style/TextMedium19ColorOnPrimaryStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal_16"
-            android:layout_marginTop="@dimen/margin_top_42"
-            android:layout_marginBottom="@dimen/margin_bottom_20"
+            android:layout_marginHorizontal="@dimen/indentation_16"
+            android:layout_marginTop="@dimen/indentation_42"
+            android:layout_marginBottom="@dimen/indentation_20"
             android:text="@string/history_title" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rw_history_list_search"
+            android:id="@+id/rv_history_list_search"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
@@ -76,8 +76,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_top_24"
-            android:layout_marginBottom="@dimen/margin_bottom_16"
+            android:layout_marginTop="@dimen/indentation_24"
+            android:layout_marginBottom="@dimen/indentation_16"
             android:text="@string/history_clear_btn" />
     </LinearLayout>
 
@@ -86,33 +86,33 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rw_track_list_search"
+            android:id="@+id/rv_track_list_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_16" />
+            android:layout_marginTop="@dimen/indentation_16" />
 
         <LinearLayout
-            android:id="@+id/wg_error_search"
+            android:id="@+id/vg_error_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/iw_error_search"
+                android:id="@+id/iv_error_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_top_102"
+                android:layout_marginTop="@dimen/indentation_102"
                 android:backgroundTint="@color/gray_900"
-                tools:src="@drawable/ic_placeholder_bad_connection_lm" />
+                tools:src="@drawable/ic_placeholder_bad_connection_lm_120" />
 
             <TextView
-                android:id="@+id/tw_error_search"
-                style="@style/TextMedium19ColorStyle"
+                android:id="@+id/tv_error_search"
+                style="@style/TextMedium19ColorOnPrimaryStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_horizontal_24"
-                android:layout_marginTop="@dimen/margin_top_16"
+                android:layout_marginHorizontal="@dimen/indentation_24"
+                android:layout_marginTop="@dimen/indentation_16"
                 android:gravity="center"
                 tools:text="@string/message_bad_connection" />
 
@@ -121,7 +121,7 @@
                 style="@style/BtnSearchScreenColorStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_top_24"
+                android:layout_marginTop="@dimen/indentation_24"
                 android:text="@string/update"
                 android:visibility="gone"/>
         </LinearLayout>

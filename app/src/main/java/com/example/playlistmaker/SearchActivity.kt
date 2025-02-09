@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
@@ -21,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.App.Companion.INTENT_TRACK_KEY
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -73,18 +75,18 @@ class SearchActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar_search_screen)
         searchLine = findViewById(R.id.search_line)
-        trackRecyclerView = findViewById(R.id.rw_track_list_search)
+        trackRecyclerView = findViewById(R.id.rv_track_list_search)
         val clearETButton = findViewById<ImageView>(R.id.clearIcon_search_line)
-        wgErrorSearch = findViewById(R.id.wg_error_search)
-        errorImage = findViewById(R.id.iw_error_search)
-        errorMessage = findViewById(R.id.tw_error_search)
+        wgErrorSearch = findViewById(R.id.vg_error_search)
+        errorImage = findViewById(R.id.iv_error_search)
+        errorMessage = findViewById(R.id.tv_error_search)
         errorBtn = findViewById(R.id.btn_error_search)
 
         searchHistory = SearchHistory((applicationContext as App).sharedPrefs)
         val clearHistoryBtn = findViewById<Button>(R.id.btn_clear_history_search)
-        val rwHistory = findViewById<RecyclerView>(R.id.rw_history_list_search)
-        val wgHistory = findViewById<LinearLayout>(R.id.wg_history_search)
-        historyAdapter = TrackAdapter { saveTrack(it) }
+        val rwHistory = findViewById<RecyclerView>(R.id.rv_history_list_search)
+        val wgHistory = findViewById<LinearLayout>(R.id.vg_history_search)
+        historyAdapter = TrackAdapter { openPlayer(it) }
         historyAdapter.tracks = searchHistory.getSearchHistoryTracks().toMutableList()
         rwHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rwHistory.adapter = historyAdapter
@@ -154,7 +156,7 @@ class SearchActivity : AppCompatActivity() {
             false
         )
         trackAdapter = TrackAdapter {
-            saveTrack(it)
+            openPlayer(it)
         }
         trackAdapter.tracks = tracks
         trackRecyclerView.adapter = trackAdapter
@@ -170,16 +172,16 @@ class SearchActivity : AppCompatActivity() {
         if (message.isNotEmpty()) {
             if (isConnectionError) {
                 showErrorImage(
-                    R.drawable.ic_placeholder_bad_connection_lm,
-                    R.drawable.ic_placeholder_bad_connection_dm
+                    R.drawable.ic_placeholder_bad_connection_lm_120,
+                    R.drawable.ic_placeholder_bad_connection_dm_120
                 )
                 errorMessage.text = getString(R.string.message_bad_connection)
                 wgErrorSearch.visibility = View.VISIBLE
                 errorBtn.visibility = View.VISIBLE
             } else {
                 showErrorImage(
-                    R.drawable.ic_placeholder_nothing_found_lm,
-                    R.drawable.ic_placeholder_nothing_found_dm
+                    R.drawable.ic_placeholder_nothing_found_lm_120,
+                    R.drawable.ic_placeholder_nothing_found_dm_120
                 )
                 errorMessage.text = getString(R.string.message_nothing_found)
                 wgErrorSearch.visibility = View.VISIBLE
@@ -228,7 +230,14 @@ class SearchActivity : AppCompatActivity() {
             })
     }
 
-    private fun saveTrack(track: Track) {
+    private fun openPlayer(track: Track){
+        saveTrackToHistory(track)
+        val intent: Intent = Intent(this, AudioPlayerActivity::class.java)
+        intent.putExtra(INTENT_TRACK_KEY, track)
+        startActivity(intent)
+    }
+
+    private fun saveTrackToHistory(track: Track) {
         searchHistory.saveTrack(track)
         historyAdapter.tracks = searchHistory.getSearchHistoryTracks().toMutableList()
         historyAdapter.notifyDataSetChanged()

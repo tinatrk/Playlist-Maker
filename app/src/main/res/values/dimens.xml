@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_size_22">22sp</dimen>
-    <dimen name="text_size_19">19sp</dimen>
-    <dimen name="text_size_16">16sp</dimen>
-    <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_19">19sp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
     <dimen name="letter_spacing">0</dimen>
 
-    <dimen name="selection_item_height">60dp</dimen>
-    <dimen name="toolbar_height">56dp</dimen>
     <dimen name="edit_text_height">36dp</dimen>
     <dimen name="track_art_size">44dp</dimen>
+    <dimen name="btn_player_size">51dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="selection_item_height">60dp</dimen>
+    <dimen name="btn_play_player_size">100dp</dimen>
 
-    <dimen name="margin_horizontal_8">8dp</dimen>
-    <dimen name="margin_horizontal_12">12dp</dimen>
-    <dimen name="margin_horizontal_16">16dp</dimen>
-    <dimen name="margin_horizontal_24">24dp</dimen>
-
-    <dimen name="margin_bottom_8">8dp</dimen>
-    <dimen name="margin_bottom_16">16dp</dimen>
-    <dimen name="margin_bottom_20">20dp</dimen>
-    <dimen name="margin_bottom_28">28dp</dimen>
-
-    <dimen name="margin_top_8">8dp</dimen>
-    <dimen name="margin_top_16">16dp</dimen>
-    <dimen name="margin_top_24">24dp</dimen>
-    <dimen name="margin_top_42">42dp</dimen>
-    <dimen name="margin_top_102">102dp</dimen>
+    <dimen name="indentation_4">4dp</dimen>
+    <dimen name="indentation_8">8dp</dimen>
+    <dimen name="indentation_10">10dp</dimen>
+    <dimen name="indentation_12">12dp</dimen>
+    <dimen name="indentation_13">13dp</dimen>
+    <dimen name="indentation_16">16dp</dimen>
+    <dimen name="indentation_17">17dp</dimen>
+    <dimen name="indentation_20">20dp</dimen>
+    <dimen name="indentation_24">24dp</dimen>
+    <dimen name="indentation_26">26dp</dimen>
+    <dimen name="indentation_28">28dp</dimen>
+    <dimen name="indentation_30">30dp</dimen>
+    <dimen name="indentation_39">39dp</dimen>
+    <dimen name="indentation_42">42dp</dimen>
+    <dimen name="indentation_54">54dp</dimen>
+    <dimen name="indentation_102">102dp</dimen>
 
     <dimen name="corner_radius_2">2dp</dimen>
     <dimen name="corner_radius_8">8dp</dimen>
     <dimen name="corner_radius_16">16dp</dimen>
     <dimen name="corner_radius_54">54dp</dimen>
-
-    <dimen name="icon_indentation_8">8dp</dimen>
-    <dimen name="icon_indentation_10">10dp</dimen>
-    <dimen name="icon_indentation_13">13dp</dimen>
+    <dimen name="corner_radius_69">69dp</dimen>
 
 </resources>
