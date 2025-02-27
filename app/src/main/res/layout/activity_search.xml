@@ -31,7 +31,6 @@
             android:autofillHints="@string/search_line_desc"
             android:drawableStart="@drawable/ic_search_16"
             android:hint="@string/search_line_default"
-            android:imeOptions="actionDone"
             android:singleLine="true" />
 
         <ImageView
@@ -125,6 +124,14 @@
                 android:text="@string/update"
                 android:visibility="gone"/>
         </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progress_bar_search"
+            android:layout_width="@dimen/progress_bar_size"
+            android:layout_height="@dimen/progress_bar_size"
+            android:indeterminateTint="@color/blue_700"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/indentation_140"
+            android:visibility="gone"/>
     </FrameLayout>
 
 </LinearLayout>

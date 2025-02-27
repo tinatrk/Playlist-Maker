@@ -14,6 +14,7 @@
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="selection_item_height">60dp</dimen>
     <dimen name="btn_play_player_size">100dp</dimen>
+    <dimen name="progress_bar_size">44dp</dimen>
 
     <dimen name="indentation_4">4dp</dimen>
     <dimen name="indentation_8">8dp</dimen>
@@ -31,6 +32,7 @@
     <dimen name="indentation_42">42dp</dimen>
     <dimen name="indentation_54">54dp</dimen>
     <dimen name="indentation_102">102dp</dimen>
+    <dimen name="indentation_140">140dp</dimen>
 
     <dimen name="corner_radius_2">2dp</dimen>
     <dimen name="corner_radius_8">8dp</dimen>

@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -13,6 +15,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -50,6 +53,10 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var searchHistory: SearchHistory
 
+    private val searchRunnable = Runnable {searchTrack()}
+    private val handler = Handler(Looper.getMainLooper())
+    private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -81,6 +88,7 @@ class SearchActivity : AppCompatActivity() {
         errorImage = findViewById(R.id.iv_error_search)
         errorMessage = findViewById(R.id.tv_error_search)
         errorBtn = findViewById(R.id.btn_error_search)
+        progressBar = findViewById(R.id.progress_bar_search)
 
         searchHistory = SearchHistory((applicationContext as App).sharedPrefs)
         val clearHistoryBtn = findViewById<Button>(R.id.btn_clear_history_search)
@@ -91,11 +99,16 @@ class SearchActivity : AppCompatActivity() {
         rwHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rwHistory.adapter = historyAdapter
 
+        /*rwHistory.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                clearFocusEditText()
+            }
+        })*/
 
         toolbar.setNavigationOnClickListener {
             finish()
         }
-
 
         searchLine.setOnFocusChangeListener { _, hasFocus ->
             searchLineHasFocus = hasFocus
@@ -103,15 +116,6 @@ class SearchActivity : AppCompatActivity() {
                 if (hasFocus && searchLine.text.isEmpty() && historyAdapter.tracks.size != 0)
                     View.VISIBLE
                 else View.GONE
-        }
-        searchLine.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTrack()
-                clearFocusEditText()
-                isResponseDisplayed = true
-                true
-            }
-            false
         }
 
         clearETButton.setOnClickListener {
@@ -126,6 +130,7 @@ class SearchActivity : AppCompatActivity() {
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!s.isNullOrEmpty()) { searchDebounce() }
                 clearETButton.isVisible = !s.isNullOrEmpty()
                 searchLineText = s.toString()
                 wgHistory.visibility = if (searchLine.hasFocus() && s?.isEmpty() == true &&
@@ -140,7 +145,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         searchLine.addTextChangedListener(textWatcher)
-
 
         clearHistoryBtn.setOnClickListener {
             searchHistory.clearSearchHistory()
@@ -166,6 +170,13 @@ class SearchActivity : AppCompatActivity() {
             searchTrack()
             isResponseDisplayed = true
         }
+
+        trackRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                clearFocusEditText()
+            }
+        })
     }
 
     private fun showErrorMessage(message: String, isConnectionError: Boolean) {
@@ -203,6 +214,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchTrack() {
+        progressBar.visibility = View.VISIBLE
         trackService
             .searchTracks(searchLine.text.toString().trim())
             .enqueue(object : Callback<TrackResponse> {
@@ -210,6 +222,7 @@ class SearchActivity : AppCompatActivity() {
                     call: Call<TrackResponse>,
                     response: Response<TrackResponse>
                 ) {
+                    progressBar.visibility = View.GONE
                     if (response.code() == 200) {
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.clear()
@@ -225,6 +238,7 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                    progressBar.visibility = View.GONE
                     showErrorMessage(getString(R.string.message_bad_connection), true)
                 }
             })
@@ -249,6 +263,11 @@ class SearchActivity : AppCompatActivity() {
             getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(searchLine.windowToken, 0)
         searchLine.clearFocus()
+    }
+
+    private fun searchDebounce(){
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DELAY_MILLIS)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -278,6 +297,8 @@ class SearchActivity : AppCompatActivity() {
         const val STRING_DEF_VALUE = ""
         const val SEARCH_LINE_HAS_FOCUS = "SEARCH_LINE_HAS_FOCUS"
         const val IS_RESPONSE_DISPLAYED = "IS_RESPONSE_DISPLAYED"
+        const val SEARCH_DELAY_MILLIS = 2000L
+        const val CLICK_ON_TRACK_DELAY_MILLIS = 1000L
     }
 
 }
