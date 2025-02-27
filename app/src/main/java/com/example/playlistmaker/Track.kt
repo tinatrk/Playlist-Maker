@@ -13,7 +13,8 @@ data class Track(
     val trackTimeMillis: Int?,
     val country: String?,
     val primaryGenreName: String?,
-    val releaseDate: String?
+    val releaseDate: String?,
+    val previewUrl: String?
 ) : Serializable {
     fun getCoverArtwork() = artworkUrl100?.replaceAfterLast(COVER_DELIMITER, COVER_REPLACEMENT)
 
@@ -23,7 +24,7 @@ data class Track(
         null
     }
 
-    fun getTrackYear(): String?{
+    fun getTrackYear(): String? {
         val parser = SimpleDateFormat(INPUT_DATE_FORMAT, Locale.getDefault())
         val date = releaseDate?.let { parser.parse(it) } ?: return null
         val formatter = SimpleDateFormat(YEAR_FORMAT, Locale.getDefault())
