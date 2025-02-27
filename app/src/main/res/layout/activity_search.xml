@@ -30,8 +30,7 @@
             android:layout_height="@dimen/edit_text_height"
             android:autofillHints="@string/search_line_desc"
             android:drawableStart="@drawable/ic_search_16"
-            android:hint="@string/search_line_default"
-            android:singleLine="true" />
+            android:hint="@string/search_line_default" />
 
         <ImageView
             android:id="@+id/clearIcon_search_line"
@@ -122,16 +121,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/indentation_24"
                 android:text="@string/update"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </LinearLayout>
+
         <ProgressBar
             android:id="@+id/progress_bar_search"
             android:layout_width="@dimen/progress_bar_size"
             android:layout_height="@dimen/progress_bar_size"
-            android:indeterminateTint="@color/blue_700"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/indentation_140"
-            android:visibility="gone"/>
+            android:indeterminateTint="@color/blue_700"
+            android:visibility="gone" />
     </FrameLayout>
 
 </LinearLayout>

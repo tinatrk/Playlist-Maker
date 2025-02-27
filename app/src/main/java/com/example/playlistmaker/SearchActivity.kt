@@ -9,7 +9,6 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -53,7 +52,7 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var searchHistory: SearchHistory
 
-    private val searchRunnable = Runnable {searchTrack()}
+    private val searchRunnable = Runnable { searchTrack() }
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var progressBar: ProgressBar
     private var isOnTrackClickAllowed: Boolean = true
@@ -123,8 +122,11 @@ class SearchActivity : AppCompatActivity() {
 
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!s.isNullOrEmpty()) { searchDebounce() }
+                if (!s.isNullOrEmpty()) {
+                    searchDebounce()
+                }
                 clearETButton.isVisible = !s.isNullOrEmpty()
                 searchLineText = s.toString()
                 wgHistory.visibility = if (searchLine.hasFocus() && s?.isEmpty() == true &&
@@ -157,7 +159,7 @@ class SearchActivity : AppCompatActivity() {
         }
         trackAdapter.tracks = tracks
         trackRecyclerView.adapter = trackAdapter
-        trackRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+        trackRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 clearFocusEditText()
@@ -177,7 +179,7 @@ class SearchActivity : AppCompatActivity() {
                     R.drawable.ic_placeholder_bad_connection_lm_120,
                     R.drawable.ic_placeholder_bad_connection_dm_120
                 )
-                errorMessage.text = getString(R.string.message_bad_connection)
+                errorMessage.text = message
                 wgErrorSearch.visibility = View.VISIBLE
                 errorBtn.visibility = View.VISIBLE
             } else {
@@ -185,7 +187,7 @@ class SearchActivity : AppCompatActivity() {
                     R.drawable.ic_placeholder_nothing_found_lm_120,
                     R.drawable.ic_placeholder_nothing_found_dm_120
                 )
-                errorMessage.text = getString(R.string.message_nothing_found)
+                errorMessage.text = message
                 wgErrorSearch.visibility = View.VISIBLE
                 errorBtn.visibility = View.GONE
             }
@@ -205,6 +207,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchTrack() {
+        trackRecyclerView.visibility = View.GONE
+        wgErrorSearch.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
         trackService
             .searchTracks(searchLine.text.toString().trim())
@@ -219,12 +223,13 @@ class SearchActivity : AppCompatActivity() {
                             tracks.clear()
                             tracks.addAll(response.body()?.results!!)
                             trackAdapter.notifyDataSetChanged()
+                            trackRecyclerView.visibility = View.VISIBLE
                             showErrorMessage("", false)
                         } else {
                             showErrorMessage(getString(R.string.message_nothing_found), false)
                         }
                     } else {
-                        showErrorMessage(getString(R.string.message_bad_connection), true)
+                        showErrorMessage(getString(R.string.message_something_went_wrong), false)
                     }
                 }
 
@@ -235,7 +240,7 @@ class SearchActivity : AppCompatActivity() {
             })
     }
 
-    private fun openPlayer(track: Track){
+    private fun openPlayer(track: Track) {
         if (onTrackClickDebounce()) {
             saveTrackToHistory(track)
             val intent = Intent(this, AudioPlayerActivity::class.java)
@@ -258,16 +263,16 @@ class SearchActivity : AppCompatActivity() {
         searchLine.clearFocus()
     }
 
-    private fun searchDebounce(){
+    private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DELAY_MILLIS)
     }
 
-    private fun onTrackClickDebounce(): Boolean{
+    private fun onTrackClickDebounce(): Boolean {
         val currentState: Boolean = isOnTrackClickAllowed
-        if (isOnTrackClickAllowed){
+        if (isOnTrackClickAllowed) {
             isOnTrackClickAllowed = false
-            handler.postDelayed({isOnTrackClickAllowed = true}, ON_TRACK_CLICK_DELAY_MILLIS)
+            handler.postDelayed({ isOnTrackClickAllowed = true }, ON_TRACK_CLICK_DELAY_MILLIS)
         }
         return currentState
     }
@@ -292,6 +297,11 @@ class SearchActivity : AppCompatActivity() {
         outState.putString(SEARCH_LINE_TEXT, searchLineText)
         outState.putBoolean(SEARCH_LINE_HAS_FOCUS, searchLineHasFocus)
         outState.putBoolean(IS_RESPONSE_DISPLAYED, isResponseDisplayed)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        trackRecyclerView.clearOnScrollListeners()
     }
 
     private companion object {
