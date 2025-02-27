@@ -56,6 +56,7 @@ class SearchActivity : AppCompatActivity() {
     private val searchRunnable = Runnable {searchTrack()}
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var progressBar: ProgressBar
+    private var isOnTrackClickAllowed: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,23 +100,8 @@ class SearchActivity : AppCompatActivity() {
         rwHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rwHistory.adapter = historyAdapter
 
-        /*rwHistory.addOnScrollListener(object: RecyclerView.OnScrollListener(){
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                clearFocusEditText()
-            }
-        })*/
-
         toolbar.setNavigationOnClickListener {
             finish()
-        }
-
-        searchLine.setOnFocusChangeListener { _, hasFocus ->
-            searchLineHasFocus = hasFocus
-            wgHistory.visibility =
-                if (hasFocus && searchLine.text.isEmpty() && historyAdapter.tracks.size != 0)
-                    View.VISIBLE
-                else View.GONE
         }
 
         clearETButton.setOnClickListener {
@@ -125,6 +111,14 @@ class SearchActivity : AppCompatActivity() {
             trackAdapter.notifyDataSetChanged()
             showErrorMessage("", false)
             isResponseDisplayed = false
+        }
+
+        searchLine.setOnFocusChangeListener { _, hasFocus ->
+            searchLineHasFocus = hasFocus
+            wgHistory.visibility =
+                if (hasFocus && searchLine.text.isEmpty() && historyAdapter.tracks.size != 0)
+                    View.VISIBLE
+                else View.GONE
         }
 
         val textWatcher = object : TextWatcher {
@@ -154,7 +148,6 @@ class SearchActivity : AppCompatActivity() {
             clearFocusEditText()
         }
 
-
         trackRecyclerView.layoutManager = LinearLayoutManager(
             this, LinearLayoutManager.VERTICAL,
             false
@@ -164,19 +157,17 @@ class SearchActivity : AppCompatActivity() {
         }
         trackAdapter.tracks = tracks
         trackRecyclerView.adapter = trackAdapter
-
-
-        errorBtn.setOnClickListener {
-            searchTrack()
-            isResponseDisplayed = true
-        }
-
         trackRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 clearFocusEditText()
             }
         })
+
+        errorBtn.setOnClickListener {
+            searchTrack()
+            isResponseDisplayed = true
+        }
     }
 
     private fun showErrorMessage(message: String, isConnectionError: Boolean) {
@@ -245,10 +236,12 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun openPlayer(track: Track){
-        saveTrackToHistory(track)
-        val intent: Intent = Intent(this, AudioPlayerActivity::class.java)
-        intent.putExtra(INTENT_TRACK_KEY, track)
-        startActivity(intent)
+        if (onTrackClickDebounce()) {
+            saveTrackToHistory(track)
+            val intent = Intent(this, AudioPlayerActivity::class.java)
+            intent.putExtra(INTENT_TRACK_KEY, track)
+            startActivity(intent)
+        }
     }
 
     private fun saveTrackToHistory(track: Track) {
@@ -268,6 +261,15 @@ class SearchActivity : AppCompatActivity() {
     private fun searchDebounce(){
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DELAY_MILLIS)
+    }
+
+    private fun onTrackClickDebounce(): Boolean{
+        val currentState: Boolean = isOnTrackClickAllowed
+        if (isOnTrackClickAllowed){
+            isOnTrackClickAllowed = false
+            handler.postDelayed({isOnTrackClickAllowed = true}, ON_TRACK_CLICK_DELAY_MILLIS)
+        }
+        return currentState
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -298,7 +300,7 @@ class SearchActivity : AppCompatActivity() {
         const val SEARCH_LINE_HAS_FOCUS = "SEARCH_LINE_HAS_FOCUS"
         const val IS_RESPONSE_DISPLAYED = "IS_RESPONSE_DISPLAYED"
         const val SEARCH_DELAY_MILLIS = 2000L
-        const val CLICK_ON_TRACK_DELAY_MILLIS = 1000L
+        const val ON_TRACK_CLICK_DELAY_MILLIS = 1000L
     }
 
 }
