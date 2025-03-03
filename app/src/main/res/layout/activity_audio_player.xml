@@ -39,11 +39,11 @@
         android:layout_marginBottom="@dimen/indentation_24"
         android:contentDescription="@string/track_cover_desc"
         android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@id/tv_track_name_player"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/right_border_player"
         app:layout_constraintStart_toStartOf="@id/left_border_player"
         app:layout_constraintTop_toBottomOf="@id/toolbar_audio_player_screen"
-        app:layout_constraintBottom_toTopOf="@id/tv_track_name_player"
         tools:src="@drawable/ic_placeholder_45" />
 
     <TextView
@@ -54,9 +54,9 @@
         android:layout_marginBottom="@dimen/indentation_12"
         android:ellipsize="end"
         android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@id/tv_track_artist_name_player"
         app:layout_constraintEnd_toEndOf="@id/right_border_player"
         app:layout_constraintStart_toStartOf="@id/left_border_player"
-        app:layout_constraintBottom_toTopOf="@id/tv_track_artist_name_player"
         tools:text="Yesterday (Remastered 2009) Yesterday (Remastered 2009)" />
 
     <TextView
@@ -67,9 +67,9 @@
         android:layout_marginBottom="@dimen/indentation_30"
         android:ellipsize="end"
         android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@id/ibtn_play_player"
         app:layout_constraintEnd_toEndOf="@id/right_border_player"
         app:layout_constraintStart_toStartOf="@id/left_border_player"
-        app:layout_constraintBottom_toTopOf="@id/ibtn_play_player"
         tools:text="The Beatles The Beatles The Beatles The Beatles The Beatles The Beatles" />
 
     <ImageButton
@@ -93,10 +93,10 @@
         android:background="@null"
         android:clickable="true"
         android:contentDescription="@string/btn_play_desc"
-        android:src="@drawable/ic_start_stop_84"
+        android:src="@drawable/ic_play_84"
+        app:layout_constraintBottom_toTopOf="@id/tv_track_current_time_player"
         app:layout_constraintEnd_toStartOf="@id/ibtn_like_player"
         app:layout_constraintStart_toEndOf="@id/ibtn_add_track_to_playlist_player"
-        app:layout_constraintBottom_toTopOf="@id/tv_track_current_time_player"
         app:layout_constraintVertical_chainStyle="packed"
         app:tint="?attr/colorOnPrimary" />
 
@@ -122,9 +122,9 @@
         android:layout_marginBottom="@dimen/indentation_39"
         android:ellipsize="end"
         android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@id/tv_title_duration_player"
         app:layout_constraintEnd_toEndOf="@id/right_border_player"
         app:layout_constraintStart_toStartOf="@id/left_border_player"
-        app:layout_constraintBottom_toTopOf="@id/tv_title_duration_player"
         tools:text="0:30" />
 
     <TextView
@@ -134,9 +134,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/indentation_17"
         android:text="@string/track_duration_title"
+        app:layout_constraintBottom_toTopOf="@id/tv_title_album_player"
         app:layout_constraintStart_toStartOf="@id/tv_title_album_player"
-        app:layout_constraintTag="tv_title_duration_player_tag"
-        app:layout_constraintBottom_toTopOf="@id/tv_title_album_player" />
+        app:layout_constraintTag="tv_title_duration_player_tag" />
 
     <TextView
         android:id="@+id/tv_title_album_player"
@@ -145,9 +145,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/indentation_17"
         android:text="@string/track_album_title"
+        app:layout_constraintBottom_toTopOf="@id/tv_title_year_player"
         app:layout_constraintStart_toStartOf="@id/tv_title_year_player"
-        app:layout_constraintTag="tv_title_album_player_tag"
-        app:layout_constraintBottom_toTopOf="@id/tv_title_year_player"/>
+        app:layout_constraintTag="tv_title_album_player_tag" />
 
     <TextView
         android:id="@+id/tv_title_year_player"
@@ -156,9 +156,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/indentation_17"
         android:text="@string/track_year_title"
+        app:layout_constraintBottom_toTopOf="@id/tv_title_genre_player"
         app:layout_constraintStart_toStartOf="@id/tv_title_genre_player"
-        app:layout_constraintTag="tv_title_year_player_tag"
-        app:layout_constraintBottom_toTopOf="@id/tv_title_genre_player"/>
+        app:layout_constraintTag="tv_title_year_player_tag" />
 
     <TextView
         android:id="@+id/tv_title_genre_player"
@@ -167,9 +167,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/indentation_17"
         android:text="@string/track_genre_title"
+        app:layout_constraintBottom_toTopOf="@id/tv_title_country_player"
         app:layout_constraintStart_toStartOf="@id/tv_title_country_player"
-        app:layout_constraintTag="tv_title_genre_player_tag"
-        app:layout_constraintBottom_toTopOf="@id/tv_title_country_player" />
+        app:layout_constraintTag="tv_title_genre_player_tag" />
 
     <TextView
         android:id="@+id/tv_title_country_player"
@@ -254,9 +254,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/indentation_16"
         app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/barrier_player"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTag="tv_track_country_player_tag"
         app:layout_constraintTop_toTopOf="@id/tv_title_country_player"
         tools:text="Великобритания Великобритания Великобритания" />

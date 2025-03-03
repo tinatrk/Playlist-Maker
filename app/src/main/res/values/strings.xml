@@ -56,6 +56,7 @@
 
     <string name="message_nothing_found">Ничего не нашлось</string>
     <string name="message_bad_connection">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="message_something_went_wrong">Что-то пошло не так</string>
 
     <string name="update">Обновить</string>
 
@@ -69,11 +70,10 @@
     <string name="track_year_title">Год</string>
     <string name="track_genre_title">Жанр</string>
     <string name="track_country_title">Страна</string>
-    <string name="track_current_time_placeholder">0:30</string>
+    <string name="track_current_time_placeholder">00:00</string>
     <string name="track_cover_desc">Обложка трека</string>
     <string name="btn_add_track_to_playlist_desc">Добавить трек в плейлист</string>
     <string name="btn_add_track_to_favourite_desc">Добавить трек в избранное</string>
     <string name="btn_play_desc">Начать/остановить воспроизведение трека</string>
-
 
 </resources>
