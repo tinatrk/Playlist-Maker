@@ -50,7 +50,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var errorMessage: TextView
     private lateinit var errorBtn: Button
 
-    private lateinit var searchHistory: SearchHistory
+    private val searchHistory: SearchHistory by lazy {
+        SearchHistory((applicationContext as App).sharedPrefs)
+    }
 
     private val searchRunnable = Runnable { searchTrack() }
     private val handler = Handler(Looper.getMainLooper())
@@ -90,7 +92,6 @@ class SearchActivity : AppCompatActivity() {
         errorBtn = findViewById(R.id.btn_error_search)
         progressBar = findViewById(R.id.progress_bar_search)
 
-        searchHistory = SearchHistory((applicationContext as App).sharedPrefs)
         val clearHistoryBtn = findViewById<Button>(R.id.btn_clear_history_search)
         val rwHistory = findViewById<RecyclerView>(R.id.rv_history_list_search)
         val wgHistory = findViewById<LinearLayout>(R.id.vg_history_search)
@@ -108,7 +109,6 @@ class SearchActivity : AppCompatActivity() {
             clearFocusEditText()
             tracks.clear()
             trackAdapter.notifyDataSetChanged()
-            showErrorMessage("", false)
             isResponseDisplayed = false
         }
 
@@ -126,6 +126,10 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!s.isNullOrEmpty()) {
                     searchDebounce()
+                } else {
+                    trackRecyclerView.visibility = View.GONE
+                    wgErrorSearch.visibility = View.GONE
+                    handler.removeCallbacks(searchRunnable)
                 }
                 clearETButton.isVisible = !s.isNullOrEmpty()
                 searchLineText = s.toString()
@@ -133,7 +137,6 @@ class SearchActivity : AppCompatActivity() {
                     historyAdapter.tracks.size != 0
                 ) View.VISIBLE
                 else View.GONE
-                wgErrorSearch.visibility = View.GONE
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -289,7 +292,9 @@ class SearchActivity : AppCompatActivity() {
             imm?.showSoftInput(searchLine, InputMethodManager.SHOW_IMPLICIT)
         }
         isResponseDisplayed = savedInstanceState.getBoolean(IS_RESPONSE_DISPLAYED, false)
-        if (isResponseDisplayed) searchTrack()
+        if (isResponseDisplayed) {
+            searchTrack()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
