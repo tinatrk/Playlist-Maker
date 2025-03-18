@@ -1,6 +1,5 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.audioPlayer
 
-import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -17,20 +16,23 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlistmaker.App.Companion.INTENT_TRACK_KEY
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.example.playlistmaker.R
+import com.example.playlistmaker.creator.CreatorAudioPlayer
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.ui.App.Companion.INTENT_TRACK_KEY
 
 class AudioPlayerActivity : AppCompatActivity() {
+
+    private val audioPlayerInteractor = CreatorAudioPlayer.provideAudioPlayerInteractor()
+
     private val handler = Handler(Looper.getMainLooper())
-    private val player = MediaPlayer()
-    private var playerState = STATE_DEFAULT
+
     private lateinit var btnPlay: ImageButton
     private lateinit var trackCurrentTimeV: TextView
+
     private val setTrackCurTimeRunnable = object : Runnable {
         override fun run() {
-            trackCurrentTimeV.text = SimpleDateFormat(TRACK_TIME_PATTERN, Locale.getDefault())
-                .format(player.currentPosition)
+            trackCurrentTimeV.text = audioPlayerInteractor.getCurrentPosition()
             handler.postDelayed(this, SET_CURRENT_TRACK_TIME_DELAY_MILLIS)
         }
     }
@@ -71,7 +73,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         val cornerRadiusDp = (this.resources.getDimension(R.dimen.corner_radius_8)).toInt()
         Glide.with(this)
-            .load(track?.getCoverArtwork() ?: "")
+            .load(track?.artworkUrl512 ?: "")
             .centerInside()
             .transform(RoundedCorners(cornerRadiusDp))
             .placeholder(R.drawable.ic_placeholder_45)
@@ -79,9 +81,9 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         trackNameV.text = track?.trackName ?: getString(R.string.message_nothing_found)
         trackArtistV.text = track?.artistName ?: getString(R.string.message_nothing_found)
-        trackDurationV.text = track?.getTrackTime() ?: getString(R.string.message_nothing_found)
+        trackDurationV.text = track?.trackTime ?: getString(R.string.message_nothing_found)
         trackReleaseDataV.text =
-            track?.getTrackYear() ?: getString(R.string.message_nothing_found)
+            track?.releaseDate ?: getString(R.string.message_nothing_found)
         trackGenreV.text = track?.primaryGenreName ?: getString(R.string.message_nothing_found)
         trackCountryV.text = track?.country ?: getString(R.string.message_nothing_found)
         trackCurrentTimeV.text = getString(R.string.track_current_time_placeholder)
@@ -96,74 +98,62 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
 
         if (track?.previewUrl != null) {
-            preparePlayer(track.previewUrl)
+            audioPlayerInteractor.playerPrepare(
+                track.previewUrl,
+                { playerPrepareCallback() },
+                { playerCompletionCallback() })
         }
 
         btnPlay.setOnClickListener {
-            if (playerState != STATE_DEFAULT) {
-                playerControl()
-            } else {
-                Toast.makeText(
-                    this,
-                    getString(R.string.message_something_went_wrong),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            audioPlayerInteractor.playerControl(
+                { playerStartCallback() },
+                { playerPauseCallback() },
+                { playerErrorCallback() }
+            )
         }
     }
 
-    private fun preparePlayer(trackUrl: String) {
-        player.setDataSource(trackUrl)
-        player.prepareAsync()
-        player.setOnPreparedListener {
-            btnPlay.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        player.setOnCompletionListener {
-            btnPlay.setImageResource(R.drawable.ic_play_84)
-            handler.removeCallbacks(setTrackCurTimeRunnable)
-            trackCurrentTimeV.text = getString(R.string.track_current_time_placeholder)
-            playerState = STATE_PREPARED
-        }
+    private fun playerPrepareCallback() {
+        btnPlay.isEnabled = true
     }
 
-    private fun playerControl() {
-        when (playerState) {
-            STATE_PLAYING -> playerPause()
-            STATE_PREPARED, STATE_PAUSED -> playerStart()
-        }
-    }
-
-    private fun playerStart() {
-        player.start()
-        handler.post(setTrackCurTimeRunnable)
-        btnPlay.setImageResource(R.drawable.ic_pause_84)
-        playerState = STATE_PLAYING
-    }
-
-    private fun playerPause() {
-        player.pause()
+    private fun playerCompletionCallback() {
         handler.removeCallbacks(setTrackCurTimeRunnable)
         btnPlay.setImageResource(R.drawable.ic_play_84)
-        playerState = STATE_PAUSED
+        trackCurrentTimeV.text = getString(R.string.track_current_time_placeholder)
+    }
+
+    private fun playerErrorCallback() {
+        Toast.makeText(
+            this,
+            getString(R.string.message_something_went_wrong),
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    private fun playerStartCallback() {
+        handler.post(setTrackCurTimeRunnable)
+        btnPlay.setImageResource(R.drawable.ic_pause_84)
+    }
+
+    private fun playerPauseCallback() {
+        handler.removeCallbacks(setTrackCurTimeRunnable)
+        btnPlay.setImageResource(R.drawable.ic_play_84)
     }
 
     override fun onPause() {
         super.onPause()
-        playerPause()
+        audioPlayerInteractor.playerPause(
+            { playerPauseCallback() },
+            { playerErrorCallback() })
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        player.release()
+        audioPlayerInteractor.playerRelease()
     }
 
     private companion object {
-        const val STATE_DEFAULT = 0
-        const val STATE_PREPARED = 1
-        const val STATE_PLAYING = 2
-        const val STATE_PAUSED = 3
-        const val TRACK_TIME_PATTERN = "mm:ss"
         const val SET_CURRENT_TRACK_TIME_DELAY_MILLIS = 500L
     }
 }

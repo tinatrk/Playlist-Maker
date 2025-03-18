@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.models.Track
 
 class TrackViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater
@@ -23,8 +25,8 @@ class TrackViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         trackArtistName.text =
             model.artistName ?: itemView.context.getString(R.string.message_nothing_found)
         trackArtistName.requestLayout()
-        trackTime.text = model.getTrackTime() ?:
-            itemView.context.getString(R.string.message_nothing_found)
+        trackTime.text =
+            model.trackTime ?: itemView.context.getString(R.string.message_nothing_found)
         val cornerRadiusDp = (itemView.resources.getDimension(R.dimen.corner_radius_2)).toInt()
         Glide.with(itemView)
             .load(model.artworkUrl100 ?: "")
