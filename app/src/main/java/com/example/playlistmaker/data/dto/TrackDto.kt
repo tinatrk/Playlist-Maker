@@ -1,10 +1,9 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.data.dto
 
-import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-data class Track(
+data class TrackDto(
     val trackId: Int?,
     val artistName: String?,
     val collectionName: String?,
@@ -15,7 +14,7 @@ data class Track(
     val primaryGenreName: String?,
     val releaseDate: String?,
     val previewUrl: String?
-) : Serializable {
+) {
     fun getCoverArtwork() = artworkUrl100?.replaceAfterLast(COVER_DELIMITER, COVER_REPLACEMENT)
 
     fun getTrackTime(): String? = if (trackTimeMillis != null) {

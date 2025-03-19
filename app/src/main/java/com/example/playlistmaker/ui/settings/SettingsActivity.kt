@@ -1,7 +1,5 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.settings
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -9,9 +7,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.playlistmaker.R
+import com.example.playlistmaker.creator.CreatorExternalNavigator
+import com.example.playlistmaker.creator.CreatorSettings
+import com.example.playlistmaker.ui.App
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
+    private val settingsInteractor = CreatorSettings.provideSettingsInteractor()
+    private val externalNavigatorInteractor =
+        CreatorExternalNavigator.provideExternalNavigatorInteractor()
+
+    private lateinit var themeSwitch: SwitchMaterial
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -22,10 +30,10 @@ class SettingsActivity : AppCompatActivity() {
             insets
         }
 
-        val themeSwitch = findViewById<SwitchMaterial>(R.id.switch_mode_settings)
-        themeSwitch.isChecked = (applicationContext as App) .isDarkTheme
+        themeSwitch = findViewById(R.id.switch_mode_settings)
+        setCurrentTheme()
         themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            (applicationContext as App) .switchTheme(isChecked)
+            (applicationContext as App).switchTheme(isChecked)
         }
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar_settings)
@@ -35,36 +43,26 @@ class SettingsActivity : AppCompatActivity() {
 
         val btnShareApp = findViewById<TextView>(R.id.tv_share_app_setting)
         btnShareApp.setOnClickListener {
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_link))
-                type = "text/plain"
-            }
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            startActivity(shareIntent)
+            externalNavigatorInteractor.shareLink(getString(R.string.share_app_link))
         }
 
         val btnSupport = findViewById<TextView>(R.id.tv_support_settings)
         btnSupport.setOnClickListener {
-            val supportIntent = Intent(Intent.ACTION_SENDTO)
-            supportIntent.data = Uri.parse("mailto:")
-            supportIntent.putExtra(
-                Intent.EXTRA_EMAIL,
-                arrayOf(getString(R.string.support_target_mail))
+            externalNavigatorInteractor.sendMail(
+                getString(R.string.support_target_mail),
+                getString(R.string.support_subject_mail),
+                getString(R.string.support_message_mail)
             )
-            supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_subject_mail))
-            supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.support_message_mail))
-            startActivity(supportIntent)
         }
 
         val btnUserAgreement = findViewById<TextView>(R.id.tv_user_agreement_settings)
         btnUserAgreement.setOnClickListener {
-            val userAgreementIntent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(getString(R.string.user_agreement_link))
-            )
-            startActivity(userAgreementIntent)
+            externalNavigatorInteractor.openUrl(getString(R.string.user_agreement_link))
         }
+    }
 
+    private fun setCurrentTheme() {
+        val curTheme = settingsInteractor.getTheme()
+        themeSwitch.isChecked = curTheme
     }
 }
