@@ -1,23 +1,13 @@
 package com.example.playlistmaker.data.network
 
 import com.example.playlistmaker.data.NetworkClient
-import com.example.playlistmaker.data.dto.TrackSearchRequest
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import com.example.playlistmaker.data.dto.NetworkResponse
+import com.example.playlistmaker.data.dto.TrackSearchRequest
 import com.example.playlistmaker.ui.App.Companion.BAD_REQUEST_CODE
 import com.example.playlistmaker.ui.App.Companion.INTERNAL_SERVER_ERROR_CODE
+import java.io.IOException
 
-class RetrofitNetworkClient: NetworkClient {
-    private val baseUrlItunes = "https://itunes.apple.com"
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrlItunes)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val itunesService = retrofit.create(ItunesApiService::class.java)
+class RetrofitNetworkClient(private val itunesService: ItunesApiService) : NetworkClient {
 
     override fun doRequest(dto: Any): NetworkResponse {
         if (dto is TrackSearchRequest) {

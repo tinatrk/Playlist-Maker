@@ -5,8 +5,7 @@ import com.example.playlistmaker.data.dto.PlayerStateDto
 import com.example.playlistmaker.domain.PlayerState
 import com.example.playlistmaker.domain.api.repository.AudioPlayerRepository
 
-class AudioPlayerRepositoryImpl() : AudioPlayerRepository {
-    private val player = MediaPlayer()
+class AudioPlayerRepositoryImpl(private val player: MediaPlayer) : AudioPlayerRepository {
     private var playerState = PlayerStateDto.STATE_DEFAULT
 
     override fun playerPrepare(
