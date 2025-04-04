@@ -1,7 +1,5 @@
 package com.example.playlistmaker.search.data.impl
 
-import android.app.Application
-import android.content.Context
 import android.content.SharedPreferences
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.dto.NetworkResponseCode
@@ -18,12 +16,8 @@ import java.lang.reflect.Type
 
 class TrackRepositoryImpl(
     private val networkClient: NetworkClient? = null,
-    application: Application? = null
+    private val sharedPrefs: SharedPreferences? = null
 ) : TrackRepository {
-
-    private val sharedPrefs: SharedPreferences? = application?.getSharedPreferences(
-        HISTORY_SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE
-    )
 
     override fun searchTracks(text: String): Resource<List<Track>> {
         if (networkClient != null) {
@@ -75,6 +69,5 @@ class TrackRepositoryImpl(
 
     companion object {
         private const val KEY_FOR_HISTORY_TRACK_LIST = "history_track_list"
-        private const val HISTORY_SHARED_PREFERENCES_FILE = "shared_preferences_history"
     }
 }

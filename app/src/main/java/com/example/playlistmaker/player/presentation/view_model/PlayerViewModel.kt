@@ -24,10 +24,9 @@ class PlayerViewModel(
     private val playerInteractor: AudioPlayerInteractor,
     historyInteractor: TrackInteractorHistory
 ) : ViewModel() {
-    private val playerStateLiveData =
-        MutableLiveData<PlayerState>(PlayerState.NotPrepared)
+    private val playerStateLiveData = MutableLiveData<PlayerState>()
 
-    private val contentStateLiveData = MutableLiveData<PlayerTrackInfo>()
+    private val trackInfo: PlayerTrackInfo
 
     private val handler = Handler(Looper.getMainLooper())
     private var playerCurrentPosition: String = STRING_DEF_VALUE
@@ -42,8 +41,8 @@ class PlayerViewModel(
     init {
         val tracks = historyInteractor.getHistory()
         val track: Track? = getTrackFromHistory(tracks)
-        val trackInfo: PlayerTrackInfo = PlayerPresenterTrackMapper.map(track)
-        contentStateLiveData.value = trackInfo
+        trackInfo = PlayerPresenterTrackMapper.map(track)
+        playerStateLiveData.value = PlayerState.NotPrepared(trackInfo)
 
         if (track != null) playerInteractor.playerPrepare(trackInfo.previewUrl,
             { preparedCallback() },
@@ -51,8 +50,6 @@ class PlayerViewModel(
     }
 
     fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
-
-    fun getContentState(): LiveData<PlayerTrackInfo> = contentStateLiveData
 
     private fun getTrackFromHistory(tracks: List<Track>): Track? {
         tracks.forEach {
@@ -63,12 +60,12 @@ class PlayerViewModel(
     }
 
     private fun preparedCallback() {
-        playerStateLiveData.value = PlayerState.Prepared
+        playerStateLiveData.value = PlayerState.Prepared(trackInfo)
     }
 
     private fun completionCallback() {
         handler.removeCallbacks(getCurrentPosition)
-        playerStateLiveData.value = PlayerState.Prepared
+        playerStateLiveData.value = PlayerState.Prepared(trackInfo)
     }
 
     fun playerControl() {
@@ -87,18 +84,21 @@ class PlayerViewModel(
 
     private fun playerPauseCallback() {
         handler.removeCallbacks(getCurrentPosition)
-        playerStateLiveData.value = PlayerState.Paused(playerCurrentPosition)
+        playerStateLiveData.value = PlayerState.Paused(playerCurrentPosition, trackInfo)
     }
 
     private fun playerErrorCallback() {
         handler.removeCallbacks(getCurrentPosition)
-        playerStateLiveData.value = PlayerState.Error
+        playerStateLiveData.value = PlayerState.Error(trackInfo)
     }
 
     fun playerPause() {
         handler.removeCallbacks(getCurrentPosition)
-        playerInteractor.playerPause { playerPauseCallback() }
-        playerStateLiveData.value = PlayerState.Paused(playerCurrentPosition)
+        if ((playerStateLiveData.value is PlayerState.Playing) ||
+            (playerStateLiveData.value is PlayerState.Progress)) {
+            playerInteractor.playerPause { playerPauseCallback() }
+            playerStateLiveData.value = PlayerState.Paused(playerCurrentPosition, trackInfo)
+        }
     }
 
     override fun onCleared() {

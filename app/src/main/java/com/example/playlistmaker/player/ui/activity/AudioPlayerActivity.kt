@@ -44,18 +44,14 @@ class AudioPlayerActivity : AppCompatActivity() {
             PlayerViewModel.getViewModelFactory(trackId)
         )[PlayerViewModel::class.java]
 
-        viewModel.getContentState().observe(this) { trackInfo ->
-            setTrackContent(trackInfo)
-        }
-
         viewModel.getPlayerStateLiveData().observe(this) { playerState ->
             when (playerState) {
                 is PlayerState.NotPrepared -> {
-                    showNotPreparedPlayer()
+                    showNotPreparedPlayer(playerState.trackInfo)
                 }
 
                 is PlayerState.Prepared -> {
-                    showPreparedPlayer()
+                    showPreparedPlayer(playerState.trackInfo)
                 }
 
                 is PlayerState.Playing -> {
@@ -63,7 +59,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                 }
 
                 is PlayerState.Paused -> {
-                    showPausedPlayer(playerState.curPosition)
+                    showPausedPlayer(playerState.curPosition, playerState.trackInfo)
                 }
 
                 is PlayerState.Progress -> {
@@ -71,7 +67,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                 }
 
                 is PlayerState.Error -> {
-                    showPlayerError()
+                    showPlayerError(playerState.trackInfo)
                 }
             }
         }
@@ -108,13 +104,15 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun showNotPreparedPlayer() {
+    private fun showNotPreparedPlayer(trackInfo: PlayerTrackInfo) {
+        setTrackContent(trackInfo)
         binding.ibtnPlayPlayer.isEnabled = false
         binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
         binding.tvTrackCurrentTimePlayer.text = getString(R.string.track_current_time_placeholder)
     }
 
-    private fun showPreparedPlayer() {
+    private fun showPreparedPlayer(trackInfo: PlayerTrackInfo) {
+        setTrackContent(trackInfo)
         binding.ibtnPlayPlayer.isEnabled = true
         binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
         binding.tvTrackCurrentTimePlayer.text = getString(R.string.track_current_time_placeholder)
@@ -124,7 +122,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_pause_84)
     }
 
-    private fun showPausedPlayer(curPlayerPosition: String) {
+    private fun showPausedPlayer(curPlayerPosition: String, trackInfo: PlayerTrackInfo) {
+        setTrackContent(trackInfo)
         binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
         binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
     }
@@ -133,7 +132,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.tvTrackCurrentTimePlayer.text = progress
     }
 
-    private fun showPlayerError() {
+    private fun showPlayerError(trackInfo: PlayerTrackInfo) {
+        setTrackContent(trackInfo)
         Toast.makeText(
             this,
             getString(R.string.message_something_went_wrong), Toast.LENGTH_LONG

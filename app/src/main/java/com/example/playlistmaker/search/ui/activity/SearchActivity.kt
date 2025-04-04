@@ -85,9 +85,7 @@ class SearchActivity : AppCompatActivity() {
             this, LinearLayoutManager.VERTICAL,
             false
         )
-        trackAdapter = TrackAdapter {
-            openPlayer(it)
-        }
+        trackAdapter = TrackAdapter { onTrackClicked(it.trackId) }
         binding.rvTrackListSearch.adapter = trackAdapter
         binding.rvTrackListSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -101,8 +99,8 @@ class SearchActivity : AppCompatActivity() {
             viewModel.searchTrack()
         }
 
-        viewModel.getScreenStateLiveData().observe(this) { state ->
-            when (state) {
+        viewModel.getScreenStateLiveData().observe(this) { screenState ->
+            when (screenState) {
                 is SearchScreenState.Default -> {
                     showDefaultState()
                 }
@@ -116,27 +114,26 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 is SearchScreenState.Content -> {
-                    showContent(state.tracks)
+                    showContent(screenState.tracks)
                 }
 
                 is SearchScreenState.Error -> {
-                    showError(state.errorType)
+                    showError(screenState.errorType)
                 }
 
                 is SearchScreenState.History -> {
-                    showHistory()
+                    showHistory(screenState.tracks)
+                }
+
+                is SearchScreenState.OnTrackClickedEvent -> {
+                    openPlayer(screenState.trackId)
                 }
             }
-        }
-
-        viewModel.getHistoryStateLiveData().observe(this) { historyTracks ->
-            historyAdapter.updateTracks(historyTracks)
         }
     }
 
     private fun initHistoryAdapter() {
-        historyAdapter = TrackAdapter { openPlayer(it) }
-        viewModel.getHistory()
+        historyAdapter = TrackAdapter { onTrackClicked(it.trackId) }
         binding.rvHistoryListSearch.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvHistoryListSearch.adapter = historyAdapter
@@ -154,7 +151,8 @@ class SearchActivity : AppCompatActivity() {
         binding.vgHistorySearch.visibility = View.GONE
     }
 
-    private fun showHistory() {
+    private fun showHistory(tracks: List<SearchTrackInfo>) {
+        historyAdapter.updateTracks(tracks)
         trackAdapter.clearTracks()
 
         binding.progressBarSearch.visibility = View.GONE
@@ -256,13 +254,15 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun openPlayer(track: SearchTrackInfo) {
+    private fun onTrackClicked(trackId: Int) {
+        viewModel.onTrackClick(trackId)
+    }
+
+    private fun openPlayer(trackId: Int) {
         clearFocusEditText()
-        if (viewModel.onTrackClick(track.trackId)) {
-            val intent = Intent(this, AudioPlayerActivity::class.java)
-            intent.putExtra(INTENT_TRACK_KEY, track.trackId)
-            startActivity(intent)
-        }
+        val intent = Intent(this, AudioPlayerActivity::class.java)
+        intent.putExtra(INTENT_TRACK_KEY, trackId)
+        startActivity(intent)
     }
 
     private fun clearFocusEditText() {
