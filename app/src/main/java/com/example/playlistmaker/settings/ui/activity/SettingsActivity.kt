@@ -8,7 +8,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
-import com.example.playlistmaker.settings.presentation.model.SettingsScreenState
 import com.example.playlistmaker.settings.presentation.view_model.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
@@ -33,12 +32,9 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
-        viewModel.getScreenStateLiveData().observe(this) { screenState ->
-            when (screenState) {
-                is SettingsScreenState.Default -> {
-                    binding.switchModeSettings.isChecked = screenState.isDefaultThemeDark
-                }
-            }
+        viewModel.getIsDefaultThemeDarkLiveData().observe(this) { isDefaultThemeDark ->
+            binding.switchModeSettings.isChecked = isDefaultThemeDark
+
         }
 
         binding.switchModeSettings.setOnCheckedChangeListener { _, isChecked ->

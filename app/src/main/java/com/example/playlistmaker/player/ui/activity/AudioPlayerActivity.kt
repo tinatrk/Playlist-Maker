@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.app.App.Companion.INTENT_TRACK_KEY
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
-import com.example.playlistmaker.player.presentation.model.PlayerState
+import com.example.playlistmaker.player.presentation.model.PlaybackState
 import com.example.playlistmaker.player.presentation.model.PlayerTrackInfo
 import com.example.playlistmaker.player.presentation.view_model.PlayerViewModel
 
@@ -45,29 +45,24 @@ class AudioPlayerActivity : AppCompatActivity() {
         )[PlayerViewModel::class.java]
 
         viewModel.getPlayerStateLiveData().observe(this) { playerState ->
-            when (playerState) {
-                is PlayerState.NotPrepared -> {
-                    showNotPreparedPlayer(playerState.trackInfo)
-                }
+            if (playerState.isError) showPlayerError(playerState.trackInfo, playerState.curPosition)
+            else {
+                when (playerState.trackPlaybackState) {
+                    PlaybackState.NOT_PREPARED -> {
+                        showNotPreparedPlayer(playerState.trackInfo, playerState.curPosition)
+                    }
 
-                is PlayerState.Prepared -> {
-                    showPreparedPlayer(playerState.trackInfo)
-                }
+                    PlaybackState.PREPARED -> {
+                        showPreparedPlayer(playerState.trackInfo, playerState.curPosition)
+                    }
 
-                is PlayerState.Playing -> {
-                    showPlayingPlayer()
-                }
+                    PlaybackState.PLAYING -> {
+                        showPlayingPlayer(playerState.curPosition)
+                    }
 
-                is PlayerState.Paused -> {
-                    showPausedPlayer(playerState.curPosition, playerState.trackInfo)
-                }
-
-                is PlayerState.Progress -> {
-                    showPlayingPlayerProgress(playerState.progress)
-                }
-
-                is PlayerState.Error -> {
-                    showPlayerError(playerState.trackInfo)
+                    PlaybackState.PAUSED -> {
+                        showPausedPlayer(playerState.trackInfo, playerState.curPosition)
+                    }
                 }
             }
         }
@@ -104,36 +99,35 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun showNotPreparedPlayer(trackInfo: PlayerTrackInfo) {
+    private fun showNotPreparedPlayer(trackInfo: PlayerTrackInfo, curPlayerPosition: String) {
         setTrackContent(trackInfo)
         binding.ibtnPlayPlayer.isEnabled = false
         binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
-        binding.tvTrackCurrentTimePlayer.text = getString(R.string.track_current_time_placeholder)
+        binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
     }
 
-    private fun showPreparedPlayer(trackInfo: PlayerTrackInfo) {
+    private fun showPreparedPlayer(trackInfo: PlayerTrackInfo, curPlayerPosition: String) {
         setTrackContent(trackInfo)
         binding.ibtnPlayPlayer.isEnabled = true
         binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
-        binding.tvTrackCurrentTimePlayer.text = getString(R.string.track_current_time_placeholder)
+        binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
     }
 
-    private fun showPlayingPlayer() {
+    private fun showPlayingPlayer(curPlayerPosition: String) {
         binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_pause_84)
+        binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
     }
 
-    private fun showPausedPlayer(curPlayerPosition: String, trackInfo: PlayerTrackInfo) {
+    private fun showPausedPlayer(trackInfo: PlayerTrackInfo, curPlayerPosition: String) {
         setTrackContent(trackInfo)
         binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
         binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
     }
 
-    private fun showPlayingPlayerProgress(progress: String) {
-        binding.tvTrackCurrentTimePlayer.text = progress
-    }
-
-    private fun showPlayerError(trackInfo: PlayerTrackInfo) {
+    private fun showPlayerError(trackInfo: PlayerTrackInfo, curPlayerPosition: String) {
         setTrackContent(trackInfo)
+        binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
+        binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
         Toast.makeText(
             this,
             getString(R.string.message_something_went_wrong), Toast.LENGTH_LONG

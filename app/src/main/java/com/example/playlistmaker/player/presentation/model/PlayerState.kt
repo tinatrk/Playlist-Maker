@@ -1,10 +1,12 @@
 package com.example.playlistmaker.player.presentation.model
 
-sealed class PlayerState() {
-    data class NotPrepared(val trackInfo: PlayerTrackInfo) : PlayerState()
-    data class Prepared(val trackInfo: PlayerTrackInfo)  : PlayerState()
-    data object Playing : PlayerState()
-    data class Paused(val curPosition: String, val trackInfo: PlayerTrackInfo) : PlayerState()
-    data class Progress(val progress: String) : PlayerState()
-    data class Error(val trackInfo: PlayerTrackInfo)  : PlayerState()
+data class PlayerState(
+    val isError: Boolean = false,
+    val trackInfo: PlayerTrackInfo = PlayerTrackInfo.empty(),
+    val trackPlaybackState: PlaybackState = PlaybackState.NOT_PREPARED,
+    val curPosition: String = DEFAULT_CUR_POSITION
+) {
+    companion object {
+        private const val DEFAULT_CUR_POSITION = "00:00"
+    }
 }
