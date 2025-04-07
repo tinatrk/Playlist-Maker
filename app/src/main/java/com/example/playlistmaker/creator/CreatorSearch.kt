@@ -1,16 +1,23 @@
 package com.example.playlistmaker.creator
 
-import com.example.playlistmaker.data.network.ItunesApiService
-import com.example.playlistmaker.data.network.RetrofitNetworkClient
-import com.example.playlistmaker.data.network.TrackRepositoryImpl
-import com.example.playlistmaker.domain.api.interactor.TrackInteractorSearch
-import com.example.playlistmaker.domain.api.repository.TrackRepository
-import com.example.playlistmaker.domain.impl.TrackInteractorSearchImpl
+import android.app.Application
+import com.example.playlistmaker.search.data.api.ItunesApiService
+import com.example.playlistmaker.search.data.impl.RetrofitNetworkClient
+import com.example.playlistmaker.search.data.impl.TrackRepositoryImpl
+import com.example.playlistmaker.search.domain.api.interactor.TrackInteractorSearch
+import com.example.playlistmaker.search.domain.api.repository.TrackRepository
+import com.example.playlistmaker.search.domain.impl.TrackInteractorSearchImpl
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object CreatorSearch {
+    private lateinit var application: Application
+
     private const val BASE_URL_ITUNES = "https://itunes.apple.com"
+
+    fun initApplication(application: Application) {
+        this.application = application
+    }
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
@@ -24,7 +31,7 @@ object CreatorSearch {
     }
 
     private fun getTrackRepositorySearch(): TrackRepository {
-        return TrackRepositoryImpl(RetrofitNetworkClient(getItunesApiService()))
+        return TrackRepositoryImpl(RetrofitNetworkClient(getItunesApiService(), application))
     }
 
     fun provideTrackInteractorSearch(): TrackInteractorSearch {
