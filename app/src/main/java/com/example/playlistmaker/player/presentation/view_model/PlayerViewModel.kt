@@ -5,11 +5,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.CreatorAudioPlayer
-import com.example.playlistmaker.creator.CreatorHistory
 import com.example.playlistmaker.history.domain.api.interactor.TrackInteractorHistory
 import com.example.playlistmaker.player.domain.api.interactor.AudioPlayerInteractor
 import com.example.playlistmaker.player.presentation.mapper.PlayerPresenterTrackMapper
@@ -22,8 +17,8 @@ import java.util.Locale
 
 class PlayerViewModel(
     private val trackId: Int,
-    private val playerInteractor: AudioPlayerInteractor,
-    historyInteractor: TrackInteractorHistory
+    private val audioPlayerInteractor: AudioPlayerInteractor,
+    trackInteractorHistory: TrackInteractorHistory
 ) : ViewModel() {
     private val playerStateLiveData = MutableLiveData<PlayerState>()
 
@@ -33,7 +28,7 @@ class PlayerViewModel(
     private var playerCurrentPosition: String = DEFAULT_CUR_POSITION
 
     init {
-        val tracks = historyInteractor.getHistory()
+        val tracks = trackInteractorHistory.getHistory()
         val track: Track? = getTrackFromHistory(tracks)
         trackInfo = PlayerPresenterTrackMapper.map(track)
         playerStateLiveData.value = PlayerState(
@@ -43,14 +38,14 @@ class PlayerViewModel(
             curPosition = playerCurrentPosition
         )
 
-        if (track != null) playerInteractor.playerPrepare(trackInfo.previewUrl,
+        if (track != null) audioPlayerInteractor.playerPrepare(trackInfo.previewUrl,
             { preparedCallback() },
             { completionCallback() })
     }
 
     private val getCurrentPosition = object : Runnable {
         override fun run() {
-            playerCurrentPosition = progressMap(playerInteractor.getCurrentPosition())
+            playerCurrentPosition = progressMap(audioPlayerInteractor.getCurrentPosition())
             playerStateLiveData.postValue(
                 PlayerState(
                     isError = false,
@@ -95,7 +90,7 @@ class PlayerViewModel(
     }
 
     fun playerControl() {
-        playerInteractor.playerControl(
+        audioPlayerInteractor.playerControl(
             { playerStartCallback() },
             { playerPauseCallback() },
             { playerErrorCallback() }
@@ -138,7 +133,7 @@ class PlayerViewModel(
         handler.removeCallbacks(getCurrentPosition)
         if ((playerStateLiveData.value?.trackPlaybackState == PlaybackState.PLAYING)
         ) {
-            playerInteractor.playerPause { playerPauseCallback() }
+            audioPlayerInteractor.playerPause { playerPauseCallback() }
             playerStateLiveData.value = PlayerState(
                 isError = false,
                 trackInfo = trackInfo,
@@ -151,7 +146,7 @@ class PlayerViewModel(
     override fun onCleared() {
         super.onCleared()
         handler.removeCallbacks(getCurrentPosition)
-        playerInteractor.playerRelease()
+        audioPlayerInteractor.playerRelease()
     }
 
     private fun progressMap(progress: Int): String {
@@ -160,16 +155,6 @@ class PlayerViewModel(
     }
 
     companion object {
-        fun getViewModelFactory(trackId: Int): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PlayerViewModel(
-                    trackId,
-                    CreatorAudioPlayer.provideAudioPlayerInteractor(),
-                    CreatorHistory.provideTrackInteractorHistory()
-                )
-            }
-        }
-
         const val TRACK_TIME_PATTERN = "mm:ss"
         const val SET_CURRENT_TRACK_TIME_DELAY_MILLIS = 500L
         private const val DEFAULT_CUR_POSITION = "00:00"

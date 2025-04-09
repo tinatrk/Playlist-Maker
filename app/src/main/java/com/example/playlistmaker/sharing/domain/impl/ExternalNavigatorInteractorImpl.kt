@@ -4,14 +4,14 @@ import com.example.playlistmaker.sharing.domain.api.interactor.ExternalNavigator
 import com.example.playlistmaker.sharing.domain.api.repository.ExternalNavigator
 import com.example.playlistmaker.sharing.domain.models.EmailData
 
-class ExternalNavigatorInteractorImpl(private val navigator: ExternalNavigator) :
+class ExternalNavigatorInteractorImpl(private val externalNavigator: ExternalNavigator) :
     ExternalNavigatorInteractor {
     override fun openUserAgreement(url: String) {
-        navigator.openUrl(url)
+        externalNavigator.openUrl(url)
     }
 
     override fun shareApp(link: String) {
-        navigator.shareLink(link)
+        externalNavigator.shareLink(link)
     }
 
     override fun openSupport(
@@ -19,6 +19,6 @@ class ExternalNavigatorInteractorImpl(private val navigator: ExternalNavigator) 
         subjectMail: String,
         messageMail: String
     ) {
-        navigator.sendMail(EmailData(targetMail, subjectMail, messageMail))
+        externalNavigator.sendMail(EmailData(targetMail, subjectMail, messageMail))
     }
 }
