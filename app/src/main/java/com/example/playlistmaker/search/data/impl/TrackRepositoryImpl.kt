@@ -16,7 +16,8 @@ import java.lang.reflect.Type
 
 class TrackRepositoryImpl(
     private val networkClient: NetworkClient? = null,
-    private val sharedPrefs: SharedPreferences? = null
+    private val sharedPreferences: SharedPreferences? = null,
+    private val gson: Gson? = null
 ) : TrackRepository {
 
     override fun searchTracks(text: String): Resource<List<Track>> {
@@ -47,11 +48,11 @@ class TrackRepositoryImpl(
     }
 
     override fun getHistory(): List<Track> {
-        if (sharedPrefs != null) {
-            val json = sharedPrefs.getString(KEY_FOR_HISTORY_TRACK_LIST, null)
+        if (sharedPreferences != null && gson != null) {
+            val json = sharedPreferences.getString(KEY_FOR_HISTORY_TRACK_LIST, null)
             return if (json != null) {
                 val type: Type = object : TypeToken<List<Track>>() {}.type
-                Gson().fromJson(json, type) ?: listOf()
+                gson.fromJson(json, type) ?: listOf()
             } else {
                 listOf()
             }
@@ -59,9 +60,9 @@ class TrackRepositoryImpl(
     }
 
     override fun updateHistory(tracks: List<Track>) {
-        if (sharedPrefs != null) {
-            val json: String = Gson().toJson(tracks)
-            sharedPrefs.edit()
+        if (sharedPreferences != null && gson != null) {
+            val json: String = gson.toJson(tracks)
+            sharedPreferences.edit()
                 .putString(KEY_FOR_HISTORY_TRACK_LIST, json)
                 .apply()
         }

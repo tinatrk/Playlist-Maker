@@ -6,11 +6,6 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.CreatorHistory
-import com.example.playlistmaker.creator.CreatorSearch
 import com.example.playlistmaker.history.domain.api.interactor.TrackInteractorHistory
 import com.example.playlistmaker.search.domain.api.interactor.TrackInteractorSearch
 import com.example.playlistmaker.search.domain.models.ErrorType
@@ -180,15 +175,6 @@ class SearchViewModel(
     }
 
     companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(
-                    CreatorSearch.provideTrackInteractorSearch(),
-                    CreatorHistory.provideTrackInteractorHistory()
-                )
-            }
-        }
-
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
         private const val ON_TRACK_CLICK_DELAY_MILLIS = 1000L

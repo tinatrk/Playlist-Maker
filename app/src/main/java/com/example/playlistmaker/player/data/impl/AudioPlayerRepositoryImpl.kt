@@ -5,20 +5,20 @@ import com.example.playlistmaker.player.data.dto.PlayerStateDto
 import com.example.playlistmaker.player.domain.api.repository.AudioPlayerRepository
 import com.example.playlistmaker.player.domain.models.PlayerState
 
-class AudioPlayerRepositoryImpl(private val player: MediaPlayer) : AudioPlayerRepository {
+class AudioPlayerRepositoryImpl(private val mediaPlayer: MediaPlayer) : AudioPlayerRepository {
     private var playerState = PlayerStateDto.STATE_DEFAULT
 
     override fun playerPrepare(
         resourceUrl: String, preparedCallback: () -> Unit,
         completionCallback: () -> Unit
     ) {
-        player.setDataSource(resourceUrl)
-        player.prepareAsync()
-        player.setOnPreparedListener {
+        mediaPlayer.setDataSource(resourceUrl)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
             preparedCallback()
             playerState = PlayerStateDto.STATE_PREPARED
         }
-        player.setOnCompletionListener {
+        mediaPlayer.setOnCompletionListener {
             completionCallback()
             playerState = PlayerStateDto.STATE_PREPARED
         }
@@ -34,26 +34,26 @@ class AudioPlayerRepositoryImpl(private val player: MediaPlayer) : AudioPlayerRe
     }
 
     override fun getCurrentPosition(): Int {
-        return player.currentPosition
+        return mediaPlayer.currentPosition
     }
 
     override fun playerStart() {
-        player.start()
+        mediaPlayer.start()
         playerState = PlayerStateDto.STATE_PLAYING
     }
 
     override fun playerPause() {
-        player.pause()
+        mediaPlayer.pause()
         playerState = PlayerStateDto.STATE_PAUSED
     }
 
     override fun playerStop() {
-        player.pause()
+        mediaPlayer.pause()
         playerState = PlayerStateDto.STATE_PREPARED
     }
 
     override fun playerRelease() {
-        player.release()
+        mediaPlayer.reset()
     }
 
 }

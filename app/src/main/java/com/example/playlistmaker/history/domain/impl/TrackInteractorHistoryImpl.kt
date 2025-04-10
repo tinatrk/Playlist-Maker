@@ -4,9 +4,9 @@ import com.example.playlistmaker.history.domain.api.interactor.TrackInteractorHi
 import com.example.playlistmaker.search.domain.api.repository.TrackRepository
 import com.example.playlistmaker.search.domain.models.Track
 
-class TrackInteractorHistoryImpl(private val repository: TrackRepository) : TrackInteractorHistory {
+class TrackInteractorHistoryImpl(private val trackRepository: TrackRepository) : TrackInteractorHistory {
     override fun getHistory(): List<Track> {
-        return repository.getHistory()
+        return trackRepository.getHistory()
     }
 
     override fun updateHistory(newTrack: Track) {
@@ -20,11 +20,11 @@ class TrackInteractorHistoryImpl(private val repository: TrackRepository) : Trac
         if (tracks.size > MAX_COUNT_TRACKS)
             tracks = tracks.take(MAX_COUNT_TRACKS).toMutableList()
 
-        repository.updateHistory(tracks)
+        trackRepository.updateHistory(tracks)
     }
 
     override fun clearHistory() {
-        repository.updateHistory(listOf())
+        trackRepository.updateHistory(listOf())
     }
 
     private fun indexOfTheSame(tracks: List<Track>, track: Track): Int {

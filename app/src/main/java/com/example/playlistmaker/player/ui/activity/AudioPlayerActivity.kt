@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -16,11 +15,17 @@ import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.example.playlistmaker.player.presentation.model.PlaybackState
 import com.example.playlistmaker.player.presentation.model.PlayerTrackInfo
 import com.example.playlistmaker.player.presentation.view_model.PlayerViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.core.parameter.parametersOf
 
 class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioPlayerBinding
 
-    private lateinit var viewModel: PlayerViewModel
+    private var trackId: Int = UNKNOWN_TRACK_ID
+
+    private val viewModel: PlayerViewModel by lazy {
+        getViewModel { parametersOf(trackId) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,16 +38,11 @@ class AudioPlayerActivity : AppCompatActivity() {
             insets
         }
 
-        val trackId: Int = this.intent.getIntExtra(INTENT_TRACK_KEY, UNKNOWN_TRACK_ID)
+        trackId = this.intent.getIntExtra(INTENT_TRACK_KEY, UNKNOWN_TRACK_ID)
 
         binding.toolbarAudioPlayerScreen.setNavigationOnClickListener {
             finish()
         }
-
-        viewModel = ViewModelProvider(
-            this,
-            PlayerViewModel.getViewModelFactory(trackId)
-        )[PlayerViewModel::class.java]
 
         viewModel.getPlayerStateLiveData().observe(this) { playerState ->
             if (playerState.isError) showPlayerError(playerState.trackInfo, playerState.curPosition)
