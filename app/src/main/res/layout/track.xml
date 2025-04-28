@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/track"
-    style="@style/ScreenStyle"
+    style="@style/ScreenCommonStyle"
     android:layout_width="match_parent"
     android:layout_height="@dimen/selection_item_height"
     android:gravity="center_vertical"
@@ -11,7 +11,7 @@
 
     <ImageView
         android:id="@+id/track_art"
-        style="@style/ScreenStyle"
+        style="@style/ScreenCommonStyle"
         android:layout_width="@dimen/track_art_size"
         android:layout_height="@dimen/track_art_size"
         android:layout_marginStart="@dimen/indentation_13"
@@ -20,7 +20,7 @@
         tools:src="@drawable/ic_placeholder_45" />
 
     <LinearLayout
-        style="@style/ScreenStyle"
+        style="@style/ScreenCommonStyle"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
