@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/library_screen"
-    style="@style/ScreenStyle"
+    style="@style/ScreenCommonStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,4 +15,20 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         app:title="@string/library_button_text" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_library"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tab_layout_height"
+        android:background="?attr/colorPrimary"
+        app:tabTextAppearance="@style/TextMedium14ColorOnPrimaryStyle"
+        app:tabIndicatorColor="?attr/colorOnPrimary"
+        app:tabTextColor="?attr/colorOnPrimary"
+        app:tabIndicator="@drawable/tab_indicator"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager_library"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"/>
 </LinearLayout>

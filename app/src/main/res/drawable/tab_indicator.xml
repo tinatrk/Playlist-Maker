@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:start="@dimen/indentation_16"
+        android:end="@dimen/indentation_16">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/colorOnPrimary" />
+            <corners
+                android:radius="@dimen/corner_radius_2" />
+            <size
+                android:height="@dimen/tab_indicator_height" />
+        </shape>
+    </item>
+</layer-list>

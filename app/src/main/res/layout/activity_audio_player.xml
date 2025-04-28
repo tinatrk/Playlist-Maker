@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/audio_player_screen"
-    style="@style/ScreenStyle"
+    style="@style/ScreenCommonStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".player.ui.activity.AudioPlayerActivity">
@@ -106,7 +106,7 @@
         android:layout_height="@dimen/btn_player_size"
         android:background="@drawable/btn_background_player"
         android:clickable="true"
-        android:contentDescription="@string/btn_add_track_to_favourite_desc"
+        android:contentDescription="@string/btn_add_track_to_favorite_desc"
         android:src="@drawable/ic_like_23"
         app:layout_constraintBottom_toBottomOf="@id/ibtn_play_player"
         app:layout_constraintEnd_toEndOf="@id/right_border_player"

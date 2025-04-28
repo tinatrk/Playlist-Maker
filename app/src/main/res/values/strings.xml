@@ -73,7 +73,13 @@
     <string name="track_current_time_placeholder">00:00</string>
     <string name="track_cover_desc">Обложка трека</string>
     <string name="btn_add_track_to_playlist_desc">Добавить трек в плейлист</string>
-    <string name="btn_add_track_to_favourite_desc">Добавить трек в избранное</string>
+    <string name="btn_add_track_to_favorite_desc">Добавить трек в избранное</string>
     <string name="btn_play_desc">Начать/остановить воспроизведение трека</string>
+
+    <string name="favorite_tracks">Избранные треки</string>
+    <string name="playlists">Плейлисты</string>
+    <string name="empty_favorite_tracks_message">Ваша медиатека пуста</string>
+    <string name="empty_playlists_message">Вы не создали\nни одного плейлиста</string>
+    <string name="btn_new_playlist">Новый плейлист</string>
 
 </resources>
