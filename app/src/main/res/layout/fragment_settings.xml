@@ -7,11 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".settings.ui.activity.SettingsActivity">
+    tools:context=".settings.ui.fragment.SettingsFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_settings"
-        style="@style/ToolbarWithIconColorOnPrimaryStyle"
+        style="@style/ToolbarColorOnPrimaryStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         app:title="@string/settings_button_text" />
