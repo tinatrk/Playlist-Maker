@@ -14,30 +14,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PlaylistMaker"
+        android:theme="@style/Base.Theme.PlaylistMaker"
         tools:targetApi="31"
         android:screenOrientation="portrait">
         <activity
             android:name=".player.ui.activity.AudioPlayerActivity"
-            android:exported="false"
-            android:theme="@style/Theme.NotMainActivity" />
-        <activity
-            android:name=".search.ui.activity.SearchActivity"
-            android:exported="false"
-            android:theme="@style/Theme.NotMainActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name=".library.ui.activity.LibraryActivity"
-            android:exported="false"
-            android:theme="@style/Theme.NotMainActivity" />
-        <activity
-            android:name=".settings.ui.activity.SettingsActivity"
-            android:exported="false"
-            android:theme="@style/Theme.NotMainActivity" />
+            android:exported="false" />
         <activity
             android:name=".main.ui.activity.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.MainActivity">
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
