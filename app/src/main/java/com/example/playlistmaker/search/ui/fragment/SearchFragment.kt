@@ -130,11 +130,11 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.searchLine.setText(STRING_DEF_VALUE)
         trackAdapter.clearTracks()
 
-        binding.progressBarSearch.visibility = View.GONE
-        binding.clearIconSearchLine.visibility = View.GONE
-        binding.rvTrackListSearch.visibility = View.GONE
-        binding.groupErrorSearch.visibility = View.GONE
-        binding.groupHistory.visibility = View.GONE
+        binding.progressBarSearch.isVisible = false
+        binding.clearIconSearchLine.isVisible = false
+        binding.rvTrackListSearch.isVisible = false
+        binding.groupErrorSearch.isVisible = false
+        binding.groupHistory.isVisible = false
         binding.btnErrorSearch.isVisible = false
     }
 
@@ -142,46 +142,46 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         historyAdapter.updateTracks(tracks)
         trackAdapter.clearTracks()
 
-        binding.progressBarSearch.visibility = View.GONE
-        binding.clearIconSearchLine.visibility = View.GONE
-        binding.rvTrackListSearch.visibility = View.GONE
-        binding.groupErrorSearch.visibility = View.GONE
+        binding.progressBarSearch.isVisible = false
+        binding.clearIconSearchLine.isVisible = false
+        binding.rvTrackListSearch.isVisible = false
+        binding.groupErrorSearch.isVisible = false
         binding.btnErrorSearch.isVisible = false
 
-        binding.groupHistory.visibility = View.VISIBLE
+        binding.groupHistory.isVisible = true
     }
 
     private fun showEnteringRequest() {
-        binding.groupHistory.visibility = View.GONE
-        binding.groupErrorSearch.visibility = View.GONE
-        binding.progressBarSearch.visibility = View.GONE
-        binding.rvTrackListSearch.visibility = View.GONE
+        binding.groupHistory.isVisible = false
+        binding.groupErrorSearch.isVisible = false
+        binding.progressBarSearch.isVisible = false
+        binding.rvTrackListSearch.isVisible = false
         binding.btnErrorSearch.isVisible = false
 
-        binding.clearIconSearchLine.visibility = View.VISIBLE
+        binding.clearIconSearchLine.isVisible = true
     }
 
     private fun showLoading() {
-        binding.groupHistory.visibility = View.GONE
-        binding.groupErrorSearch.visibility = View.GONE
-        binding.rvTrackListSearch.visibility = View.GONE
+        binding.groupHistory.isVisible = false
+        binding.groupErrorSearch.isVisible = false
+        binding.rvTrackListSearch.isVisible = false
         binding.btnErrorSearch.isVisible = false
 
-        binding.clearIconSearchLine.visibility = View.VISIBLE
-        binding.progressBarSearch.visibility = View.VISIBLE
+        binding.clearIconSearchLine.isVisible = true
+        binding.progressBarSearch.isVisible = true
     }
 
     private fun showContent(tracks: List<SearchTrackInfo>) {
         trackAdapter.updateTracks(tracks)
         binding.rvTrackListSearch.scrollToPosition(0)
 
-        binding.groupHistory.visibility = View.GONE
-        binding.groupErrorSearch.visibility = View.GONE
-        binding.progressBarSearch.visibility = View.GONE
+        binding.groupHistory.isVisible = false
+        binding.groupErrorSearch.isVisible = false
+        binding.progressBarSearch.isVisible = false
         binding.btnErrorSearch.isVisible = false
 
-        binding.clearIconSearchLine.visibility = View.VISIBLE
-        binding.rvTrackListSearch.visibility = View.VISIBLE
+        binding.clearIconSearchLine.isVisible = true
+        binding.rvTrackListSearch.isVisible = true
     }
 
     private fun showError(errorType: ErrorTypePresenter) {
@@ -189,12 +189,12 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.tvErrorSearch.text = errorInfo.errorMessage
         binding.ivErrorSearch.setImageResource(errorInfo.errorImageId)
 
-        binding.groupHistory.visibility = View.GONE
-        binding.progressBarSearch.visibility = View.GONE
-        binding.rvTrackListSearch.visibility = View.GONE
+        binding.groupHistory.isVisible = false
+        binding.progressBarSearch.isVisible = false
+        binding.rvTrackListSearch.isVisible = false
 
-        binding.clearIconSearchLine.visibility = View.VISIBLE
-        binding.groupErrorSearch.visibility = View.VISIBLE
+        binding.clearIconSearchLine.isVisible = true
+        binding.groupErrorSearch.isVisible = true
         binding.btnErrorSearch.isVisible = errorInfo.isNeedUpdateBtn
     }
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentFavoritesBinding
 import com.example.playlistmaker.library.presentation.models.FavoritesScreenState
@@ -35,15 +36,16 @@ class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>() {
     }
 
     private fun showEmpty() {
-        val emptyImageId: Int =  getEmptyImageIdAccordingTheme(
+        val emptyImageId: Int = getEmptyImageIdAccordingTheme(
             R.drawable.ic_placeholder_nothing_found_lm_120,
             R.drawable.ic_placeholder_nothing_found_dm_120
         )
 
         binding.ivErrorImage.setImageResource(emptyImageId)
-        binding.tvErrorMessage.text = requireActivity().getString(R.string.empty_favorite_tracks_message)
+        binding.tvErrorMessage.text =
+            requireActivity().getString(R.string.empty_favorite_tracks_message)
 
-        binding.groupEmpty.visibility = View.VISIBLE
+        binding.groupEmpty.isVisible = true
     }
 
     private fun getEmptyImageIdAccordingTheme(imageIdLightMode: Int, imageIdDarkMode: Int): Int {
@@ -56,11 +58,11 @@ class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>() {
         }
     }
 
-    private fun showContent(){
-        binding.groupEmpty.visibility = View.GONE
+    private fun showContent() {
+        binding.groupEmpty.isVisible = false
     }
 
-    companion object{
-        fun newInstance() : FavoritesFragment = FavoritesFragment()
+    companion object {
+        fun newInstance(): FavoritesFragment = FavoritesFragment()
     }
 }

@@ -1,12 +1,12 @@
 package com.example.playlistmaker.player.ui.activity
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -93,11 +93,11 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         if (trackInfo.collectionName != null) {
             binding.tvTrackAlbumPlayer.text = trackInfo.collectionName
-            binding.tvTrackAlbumPlayer.visibility = View.VISIBLE
-            binding.tvTitleAlbumPlayer.visibility = View.VISIBLE
+            binding.tvTrackAlbumPlayer.isVisible = true
+            binding.tvTitleAlbumPlayer.isVisible = true
         } else {
-            binding.tvTrackAlbumPlayer.visibility = View.GONE
-            binding.tvTitleAlbumPlayer.visibility = View.GONE
+            binding.tvTrackAlbumPlayer.isVisible = false
+            binding.tvTitleAlbumPlayer.isVisible = false
         }
     }
 
