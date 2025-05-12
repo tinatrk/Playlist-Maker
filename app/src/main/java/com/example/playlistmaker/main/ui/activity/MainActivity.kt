@@ -1,14 +1,15 @@
 package com.example.playlistmaker.main.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMainBinding
-import com.example.playlistmaker.library.ui.activity.LibraryActivity
-import com.example.playlistmaker.search.ui.activity.SearchActivity
-import com.example.playlistmaker.settings.ui.activity.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -23,19 +24,22 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        binding.btnSearchMain.setOnClickListener {
-            val intent = Intent(this@MainActivity, SearchActivity::class.java)
-            startActivity(intent)
-        }
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.main_fragment_container) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        binding.btnLibraryMain.setOnClickListener {
-            val intent = Intent(this@MainActivity, LibraryActivity::class.java)
-            startActivity(intent)
-        }
+        binding.bottomNavigationView.setupWithNavController(navController)
 
-        binding.btnSettingsMain.setOnClickListener {
-            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
-            startActivity(intent)
+        navController.addOnDestinationChangedListener{
+            _, destination, _ ->
+            when(destination.id){
+                R.id.audioPlayerActivity -> {
+                    binding.bottomNavigationView.isVisible = true
+                }
+                else -> {
+                    binding.bottomNavigationView.isVisible = false
+                }
+            }
         }
     }
 }

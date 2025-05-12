@@ -1,16 +1,16 @@
 package com.example.playlistmaker.player.ui.activity
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.app.App.Companion.INTENT_TRACK_KEY
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.example.playlistmaker.player.presentation.model.PlaybackState
 import com.example.playlistmaker.player.presentation.model.PlayerTrackInfo
@@ -27,6 +27,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         getViewModel { parametersOf(trackId) }
     }
 
+    private val args: AudioPlayerActivityArgs by navArgs()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
@@ -38,7 +40,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             insets
         }
 
-        trackId = this.intent.getIntExtra(INTENT_TRACK_KEY, UNKNOWN_TRACK_ID)
+        trackId = args.trackId
 
         binding.toolbarAudioPlayerScreen.setNavigationOnClickListener {
             finish()
@@ -91,11 +93,11 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         if (trackInfo.collectionName != null) {
             binding.tvTrackAlbumPlayer.text = trackInfo.collectionName
-            binding.tvTrackAlbumPlayer.visibility = View.VISIBLE
-            binding.tvTitleAlbumPlayer.visibility = View.VISIBLE
+            binding.tvTrackAlbumPlayer.isVisible = true
+            binding.tvTitleAlbumPlayer.isVisible = true
         } else {
-            binding.tvTrackAlbumPlayer.visibility = View.GONE
-            binding.tvTitleAlbumPlayer.visibility = View.GONE
+            binding.tvTrackAlbumPlayer.isVisible = false
+            binding.tvTitleAlbumPlayer.isVisible = false
         }
     }
 
@@ -139,7 +141,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.playerPause()
     }
 
-    private companion object {
+    companion object {
         const val UNKNOWN_TRACK_ID = -1
     }
 }

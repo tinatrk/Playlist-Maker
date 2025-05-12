@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.library.presentation.models.PlaylistsScreenState
@@ -12,7 +13,7 @@ import com.example.playlistmaker.library.presentation.view_model.PlaylistsFragme
 import com.example.playlistmaker.util.BindingFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlaylistsFragment: BindingFragment<FragmentPlaylistsBinding>() {
+class PlaylistsFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
     private val viewModel: PlaylistsFragmentViewModel by viewModel()
 
@@ -35,7 +36,7 @@ class PlaylistsFragment: BindingFragment<FragmentPlaylistsBinding>() {
     }
 
     private fun showEmpty() {
-        val emptyImageId: Int =  getEmptyImageIdAccordingTheme(
+        val emptyImageId: Int = getEmptyImageIdAccordingTheme(
             R.drawable.ic_placeholder_nothing_found_lm_120,
             R.drawable.ic_placeholder_nothing_found_dm_120
         )
@@ -43,7 +44,7 @@ class PlaylistsFragment: BindingFragment<FragmentPlaylistsBinding>() {
         binding.ivErrorImage.setImageResource(emptyImageId)
         binding.tvErrorMessage.text = requireActivity().getString(R.string.empty_playlists_message)
 
-        binding.groupEmpty.visibility = View.VISIBLE
+        binding.groupEmpty.isVisible = true
     }
 
     private fun getEmptyImageIdAccordingTheme(imageIdLightMode: Int, imageIdDarkMode: Int): Int {
@@ -56,11 +57,11 @@ class PlaylistsFragment: BindingFragment<FragmentPlaylistsBinding>() {
         }
     }
 
-    private fun showContent(){
-        binding.groupEmpty.visibility = View.GONE
+    private fun showContent() {
+        binding.groupEmpty.isVisible = false
     }
 
-    companion object{
-        fun newInstance() : PlaylistsFragment = PlaylistsFragment()
+    companion object {
+        fun newInstance(): PlaylistsFragment = PlaylistsFragment()
     }
 }

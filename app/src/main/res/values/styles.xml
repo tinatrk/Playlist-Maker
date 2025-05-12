@@ -86,6 +86,16 @@
         <item name="android:textSize">@dimen/text_size_14</item>
     </style>
 
+    <style name="TextRegular12BaseStyle" parent="TextRegular11BaseStyle">
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextRegular12ColorOnPrimaryStyle" parent="TextRegular12BaseStyle">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
     <style name="TextRegular13BaseStyle" parent="TextRegular11BaseStyle">
         <item name="android:textSize">@dimen/text_size_13</item>
         <item name="android:maxLines">1</item>
@@ -166,6 +176,15 @@
     <style name="BtnCommonColorStyle" parent="BtnCommonStyle">
         <item name="android:backgroundTint">?attr/colorOnPrimary</item>
         <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="itemTextColor">@color/bottom_navigation_view_item_color</item>
+        <item name="itemIconTint">@color/bottom_navigation_view_item_color</item>
+        <item name="itemTextAppearanceActive">@style/TextRegular12ColorOnPrimaryStyle</item>
+        <item name="itemTextAppearanceInactive">@style/TextRegular12ColorOnPrimaryStyle</item>
+        <item name="itemTextAppearanceActiveBoldEnabled">false</item>
     </style>
 
 </resources>
