@@ -1,6 +1,7 @@
 package com.example.playlistmaker.search.data.impl
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.dto.NetworkResponseCode
 import com.example.playlistmaker.search.data.dto.TrackSearchRequest
@@ -12,6 +13,8 @@ import com.example.playlistmaker.search.domain.models.Resource
 import com.example.playlistmaker.search.domain.models.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.lang.reflect.Type
 
 class TrackRepositoryImpl(
@@ -20,31 +23,32 @@ class TrackRepositoryImpl(
     private val gson: Gson? = null
 ) : TrackRepository {
 
-    override fun searchTracks(text: String): Resource<List<Track>> {
+    override fun searchTracks(text: String): Flow<Resource<List<Track>>> = flow {
         if (networkClient != null) {
             val response = networkClient.doRequest(TrackSearchRequest(text))
 
             when (response.resultCode) {
                 NetworkResponseCode.SUCCESS -> {
                     val results = (response as TrackSearchResponse).results
-                    return if (results.isEmpty()) Resource.Empty()
-                    else Resource.Success(results.map { SearchRepositoryTrackMapper.map(it) })
+                    if (results.isEmpty()) emit(Resource.Empty())
+                    else emit(Resource.Success(results.map { SearchRepositoryTrackMapper.map(it) }))
                 }
 
                 NetworkResponseCode.NO_NETWORK_CONNECTION -> {
-                    return Resource.Error(errorType = ErrorType.NoNetworkConnection)
+                    emit(Resource.Error(errorType = ErrorType.NoNetworkConnection))
                 }
 
                 NetworkResponseCode.BAD_REQUEST -> {
-                    return Resource.Error(errorType = ErrorType.BadRequest())
+                    emit(Resource.Error(errorType = ErrorType.BadRequest()))
                 }
 
                 NetworkResponseCode.INTERNAL_SERVER_ERROR -> {
-                    return Resource.Error(errorType = ErrorType.InternalServerError())
+                    emit(Resource.Error(errorType = ErrorType.InternalServerError()))
                 }
             }
+        } else {
+            emit(Resource.Error(ErrorType.BadRequest()))
         }
-        return Resource.Error(ErrorType.BadRequest())
     }
 
     override fun getHistory(): List<Track> {
@@ -62,9 +66,9 @@ class TrackRepositoryImpl(
     override fun updateHistory(tracks: List<Track>) {
         if (sharedPreferences != null && gson != null) {
             val json: String = gson.toJson(tracks)
-            sharedPreferences.edit()
-                .putString(KEY_FOR_HISTORY_TRACK_LIST, json)
-                .apply()
+            sharedPreferences.edit {
+                putString(KEY_FOR_HISTORY_TRACK_LIST, json)
+            }
         }
     }
 
