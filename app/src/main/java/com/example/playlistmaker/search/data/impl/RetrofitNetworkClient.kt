@@ -9,42 +9,34 @@ import com.example.playlistmaker.search.data.api.ItunesApiService
 import com.example.playlistmaker.search.data.dto.NetworkResponse
 import com.example.playlistmaker.search.data.dto.NetworkResponseCode
 import com.example.playlistmaker.search.data.dto.TrackSearchRequest
-import java.io.IOException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RetrofitNetworkClient(
     private val itunesService: ItunesApiService,
     private val application: Application
 ) : NetworkClient {
 
-    override fun doRequest(dto: Any): NetworkResponse {
+    override suspend fun doRequest(dto: Any): NetworkResponse {
         if (!isConnected()) {
             return NetworkResponse().apply {
                 resultCode = NetworkResponseCode.NO_NETWORK_CONNECTION
             }
         }
 
-        if (dto is TrackSearchRequest) {
-            val response = try {
-                itunesService.searchTracks(dto.text).execute()
-            } catch (e: IOException) {
-                null
-            }
-
-            if (response == null) {
-                return NetworkResponse().apply {
-                    resultCode = NetworkResponseCode.INTERNAL_SERVER_ERROR
-                }
-            }
-
-            if (response.body() == null) return NetworkResponse().apply {
-                resultCode = NetworkResponseCode.BAD_REQUEST
-            }
-
-            val body = response.body() ?: NetworkResponse()
-
-            return body.apply { resultCode = NetworkResponseCode.SUCCESS }
-        } else {
+        if (dto !is TrackSearchRequest) {
             return NetworkResponse().apply { resultCode = NetworkResponseCode.BAD_REQUEST }
+        }
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = itunesService.searchTracks(dto.text)
+                response.apply {
+                    resultCode = NetworkResponseCode.SUCCESS
+                }
+            } catch (e: Throwable) {
+                NetworkResponse().apply { resultCode = NetworkResponseCode.INTERNAL_SERVER_ERROR }
+            }
         }
     }
 

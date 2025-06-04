@@ -34,10 +34,10 @@ class MainActivity : AppCompatActivity() {
             _, destination, _ ->
             when(destination.id){
                 R.id.audioPlayerActivity -> {
-                    binding.bottomNavigationView.isVisible = true
+                    binding.bottomNavigationView.isVisible = false
                 }
                 else -> {
-                    binding.bottomNavigationView.isVisible = false
+                    binding.bottomNavigationView.isVisible = true
                 }
             }
         }
