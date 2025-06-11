@@ -1,11 +1,11 @@
-package com.example.playlistmaker.library.presentation.view_model
+package com.example.playlistmaker.playlists.presentation.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.library.presentation.models.PlaylistsScreenState
+import com.example.playlistmaker.playlists.presentation.models.PlaylistsScreenState
 
-class PlaylistsFragmentViewModel() : ViewModel() {
+class PlaylistsViewModel() : ViewModel() {
     private val screenStateLiveData: MutableLiveData<PlaylistsScreenState> =
         MutableLiveData(PlaylistsScreenState.Empty)
 

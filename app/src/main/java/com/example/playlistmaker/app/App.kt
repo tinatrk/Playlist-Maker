@@ -26,8 +26,11 @@ class App : Application() {
     }
 
     companion object {
-        const val INTENT_TRACK_KEY = "track"
         const val DI_SETTINGS_SP_NAME = "settings_shared_preferences"
         const val DI_HISTORY_SP_NAME = "history_shared_preferences"
+        const val UNKNOWN_ID = -1
+        const val DEFAULT_STRING = "Ничего не нашлось"
+        const val DEFAULT_LINK = ""
+        const val DEFAULT_INT = -1
     }
 }

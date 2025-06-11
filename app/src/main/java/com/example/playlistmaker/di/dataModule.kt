@@ -2,8 +2,10 @@ package com.example.playlistmaker.di
 
 import android.content.Context
 import android.media.MediaPlayer
+import androidx.room.Room
 import com.example.playlistmaker.app.App.Companion.DI_HISTORY_SP_NAME
 import com.example.playlistmaker.app.App.Companion.DI_SETTINGS_SP_NAME
+import com.example.playlistmaker.favorites.data.AppDatabase
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.api.ItunesApiService
 import com.example.playlistmaker.search.data.impl.RetrofitNetworkClient
@@ -20,6 +22,7 @@ private const val HISTORY_SHARED_PREFERENCES_FILE = "shared_preferences_history"
 
 
 val dataModule = module {
+
     single<ItunesApiService> {
         Retrofit.Builder()
             .baseUrl(BASE_URL_ITUNES)
@@ -50,5 +53,10 @@ val dataModule = module {
 
     factory {
         MediaPlayer()
+    }
+
+    single {
+        Room.databaseBuilder(androidApplication(), AppDatabase::class.java, "database.db")
+            .build()
     }
 }

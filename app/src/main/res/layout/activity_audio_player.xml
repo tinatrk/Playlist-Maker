@@ -107,11 +107,12 @@
         android:background="@drawable/btn_background_player"
         android:clickable="true"
         android:contentDescription="@string/btn_add_track_to_favorite_desc"
-        android:src="@drawable/ic_like_23"
+        android:src="@drawable/ic_like_selector_23"
         app:layout_constraintBottom_toBottomOf="@id/ibtn_play_player"
         app:layout_constraintEnd_toEndOf="@id/right_border_player"
         app:layout_constraintStart_toEndOf="@id/ibtn_play_player"
-        app:layout_constraintTop_toTopOf="@id/ibtn_play_player" />
+        app:layout_constraintTop_toTopOf="@id/ibtn_play_player"
+        android:foreground="?attr/selectableItemBackground"/>
 
     <TextView
         android:id="@+id/tv_track_current_time_player"

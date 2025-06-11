@@ -13,6 +13,7 @@
     <dimen name="track_art_size">44dp</dimen>
     <dimen name="btn_player_size">51dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="bottom_navigation_view_height">56dp</dimen>
     <dimen name="selection_item_height">60dp</dimen>
     <dimen name="btn_play_player_size">100dp</dimen>
     <dimen name="progress_bar_size">44dp</dimen>

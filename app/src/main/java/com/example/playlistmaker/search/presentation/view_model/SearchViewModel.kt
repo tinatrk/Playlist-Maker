@@ -4,60 +4,49 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.favorites.domain.api.interactor.FavoritesInteractor
 import com.example.playlistmaker.history.domain.api.interactor.TrackInteractorHistory
 import com.example.playlistmaker.search.domain.api.interactor.TrackInteractorSearch
 import com.example.playlistmaker.search.domain.models.ErrorType
 import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.presentation.mapper.SearchPresenterErrorTypeMapper
-import com.example.playlistmaker.search.presentation.mapper.SearchPresenterTrackMapper
-import com.example.playlistmaker.search.presentation.model.ErrorTypePresenter
 import com.example.playlistmaker.search.presentation.model.SearchScreenState
-import com.example.playlistmaker.search.presentation.model.SearchTrackInfo
+import com.example.playlistmaker.util.SingleEventLiveData
 import com.example.playlistmaker.util.debounce
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val trackInteractorSearch: TrackInteractorSearch,
-    private val trackInteractorHistory: TrackInteractorHistory
+    private val trackInteractorHistory: TrackInteractorHistory,
+    private val favoritesInteractor: FavoritesInteractor
 ) : ViewModel() {
 
     private val screenStateLiveData = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
-    fun getScreenStateLiveData(): LiveData<SearchScreenState> = screenStateLiveData
+    fun observeScreenStateLiveData(): LiveData<SearchScreenState> = screenStateLiveData
+
+    private val onTrackClickedLiveData = SingleEventLiveData<Track>()
+    fun observeOnTrackClickedLiveData(): LiveData<Track> = onTrackClickedLiveData
 
     private var latestSearchRequest: String = STRING_DEF_VALUE
 
-    private val historyTrackList: MutableList<Track> =
-        trackInteractorHistory.getHistory().toMutableList()
+    private val historyTrackList: MutableList<Track> = mutableListOf()
 
     private val responseTrackList: MutableList<Track> = mutableListOf()
 
     private var isDisplayHistoryAllowed: Boolean = false
 
-    private val onTrackClickDebounce: (Int) -> Unit
+    private val onTrackClickDebounce: (Track) -> Unit =
+        debounce<Track>(ON_TRACK_CLICK_DELAY_MILLIS, viewModelScope, false) { track ->
+            viewModelScope.launch(Dispatchers.IO) {
+                trackInteractorHistory.updateHistory(track)
+                onTrackClickedLiveData.postValue(track)
+            }
+
+        }
 
     private var searchJob: Job? = null
-
-    init {
-        onTrackClickDebounce =
-            debounce<Int>(ON_TRACK_CLICK_DELAY_MILLIS, viewModelScope, false) { trackId ->
-                val track = getTrackForPlayer(trackId)
-                if (track != null) {
-                    trackInteractorHistory.updateHistory(track)
-                    historyTrackList.clear()
-                    historyTrackList.addAll(trackInteractorHistory.getHistory())
-                    screenStateLiveData.value =
-                        SearchScreenState.OnTrackClickedEvent(trackId)
-                }
-            }
-    }
-
-    private fun getTracksInfo(tracks: List<Track>): List<SearchTrackInfo> {
-        return tracks.map { track ->
-            SearchPresenterTrackMapper.map(track)
-        }
-    }
 
     fun onSearchLineTextChanged(newSearchRequest: String) {
         val curSearchRequest = newSearchRequest.trim()
@@ -67,7 +56,8 @@ class SearchViewModel(
         searchJob?.cancel()
 
         if (curSearchRequest.isEmpty() && historyTrackList.isNotEmpty() && isDisplayHistoryAllowed) {
-            screenStateLiveData.value = SearchScreenState.History(getTracksInfo(historyTrackList))
+            screenStateLiveData.value =
+                SearchScreenState.History(historyTrackList)
             return
         }
         if (curSearchRequest.isEmpty()) return
@@ -109,18 +99,22 @@ class SearchViewModel(
                 )
             } else {
                 responseTrackList.clear()
-                renderState(SearchScreenState.Error(ErrorTypePresenter.EmptyResult))
+                renderState(SearchScreenState.Error(ErrorType.EmptyResult))
             }
         } else {
             responseTrackList.clear()
-            renderState(SearchScreenState.Error(SearchPresenterErrorTypeMapper.map(errorType)))
+            renderState(
+                SearchScreenState.Error(
+                    errorType ?: ErrorType.BadRequest()
+                )
+            )
         }
     }
 
-    private fun setContent(tracks: List<Track>): List<SearchTrackInfo> {
+    private fun setContent(tracks: List<Track>): List<Track> {
         responseTrackList.clear()
         responseTrackList.addAll(tracks)
-        return tracks.map { SearchPresenterTrackMapper.map(it) }
+        return tracks
     }
 
     private fun renderState(screenState: SearchScreenState) {
@@ -128,9 +122,11 @@ class SearchViewModel(
     }
 
     fun clearHistory() {
-        trackInteractorHistory.clearHistory()
-        historyTrackList.clear()
-        screenStateLiveData.value = SearchScreenState.Default
+        viewModelScope.launch(Dispatchers.IO) {
+            trackInteractorHistory.clearHistory()
+            historyTrackList.clear()
+            screenStateLiveData.postValue(SearchScreenState.Default)
+        }
     }
 
     fun clearSearchRequest() {
@@ -139,37 +135,42 @@ class SearchViewModel(
         screenStateLiveData.value = SearchScreenState.Default
     }
 
-    fun onTrackClick(trackId: Int) {
-        onTrackClickDebounce(trackId)
-    }
-
-    private fun getTrackForPlayer(trackId: Int): Track? {
-        responseTrackList.forEach {
-            if (it.trackId == trackId)
-                return it
-        }
-
-        historyTrackList.forEach {
-            if (it.trackId == trackId) {
-                return it
-            }
-        }
-        return null
+    fun onTrackClicked(track: Track) {
+        onTrackClickDebounce(track)
     }
 
     fun onSearchLineFocusChanged(isSearchLineInFocus: Boolean) {
         isDisplayHistoryAllowed = isSearchLineInFocus
         if (isSearchLineInFocus && latestSearchRequest.isEmpty() && historyTrackList.isNotEmpty()) {
-            screenStateLiveData.value = SearchScreenState.History(getTracksInfo(historyTrackList))
+            screenStateLiveData.value =
+                SearchScreenState.History(historyTrackList)
         } else if (!isSearchLineInFocus && latestSearchRequest.isEmpty()) {
             screenStateLiveData.value = SearchScreenState.Default
         }
     }
 
-    fun saveContentStateBeforeOpenPlayer() {
-        if (latestSearchRequest.isNotEmpty() && responseTrackList.isNotEmpty()) {
-            screenStateLiveData.value =
-                SearchScreenState.Content(responseTrackList.map { SearchPresenterTrackMapper.map(it) })
+    fun updateHistory() {
+        viewModelScope.launch(Dispatchers.IO) {
+            trackInteractorHistory.getHistory().collect { tracks ->
+                historyTrackList.clear()
+                historyTrackList.addAll(tracks)
+            }
+        }
+    }
+
+    fun updateSearchResults() {
+        markFavoriteSearchTracks()
+    }
+
+    private fun markFavoriteSearchTracks() {
+        if (screenStateLiveData.value is SearchScreenState.Content) {
+            viewModelScope.launch(Dispatchers.IO) {
+                favoritesInteractor.markFavoriteTracks(
+                    responseTrackList
+                ).collect { markedTracks ->
+                    renderState(SearchScreenState.Content(markedTracks))
+                }
+            }
         }
     }
 
