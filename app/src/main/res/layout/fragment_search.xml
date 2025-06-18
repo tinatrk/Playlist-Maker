@@ -36,7 +36,8 @@
             android:hint="@string/search_line_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_search_screen" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar_search_screen"
+            android:inputType="text"/>
 
         <ImageView
             android:id="@+id/clearIcon_search_line"

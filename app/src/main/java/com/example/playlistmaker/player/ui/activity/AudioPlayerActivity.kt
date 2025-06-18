@@ -66,7 +66,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                     }
 
                     PlaybackState.PLAYING -> {
-                        showPlayingPlayer(playerState.curPosition)
+                        showPlayingPlayer(playerState.trackInfo, playerState.curPosition)
                     }
 
                     PlaybackState.PAUSED -> {
@@ -74,10 +74,6 @@ class AudioPlayerActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-
-        viewModel.observeIsFavoriteClickedLiveData().observe(this) { isTrackFavorite ->
-            setIsTrackFavorite(isTrackFavorite)
         }
 
         binding.ibtnPlayPlayer.setOnClickListener {
@@ -140,7 +136,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
     }
 
-    private fun showPlayingPlayer(curPlayerPosition: String) {
+    private fun showPlayingPlayer(trackInfo: PlayerTrackInfo, curPlayerPosition: String) {
+        setTrackContent(trackInfo)
         binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_pause_84)
         binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
     }

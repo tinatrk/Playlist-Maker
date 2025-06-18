@@ -282,6 +282,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     override fun onDestroyView() {
         binding.rvTrackListSearch.clearOnScrollListeners()
+        binding.rvHistoryListSearch.adapter = null
+        binding.rvTrackListSearch.adapter = null
         super.onDestroyView()
     }
 

@@ -2,7 +2,6 @@ package com.example.playlistmaker.favorites.ui.fragment
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -94,7 +93,7 @@ class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>() {
         }
     }
 
-    private fun showContent(tracks: List<Track>){
+    private fun showContent(tracks: List<Track>) {
         binding.groupEmpty.isVisible = false
         binding.progressBarFavorites.isVisible = false
 
@@ -105,6 +104,11 @@ class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>() {
     override fun onStart() {
         super.onStart()
         viewModel.updateFavoriteTracks()
+    }
+
+    override fun onDestroyView() {
+        binding.rvTrackList.adapter = null
+        super.onDestroyView()
     }
 
     companion object {

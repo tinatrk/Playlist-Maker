@@ -4,42 +4,35 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.app.App.Companion.UNKNOWN_ID
 import com.example.playlistmaker.favorites.domain.api.interactor.FavoritesInteractor
-import com.example.playlistmaker.history.domain.api.interactor.TrackInteractorHistory
 import com.example.playlistmaker.player.domain.api.interactor.AudioPlayerInteractor
 import com.example.playlistmaker.player.presentation.mapper.PlayerPresenterTrackMapper
 import com.example.playlistmaker.player.presentation.model.PlaybackState
 import com.example.playlistmaker.player.presentation.model.PlayerState
 import com.example.playlistmaker.player.presentation.model.PlayerTrackInfo
 import com.example.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
-import com.example.playlistmaker.app.App.Companion.DEFAULT_INT
-import com.example.playlistmaker.app.App.Companion.DEFAULT_LINK
-import com.example.playlistmaker.app.App.Companion.DEFAULT_STRING
-import com.example.playlistmaker.app.App.Companion.UNKNOWN_ID
-import android.util.Log
-import com.example.playlistmaker.util.SingleEventLiveData
-import kotlinx.coroutines.Dispatchers
 
 class PlayerViewModel(
     private val track: Track,
     private val audioPlayerInteractor: AudioPlayerInteractor,
-    private val trackMapper: PlayerPresenterTrackMapper,
+    trackMapper: PlayerPresenterTrackMapper,
     private val favoritesInteractor: FavoritesInteractor
 ) : ViewModel() {
     private val playerStateLiveData = MutableLiveData<PlayerState>()
     fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
 
-    private val isFavoriteClickedLiveData = SingleEventLiveData<Boolean>()
-    fun observeIsFavoriteClickedLiveData(): LiveData<Boolean> = isFavoriteClickedLiveData
-
     private val trackInfo: PlayerTrackInfo = trackMapper.map(track)
 
     private var playerCurrentPosition: String = DEFAULT_CUR_POSITION
+
+    private var playerCurrentState: PlaybackState = PlaybackState.NOT_PREPARED
 
     private var timerJob: Job? = null
 
@@ -48,7 +41,7 @@ class PlayerViewModel(
             PlayerState(
                 isError = false,
                 trackInfo = trackInfo,
-                trackPlaybackState = PlaybackState.NOT_PREPARED,
+                trackPlaybackState = playerCurrentState,
                 curPosition = playerCurrentPosition,
             )
 
@@ -65,24 +58,26 @@ class PlayerViewModel(
             ) {
                 delay(SET_CURRENT_TRACK_TIME_DELAY_MILLIS)
                 playerCurrentPosition = progressMap(audioPlayerInteractor.getCurrentPosition())
-                playerStateLiveData.postValue(
+                playerCurrentState = PlaybackState.PLAYING
+                playerStateLiveData.value =
                     PlayerState(
                         isError = false,
                         trackInfo = trackInfo,
-                        trackPlaybackState = PlaybackState.PLAYING,
+                        trackPlaybackState = playerCurrentState,
                         curPosition = playerCurrentPosition
                     )
-                )
+
             }
         }
     }
 
     private fun preparedCallback() {
         playerCurrentPosition = DEFAULT_CUR_POSITION
+        playerCurrentState = PlaybackState.PREPARED
         playerStateLiveData.value = PlayerState(
             isError = false,
             trackInfo = trackInfo,
-            trackPlaybackState = PlaybackState.PREPARED,
+            trackPlaybackState = playerCurrentState,
             curPosition = playerCurrentPosition
         )
     }
@@ -90,10 +85,11 @@ class PlayerViewModel(
     private fun completionCallback() {
         timerJob?.cancel()
         playerCurrentPosition = DEFAULT_CUR_POSITION
+        playerCurrentState = PlaybackState.PREPARED
         playerStateLiveData.value = PlayerState(
             isError = false,
             trackInfo = trackInfo,
-            trackPlaybackState = PlaybackState.PREPARED,
+            trackPlaybackState = playerCurrentState,
             curPosition = playerCurrentPosition
         )
     }
@@ -108,10 +104,11 @@ class PlayerViewModel(
 
     private fun playerStartCallback() {
         timerJob?.cancel()
+        playerCurrentState = PlaybackState.PLAYING
         playerStateLiveData.value = PlayerState(
             isError = false,
             trackInfo = trackInfo,
-            trackPlaybackState = PlaybackState.PLAYING,
+            trackPlaybackState = playerCurrentState,
             curPosition = playerCurrentPosition
         )
         startTimer()
@@ -119,10 +116,11 @@ class PlayerViewModel(
 
     private fun playerPauseCallback() {
         timerJob?.cancel()
+        playerCurrentState = PlaybackState.PAUSED
         playerStateLiveData.value = PlayerState(
             isError = false,
             trackInfo = trackInfo,
-            trackPlaybackState = PlaybackState.PAUSED,
+            trackPlaybackState = playerCurrentState,
             curPosition = playerCurrentPosition
         )
     }
@@ -130,10 +128,11 @@ class PlayerViewModel(
     private fun playerErrorCallback() {
         timerJob?.cancel()
         playerCurrentPosition = DEFAULT_CUR_POSITION
+        playerCurrentState = PlaybackState.NOT_PREPARED
         playerStateLiveData.value = PlayerState(
             isError = true,
             trackInfo = trackInfo,
-            trackPlaybackState = PlaybackState.NOT_PREPARED,
+            trackPlaybackState = playerCurrentState,
             curPosition = playerCurrentPosition
         )
     }
@@ -142,10 +141,11 @@ class PlayerViewModel(
         if ((playerStateLiveData.value?.trackPlaybackState == PlaybackState.PLAYING)
         ) {
             audioPlayerInteractor.playerPause { playerPauseCallback() }
+            playerCurrentState = PlaybackState.PAUSED
             playerStateLiveData.value = PlayerState(
                 isError = false,
                 trackInfo = trackInfo,
-                trackPlaybackState = PlaybackState.PAUSED,
+                trackPlaybackState = playerCurrentState,
                 curPosition = playerCurrentPosition
             )
         }
@@ -164,7 +164,7 @@ class PlayerViewModel(
     }
 
     fun onFavoriteClicked() {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             if (track.isFavorite) {
                 favoritesInteractor.deleteFavoriteTrack(track)
             } else {
@@ -172,8 +172,15 @@ class PlayerViewModel(
             }
             track.isFavorite = !track.isFavorite
             trackInfo.isFavorite = track.isFavorite
-            isFavoriteClickedLiveData.postValue(track.isFavorite)
 
+            playerStateLiveData.postValue(
+                PlayerState(
+                    isError = false,
+                    trackInfo = trackInfo,
+                    trackPlaybackState = playerCurrentState,
+                    curPosition = playerCurrentPosition
+                )
+            )
         }
     }
 
