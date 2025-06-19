@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerViewModel(
-    private val track: Track,
+    private var track: Track,
     private val audioPlayerInteractor: AudioPlayerInteractor,
     trackMapper: PlayerPresenterTrackMapper,
     private val favoritesInteractor: FavoritesInteractor
@@ -28,11 +28,7 @@ class PlayerViewModel(
     private val playerStateLiveData = MutableLiveData<PlayerState>()
     fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
 
-    private val trackInfo: PlayerTrackInfo = trackMapper.map(track)
-
-    private var playerCurrentPosition: String = DEFAULT_CUR_POSITION
-
-    private var playerCurrentState: PlaybackState = PlaybackState.NOT_PREPARED
+    private var trackInfo: PlayerTrackInfo = trackMapper.map(track)
 
     private var timerJob: Job? = null
 
@@ -41,8 +37,8 @@ class PlayerViewModel(
             PlayerState(
                 isError = false,
                 trackInfo = trackInfo,
-                trackPlaybackState = playerCurrentState,
-                curPosition = playerCurrentPosition,
+                trackPlaybackState = PlaybackState.NOT_PREPARED,
+                curPosition = DEFAULT_CUR_POSITION,
             )
 
         if (trackInfo.trackId != UNKNOWN_ID) audioPlayerInteractor.playerPrepare(
@@ -57,14 +53,12 @@ class PlayerViewModel(
                     ?: PlaybackState.NOT_PREPARED) == PlaybackState.PLAYING
             ) {
                 delay(SET_CURRENT_TRACK_TIME_DELAY_MILLIS)
-                playerCurrentPosition = progressMap(audioPlayerInteractor.getCurrentPosition())
-                playerCurrentState = PlaybackState.PLAYING
                 playerStateLiveData.value =
                     PlayerState(
                         isError = false,
                         trackInfo = trackInfo,
-                        trackPlaybackState = playerCurrentState,
-                        curPosition = playerCurrentPosition
+                        trackPlaybackState = PlaybackState.PLAYING,
+                        curPosition = progressMap(audioPlayerInteractor.getCurrentPosition())
                     )
 
             }
@@ -72,25 +66,21 @@ class PlayerViewModel(
     }
 
     private fun preparedCallback() {
-        playerCurrentPosition = DEFAULT_CUR_POSITION
-        playerCurrentState = PlaybackState.PREPARED
         playerStateLiveData.value = PlayerState(
             isError = false,
             trackInfo = trackInfo,
-            trackPlaybackState = playerCurrentState,
-            curPosition = playerCurrentPosition
+            trackPlaybackState = PlaybackState.PREPARED,
+            curPosition = DEFAULT_CUR_POSITION
         )
     }
 
     private fun completionCallback() {
         timerJob?.cancel()
-        playerCurrentPosition = DEFAULT_CUR_POSITION
-        playerCurrentState = PlaybackState.PREPARED
         playerStateLiveData.value = PlayerState(
             isError = false,
             trackInfo = trackInfo,
-            trackPlaybackState = playerCurrentState,
-            curPosition = playerCurrentPosition
+            trackPlaybackState = PlaybackState.PREPARED,
+            curPosition = DEFAULT_CUR_POSITION
         )
     }
 
@@ -104,36 +94,30 @@ class PlayerViewModel(
 
     private fun playerStartCallback() {
         timerJob?.cancel()
-        playerCurrentState = PlaybackState.PLAYING
-        playerStateLiveData.value = PlayerState(
+        playerStateLiveData.value = playerStateLiveData.value?.copy(
             isError = false,
             trackInfo = trackInfo,
-            trackPlaybackState = playerCurrentState,
-            curPosition = playerCurrentPosition
+            trackPlaybackState = PlaybackState.PLAYING
         )
         startTimer()
     }
 
     private fun playerPauseCallback() {
         timerJob?.cancel()
-        playerCurrentState = PlaybackState.PAUSED
-        playerStateLiveData.value = PlayerState(
+        playerStateLiveData.value = playerStateLiveData.value?.copy(
             isError = false,
             trackInfo = trackInfo,
-            trackPlaybackState = playerCurrentState,
-            curPosition = playerCurrentPosition
+            trackPlaybackState = PlaybackState.PAUSED
         )
     }
 
     private fun playerErrorCallback() {
         timerJob?.cancel()
-        playerCurrentPosition = DEFAULT_CUR_POSITION
-        playerCurrentState = PlaybackState.NOT_PREPARED
         playerStateLiveData.value = PlayerState(
             isError = true,
             trackInfo = trackInfo,
-            trackPlaybackState = playerCurrentState,
-            curPosition = playerCurrentPosition
+            trackPlaybackState = PlaybackState.NOT_PREPARED,
+            curPosition = DEFAULT_CUR_POSITION
         )
     }
 
@@ -141,12 +125,10 @@ class PlayerViewModel(
         if ((playerStateLiveData.value?.trackPlaybackState == PlaybackState.PLAYING)
         ) {
             audioPlayerInteractor.playerPause { playerPauseCallback() }
-            playerCurrentState = PlaybackState.PAUSED
-            playerStateLiveData.value = PlayerState(
+            playerStateLiveData.value = playerStateLiveData.value?.copy(
                 isError = false,
                 trackInfo = trackInfo,
-                trackPlaybackState = playerCurrentState,
-                curPosition = playerCurrentPosition
+                trackPlaybackState = PlaybackState.PAUSED
             )
         }
     }
@@ -170,15 +152,13 @@ class PlayerViewModel(
             } else {
                 favoritesInteractor.saveFavoriteTrack(track)
             }
-            track.isFavorite = !track.isFavorite
-            trackInfo.isFavorite = track.isFavorite
+            track = track.copy(isFavorite = !track.isFavorite)
+            trackInfo = trackInfo.copy(isFavorite = track.isFavorite)
 
             playerStateLiveData.postValue(
-                PlayerState(
+                playerStateLiveData.value?.copy(
                     isError = false,
-                    trackInfo = trackInfo,
-                    trackPlaybackState = playerCurrentState,
-                    curPosition = playerCurrentPosition
+                    trackInfo = trackInfo
                 )
             )
         }

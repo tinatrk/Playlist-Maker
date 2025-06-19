@@ -15,7 +15,7 @@ data class PlayerTrackInfo(
     val genre: String,
     val releaseDate: String,
     val previewUrl: String,
-    var isFavorite: Boolean
+    val isFavorite: Boolean
 ) {
     companion object {
         fun empty(): PlayerTrackInfo {

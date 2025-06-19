@@ -35,17 +35,21 @@ class FavoritesRepositoryImpl(
     private fun convertFromTrackEntity(entities: List<TrackEntity>): List<Track> {
         val tracks = entities.sortedByDescending { it.dataOfAppearanceInDB }
             .map { entity -> trackMapper.map(entity) }
-        tracks.forEach { it.isFavorite = true }
-        return tracks
+        val markedTracks: MutableList<Track> = mutableListOf()
+        for (i in tracks.indices) {
+            markedTracks.add(tracks[i].copy(isFavorite = true))
+        }
+        return markedTracks
     }
 
     override suspend fun markFavoriteTracks(tracks: List<Track>): List<Track> {
         val favoriteIds = appDatabase.trackDao().getAllTrackId()
         if (favoriteIds.isEmpty())
             return (tracks)
-        tracks.map {
-            it.isFavorite = favoriteIds.contains(it.trackId)
+        val markedTracks: MutableList<Track> = mutableListOf()
+        for (i in tracks.indices) {
+            markedTracks.add(tracks[i].copy(isFavorite = favoriteIds.contains(tracks[i].trackId)))
         }
-        return (tracks)
+        return (markedTracks)
     }
 }

@@ -89,10 +89,11 @@ class TrackRepositoryImpl(
         val ids = appDatabase.trackDao().getAllTrackId()
         if (ids.isEmpty())
             return tracks
-        tracks.map {
-            it.isFavorite = ids.contains(it.trackId)
+        val markedTracks: MutableList<Track> = mutableListOf()
+        for (i in tracks.indices) {
+            markedTracks.add(tracks[i].copy(isFavorite = ids.contains(tracks[i].trackId)))
         }
-        return tracks
+        return markedTracks
 
     }
 
