@@ -1,4 +1,4 @@
-package com.example.playlistmaker.library.presentation.models
+package com.example.playlistmaker.playlists.presentation.models
 
 sealed class PlaylistsScreenState {
     data object Content: PlaylistsScreenState()

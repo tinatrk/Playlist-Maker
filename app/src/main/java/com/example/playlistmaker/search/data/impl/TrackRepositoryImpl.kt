@@ -2,6 +2,7 @@ package com.example.playlistmaker.search.data.impl
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.example.playlistmaker.favorites.data.AppDatabase
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.dto.NetworkResponseCode
 import com.example.playlistmaker.search.data.dto.TrackSearchRequest
@@ -15,15 +16,19 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import java.lang.reflect.Type
 
 class TrackRepositoryImpl(
     private val networkClient: NetworkClient? = null,
     private val sharedPreferences: SharedPreferences? = null,
-    private val gson: Gson? = null
+    private val gson: Gson? = null,
+    private val trackMapper: SearchRepositoryTrackMapper,
+    private val appDatabase: AppDatabase
 ) : TrackRepository {
 
     override fun searchTracks(text: String): Flow<Resource<List<Track>>> = flow {
+
         if (networkClient != null) {
             val response = networkClient.doRequest(TrackSearchRequest(text))
 
@@ -31,7 +36,10 @@ class TrackRepositoryImpl(
                 NetworkResponseCode.SUCCESS -> {
                     val results = (response as TrackSearchResponse).results
                     if (results.isEmpty()) emit(Resource.Empty())
-                    else emit(Resource.Success(results.map { SearchRepositoryTrackMapper.map(it) }))
+                    else {
+                        val tracks = markFavoriteTracks(results.map { trackMapper.map(it) })
+                        emit(Resource.Success(tracks))
+                    }
                 }
 
                 NetworkResponseCode.NO_NETWORK_CONNECTION -> {
@@ -51,25 +59,42 @@ class TrackRepositoryImpl(
         }
     }
 
-    override fun getHistory(): List<Track> {
+    override fun getHistory(): Flow<List<Track>> {
+        return getHistoryFromSP().map { markFavoriteTracks(it) }
+    }
+
+    private fun getHistoryFromSP(): Flow<List<Track>> = flow {
         if (sharedPreferences != null && gson != null) {
             val json = sharedPreferences.getString(KEY_FOR_HISTORY_TRACK_LIST, null)
-            return if (json != null) {
+            val result: List<Track> = if (json != null) {
                 val type: Type = object : TypeToken<List<Track>>() {}.type
                 gson.fromJson(json, type) ?: listOf()
             } else {
                 listOf()
             }
-        } else return listOf()
+            emit(result)
+        } else emit(listOf())
     }
 
-    override fun updateHistory(tracks: List<Track>) {
+    override suspend fun updateHistory(tracks: List<Track>) {
         if (sharedPreferences != null && gson != null) {
             val json: String = gson.toJson(tracks)
             sharedPreferences.edit {
                 putString(KEY_FOR_HISTORY_TRACK_LIST, json)
             }
         }
+    }
+
+    private suspend fun markFavoriteTracks(tracks: List<Track>): List<Track> {
+        val ids = appDatabase.trackDao().getAllTrackId()
+        if (ids.isEmpty())
+            return tracks
+        val markedTracks: MutableList<Track> = mutableListOf()
+        for (i in tracks.indices) {
+            markedTracks.add(tracks[i].copy(isFavorite = ids.contains(tracks[i].trackId)))
+        }
+        return markedTracks
+
     }
 
     companion object {

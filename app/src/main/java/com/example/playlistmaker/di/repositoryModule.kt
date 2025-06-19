@@ -3,9 +3,13 @@ package com.example.playlistmaker.di
 import android.content.res.Configuration
 import com.example.playlistmaker.app.App.Companion.DI_HISTORY_SP_NAME
 import com.example.playlistmaker.app.App.Companion.DI_SETTINGS_SP_NAME
+import com.example.playlistmaker.favorites.data.impl.FavoritesRepositoryImpl
+import com.example.playlistmaker.favorites.data.mapper.TrackDbMapper
+import com.example.playlistmaker.favorites.domain.api.repository.FavoritesRepository
 import com.example.playlistmaker.player.data.impl.AudioPlayerRepositoryImpl
 import com.example.playlistmaker.player.domain.api.repository.AudioPlayerRepository
 import com.example.playlistmaker.search.data.impl.TrackRepositoryImpl
+import com.example.playlistmaker.search.data.mapper.SearchRepositoryTrackMapper
 import com.example.playlistmaker.search.domain.api.repository.TrackRepository
 import com.example.playlistmaker.settings.data.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.settings.domain.api.repository.SettingsRepository
@@ -20,7 +24,9 @@ val repositoryModule = module {
         TrackRepositoryImpl(
             networkClient = get(),
             sharedPreferences = get(named(DI_HISTORY_SP_NAME)),
-            gson = get()
+            gson = get(),
+            trackMapper = get(),
+            appDatabase = get()
         )
     }
 
@@ -39,5 +45,17 @@ val repositoryModule = module {
 
     single<AudioPlayerRepository> {
         AudioPlayerRepositoryImpl(mediaPlayer = get())
+    }
+
+    factory {
+        SearchRepositoryTrackMapper()
+    }
+
+   single<FavoritesRepository>{
+        FavoritesRepositoryImpl(appDatabase = get(), trackMapper = get())
+    }
+
+    factory {
+        TrackDbMapper()
     }
 }

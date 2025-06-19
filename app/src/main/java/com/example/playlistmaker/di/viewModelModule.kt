@@ -1,35 +1,46 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.library.presentation.view_model.FavoritesFragmentViewModel
-import com.example.playlistmaker.library.presentation.view_model.PlaylistsFragmentViewModel
+import com.example.playlistmaker.favorites.presentation.view_model.FavoritesViewModel
+import com.example.playlistmaker.player.presentation.mapper.PlayerPresenterTrackMapper
 import com.example.playlistmaker.player.presentation.view_model.PlayerViewModel
+import com.example.playlistmaker.playlists.presentation.view_model.PlaylistsViewModel
+import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.view_model.SearchViewModel
 import com.example.playlistmaker.settings.presentation.view_model.SettingsViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel {
-        SearchViewModel(trackInteractorSearch = get(), trackInteractorHistory = get())
+        SearchViewModel(
+            trackInteractorSearch = get(),
+            trackInteractorHistory = get(),
+            favoritesInteractor = get()
+        )
     }
 
     viewModel {
         SettingsViewModel(externalNavigatorInteractor = get(), settingsInteractor = get())
     }
 
-    viewModel { (trackId: Int) ->
+    viewModel { (track: Track) ->
         PlayerViewModel(
-            trackId = trackId,
+            track = track,
             audioPlayerInteractor = get(),
-            trackInteractorHistory = get()
+            trackMapper = get(),
+            favoritesInteractor = get()
         )
     }
 
-    viewModel{
-        FavoritesFragmentViewModel()
+    viewModel {
+        FavoritesViewModel(favoritesInteractor = get())
     }
 
     viewModel {
-        PlaylistsFragmentViewModel()
+        PlaylistsViewModel()
+    }
+
+    factory {
+        PlayerPresenterTrackMapper()
     }
 }

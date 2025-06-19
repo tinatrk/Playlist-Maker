@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.search.presentation.model.ErrorTypePresenter
+import com.example.playlistmaker.search.domain.models.ErrorType
+import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.model.SearchScreenState
-import com.example.playlistmaker.search.presentation.model.SearchTrackInfo
 import com.example.playlistmaker.search.presentation.view_model.SearchViewModel
 import com.example.playlistmaker.search.ui.adapter.TrackAdapter
 import com.example.playlistmaker.search.ui.model.ErrorInfo
@@ -63,15 +63,17 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
         binding.searchLine.addTextChangedListener(textWatcher)
 
+
         binding.btnClearHistorySearch.setOnClickListener {
             viewModel.clearHistory()
         }
 
+        trackAdapter = TrackAdapter {
+            onTrackClicked(it)
+        }
         binding.rvTrackListSearch.layoutManager = LinearLayoutManager(
-            requireContext(), LinearLayoutManager.VERTICAL,
-            false
+            requireContext(), LinearLayoutManager.VERTICAL, false
         )
-        trackAdapter = TrackAdapter { onTrackClicked(it.trackId) }
         binding.rvTrackListSearch.adapter = trackAdapter
         binding.rvTrackListSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -85,7 +87,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             viewModel.searchTrack()
         }
 
-        viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
+        viewModel.observeScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
             when (screenState) {
                 is SearchScreenState.Default -> {
                     showDefaultState()
@@ -112,14 +114,20 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 }
 
                 is SearchScreenState.OnTrackClickedEvent -> {
-                    openPlayer(screenState.trackId)
+                    openPlayer(screenState.track)
                 }
             }
+        }
+
+        viewModel.observeOnTrackClickedLiveData().observe(viewLifecycleOwner) { track ->
+            openPlayer(track)
         }
     }
 
     private fun initHistoryAdapter() {
-        historyAdapter = TrackAdapter { onTrackClicked(it.trackId) }
+        historyAdapter = TrackAdapter {
+            onTrackClicked(it)
+        }
         binding.rvHistoryListSearch.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHistoryListSearch.adapter = historyAdapter
@@ -138,7 +146,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.btnErrorSearch.isVisible = false
     }
 
-    private fun showHistory(tracks: List<SearchTrackInfo>) {
+    private fun showHistory(tracks: List<Track>) {
         historyAdapter.updateTracks(tracks)
         trackAdapter.clearTracks()
 
@@ -171,7 +179,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.progressBarSearch.isVisible = true
     }
 
-    private fun showContent(tracks: List<SearchTrackInfo>) {
+    private fun showContent(tracks: List<Track>) {
         trackAdapter.updateTracks(tracks)
         binding.rvTrackListSearch.scrollToPosition(0)
 
@@ -184,7 +192,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.rvTrackListSearch.isVisible = true
     }
 
-    private fun showError(errorType: ErrorTypePresenter) {
+    private fun showError(errorType: ErrorType) {
         val errorInfo = getErrorInfo(errorType)
         binding.tvErrorSearch.text = errorInfo.errorMessage
         binding.ivErrorSearch.setImageResource(errorInfo.errorImageId)
@@ -198,9 +206,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.btnErrorSearch.isVisible = errorInfo.isNeedUpdateBtn
     }
 
-    private fun getErrorInfo(errorType: ErrorTypePresenter): ErrorInfo {
+    private fun getErrorInfo(errorType: ErrorType): ErrorInfo {
         when (errorType) {
-            is ErrorTypePresenter.EmptyResult -> {
+            is ErrorType.EmptyResult -> {
                 return ErrorInfo(
                     requireActivity().getString(R.string.message_nothing_found),
                     getErrorImageIdAccordingTheme(
@@ -211,7 +219,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 )
             }
 
-            is ErrorTypePresenter.NoNetworkConnection -> {
+            is ErrorType.NoNetworkConnection -> {
                 return ErrorInfo(
                     requireActivity().getString(R.string.message_bad_connection),
                     getErrorImageIdAccordingTheme(
@@ -222,7 +230,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 )
             }
 
-            is ErrorTypePresenter.BadRequest, is ErrorTypePresenter.InternalServerError -> {
+            is ErrorType.BadRequest, is ErrorType.InternalServerError -> {
                 return ErrorInfo(
                     requireActivity().getString(R.string.message_something_went_wrong),
                     getErrorImageIdAccordingTheme(
@@ -245,14 +253,15 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
     }
 
-    private fun onTrackClicked(trackId: Int) {
-        viewModel.onTrackClick(trackId)
+    private fun onTrackClicked(track: Track) {
+        viewModel.onTrackClicked(track)
     }
 
-    private fun openPlayer(trackId: Int) {
+    private fun openPlayer(track: Track) {
         clearFocusEditText()
-        viewModel.saveContentStateBeforeOpenPlayer()
-        val action = SearchFragmentDirections.actionSearchFragmentToAudioPlayerActivity(trackId)
+        val action = SearchFragmentDirections.actionSearchFragmentToAudioPlayerActivity(
+            track
+        )
         findNavController().navigate(action)
     }
 
@@ -265,8 +274,16 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.updateSearchResults()
+        viewModel.updateHistory()
+    }
+
     override fun onDestroyView() {
         binding.rvTrackListSearch.clearOnScrollListeners()
+        binding.rvHistoryListSearch.adapter = null
+        binding.rvTrackListSearch.adapter = null
         super.onDestroyView()
     }
 

@@ -26,12 +26,13 @@ class LibraryFragment : BindingFragment<FragmentLibraryBinding>() {
 
         binding.viewPagerLibrary.adapter = LibraryViewPagerAdapter(childFragmentManager, lifecycle)
 
-        tabLayoutMediator = TabLayoutMediator(binding.tabLibrary, binding.viewPagerLibrary){tab, position ->
-            when (position){
-                0 -> tab.text = getString(R.string.favorite_tracks)
-                1 -> tab.text = getString(R.string.playlists)
+        tabLayoutMediator =
+            TabLayoutMediator(binding.tabLibrary, binding.viewPagerLibrary) { tab, position ->
+                when (position) {
+                    0 -> tab.text = getString(R.string.favorite_tracks)
+                    1 -> tab.text = getString(R.string.playlists)
+                }
             }
-        }
         tabLayoutMediator.attach()
     }
 

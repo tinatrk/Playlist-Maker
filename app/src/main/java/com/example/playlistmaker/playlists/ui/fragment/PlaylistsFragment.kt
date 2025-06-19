@@ -1,4 +1,4 @@
-package com.example.playlistmaker.library.ui.fragment
+package com.example.playlistmaker.playlists.ui.fragment
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -7,21 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentFavoritesBinding
-import com.example.playlistmaker.library.presentation.models.FavoritesScreenState
-import com.example.playlistmaker.library.presentation.view_model.FavoritesFragmentViewModel
+import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
+import com.example.playlistmaker.playlists.presentation.models.PlaylistsScreenState
+import com.example.playlistmaker.playlists.presentation.view_model.PlaylistsViewModel
 import com.example.playlistmaker.util.BindingFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>() {
+class PlaylistsFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
-    private val viewModel: FavoritesFragmentViewModel by viewModel()
+    private val viewModel: PlaylistsViewModel by viewModel()
 
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentFavoritesBinding {
-        return FragmentFavoritesBinding.inflate(inflater, container, false)
+    ): FragmentPlaylistsBinding {
+        return FragmentPlaylistsBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,8 +29,8 @@ class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>() {
 
         viewModel.screenStateObserve().observe(viewLifecycleOwner) { state ->
             when (state) {
-                is FavoritesScreenState.Empty -> showEmpty()
-                is FavoritesScreenState.Content -> showContent()
+                is PlaylistsScreenState.Empty -> showEmpty()
+                is PlaylistsScreenState.Content -> showContent()
             }
         }
     }
@@ -42,8 +42,7 @@ class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>() {
         )
 
         binding.ivErrorImage.setImageResource(emptyImageId)
-        binding.tvErrorMessage.text =
-            requireActivity().getString(R.string.empty_favorite_tracks_message)
+        binding.tvErrorMessage.text = requireActivity().getString(R.string.empty_playlists_message)
 
         binding.groupEmpty.isVisible = true
     }
@@ -63,6 +62,6 @@ class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>() {
     }
 
     companion object {
-        fun newInstance(): FavoritesFragment = FavoritesFragment()
+        fun newInstance(): PlaylistsFragment = PlaylistsFragment()
     }
 }
