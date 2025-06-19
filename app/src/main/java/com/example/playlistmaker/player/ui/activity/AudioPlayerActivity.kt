@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -15,9 +16,12 @@ import com.example.playlistmaker.app.App.Companion.DEFAULT_STRING
 import com.example.playlistmaker.app.App.Companion.UNKNOWN_ID
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.example.playlistmaker.player.presentation.model.PlaybackState
+import com.example.playlistmaker.player.presentation.model.PlayerState
 import com.example.playlistmaker.player.presentation.model.PlayerTrackInfo
 import com.example.playlistmaker.player.presentation.view_model.PlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -53,31 +57,38 @@ class AudioPlayerActivity : AppCompatActivity() {
             viewModel.onFavoriteClicked()
         }
 
-        viewModel.getPlayerStateLiveData().observe(this) { playerState ->
-            if (playerState.isError) showPlayerError(playerState.trackInfo, playerState.curPosition)
-            else {
-                when (playerState.trackPlaybackState) {
-                    PlaybackState.NOT_PREPARED -> {
-                        showNotPreparedPlayer(playerState.trackInfo, playerState.curPosition)
-                    }
-
-                    PlaybackState.PREPARED -> {
-                        showPreparedPlayer(playerState.trackInfo, playerState.curPosition)
-                    }
-
-                    PlaybackState.PLAYING -> {
-                        showPlayingPlayer(playerState.trackInfo, playerState.curPosition)
-                    }
-
-                    PlaybackState.PAUSED -> {
-                        showPausedPlayer(playerState.trackInfo, playerState.curPosition)
-                    }
-                }
+        //viewModel.getPlayerStateLiveData().observe(this) { playerState ->
+        lifecycleScope.launch {
+            viewModel.playerStateFlow.collect{ state ->
+                renderState(state)
             }
         }
 
         binding.ibtnPlayPlayer.setOnClickListener {
             viewModel.playerControl()
+        }
+    }
+
+    private fun renderState(playerState: PlayerState){
+        if (playerState.isError) showPlayerError(playerState.trackInfo, playerState.curPosition)
+        else {
+            when (playerState.trackPlaybackState) {
+                PlaybackState.NOT_PREPARED -> {
+                    showNotPreparedPlayer(playerState.trackInfo, playerState.curPosition)
+                }
+
+                PlaybackState.PREPARED -> {
+                    showPreparedPlayer(playerState.trackInfo, playerState.curPosition)
+                }
+
+                PlaybackState.PLAYING -> {
+                    showPlayingPlayer(playerState.trackInfo, playerState.curPosition)
+                }
+
+                PlaybackState.PAUSED -> {
+                    showPausedPlayer(playerState.trackInfo, playerState.curPosition)
+                }
+            }
         }
     }
 

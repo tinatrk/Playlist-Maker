@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,8 @@ import com.example.playlistmaker.search.presentation.view_model.SearchViewModel
 import com.example.playlistmaker.search.ui.adapter.TrackAdapter
 import com.example.playlistmaker.search.ui.model.ErrorInfo
 import com.example.playlistmaker.util.BindingFragment
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -87,40 +90,47 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             viewModel.searchTrack()
         }
 
-        viewModel.observeScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
-            when (screenState) {
-                is SearchScreenState.Default -> {
-                    showDefaultState()
-                }
-
-                is SearchScreenState.EnteringRequest -> {
-                    showEnteringRequest()
-                }
-
-                is SearchScreenState.Loading -> {
-                    showLoading()
-                }
-
-                is SearchScreenState.Content -> {
-                    showContent(screenState.tracks)
-                }
-
-                is SearchScreenState.Error -> {
-                    showError(screenState.errorType)
-                }
-
-                is SearchScreenState.History -> {
-                    showHistory(screenState.tracks)
-                }
-
-                is SearchScreenState.OnTrackClickedEvent -> {
-                    openPlayer(screenState.track)
-                }
+        //viewModel.observeScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.screenStateFlow.collect { state ->
+                renderState(state)
             }
         }
 
         viewModel.observeOnTrackClickedLiveData().observe(viewLifecycleOwner) { track ->
             openPlayer(track)
+        }
+    }
+
+    private fun renderState(screenState: SearchScreenState){
+        when (screenState) {
+            is SearchScreenState.Default -> {
+                showDefaultState()
+            }
+
+            is SearchScreenState.EnteringRequest -> {
+                showEnteringRequest()
+            }
+
+            is SearchScreenState.Loading -> {
+                showLoading()
+            }
+
+            is SearchScreenState.Content -> {
+                showContent(screenState.tracks)
+            }
+
+            is SearchScreenState.Error -> {
+                showError(screenState.errorType)
+            }
+
+            is SearchScreenState.History -> {
+                showHistory(screenState.tracks)
+            }
+
+            is SearchScreenState.OnTrackClickedEvent -> {
+                openPlayer(screenState.track)
+            }
         }
     }
 

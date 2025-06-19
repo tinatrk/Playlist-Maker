@@ -1,7 +1,6 @@
 package com.example.playlistmaker.search.presentation.view_model
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.favorites.domain.api.interactor.FavoritesInteractor
@@ -15,6 +14,9 @@ import com.example.playlistmaker.util.debounce
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
@@ -23,8 +25,11 @@ class SearchViewModel(
     private val favoritesInteractor: FavoritesInteractor
 ) : ViewModel() {
 
-    private val screenStateLiveData = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
-    fun observeScreenStateLiveData(): LiveData<SearchScreenState> = screenStateLiveData
+    private val _screenStateFlow = MutableStateFlow<SearchScreenState>(SearchScreenState.Default)
+    val screenStateFlow = _screenStateFlow.asStateFlow()
+
+    //private val screenStateLiveData = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
+    //fun observeScreenStateLiveData(): LiveData<SearchScreenState> = screenStateLiveData
 
     private val onTrackClickedLiveData = SingleEventLiveData<Track>()
     fun observeOnTrackClickedLiveData(): LiveData<Track> = onTrackClickedLiveData
@@ -56,13 +61,15 @@ class SearchViewModel(
         searchJob?.cancel()
 
         if (curSearchRequest.isEmpty() && historyTrackList.isNotEmpty() && isDisplayHistoryAllowed) {
-            screenStateLiveData.value =
-                SearchScreenState.History(historyTrackList)
+            //screenStateLiveData.value = SearchScreenState.History(historyTrackList)
+            _screenStateFlow.update { SearchScreenState.History(historyTrackList) }
             return
         }
         if (curSearchRequest.isEmpty()) return
 
-        screenStateLiveData.value = SearchScreenState.EnteringRequest
+        //screenStateLiveData.value = SearchScreenState.EnteringRequest
+        _screenStateFlow.update { SearchScreenState.EnteringRequest }
+
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
             searchTrack(curSearchRequest)
@@ -70,7 +77,8 @@ class SearchViewModel(
     }
 
     fun searchTrack(newSearchRequest: String? = null) {
-        screenStateLiveData.postValue(SearchScreenState.Loading)
+        //screenStateLiveData.postValue(SearchScreenState.Loading)
+        _screenStateFlow.update { SearchScreenState.Loading }
         val curSearchText = (newSearchRequest ?: latestSearchRequest)
 
         viewModelScope.launch {
@@ -118,21 +126,24 @@ class SearchViewModel(
     }
 
     private fun renderState(screenState: SearchScreenState) {
-        screenStateLiveData.postValue(screenState)
+        //screenStateLiveData.postValue(screenState)
+        _screenStateFlow.update { screenState }
     }
 
     fun clearHistory() {
         viewModelScope.launch(Dispatchers.IO) {
             trackInteractorHistory.clearHistory()
             historyTrackList.clear()
-            screenStateLiveData.postValue(SearchScreenState.Default)
+            //screenStateLiveData.postValue(SearchScreenState.Default)
+            _screenStateFlow.update { SearchScreenState.Default }
         }
     }
 
     fun clearSearchRequest() {
         searchJob?.cancel()
         responseTrackList.clear()
-        screenStateLiveData.value = SearchScreenState.Default
+        //screenStateLiveData.value = SearchScreenState.Default
+        _screenStateFlow.update { SearchScreenState.Default }
     }
 
     fun onTrackClicked(track: Track) {
@@ -142,10 +153,11 @@ class SearchViewModel(
     fun onSearchLineFocusChanged(isSearchLineInFocus: Boolean) {
         isDisplayHistoryAllowed = isSearchLineInFocus
         if (isSearchLineInFocus && latestSearchRequest.isEmpty() && historyTrackList.isNotEmpty()) {
-            screenStateLiveData.value =
-                SearchScreenState.History(historyTrackList)
+            //screenStateLiveData.value = SearchScreenState.History(historyTrackList)
+            _screenStateFlow.update { SearchScreenState.History(historyTrackList) }
         } else if (!isSearchLineInFocus && latestSearchRequest.isEmpty()) {
-            screenStateLiveData.value = SearchScreenState.Default
+            //screenStateLiveData.value = SearchScreenState.Default
+            _screenStateFlow.update { SearchScreenState.Default }
         }
     }
 
@@ -163,7 +175,8 @@ class SearchViewModel(
     }
 
     private fun markFavoriteSearchTracks() {
-        if (screenStateLiveData.value is SearchScreenState.Content) {
+        //if (screenStateLiveData.value is SearchScreenState.Content) {
+        if (_screenStateFlow.value is SearchScreenState.Content) {
             viewModelScope.launch(Dispatchers.IO) {
                 favoritesInteractor.markFavoriteTracks(
                     responseTrackList

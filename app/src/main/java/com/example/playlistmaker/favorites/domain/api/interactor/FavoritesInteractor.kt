@@ -10,7 +10,7 @@ interface FavoritesInteractor {
 
     fun getAllFavoriteTracks(): Flow<List<Track>>
 
-    fun getTrackById(trackId: Int): Flow<Track>
+    //fun getTrackById(trackId: Int): Flow<Track>
 
     fun markFavoriteTracks(tracks: List<Track>): Flow<List<Track>>
 }

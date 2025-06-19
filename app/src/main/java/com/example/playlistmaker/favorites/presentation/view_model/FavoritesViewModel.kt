@@ -1,7 +1,6 @@
 package com.example.playlistmaker.favorites.presentation.view_model
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.favorites.domain.api.interactor.FavoritesInteractor
@@ -9,21 +8,27 @@ import com.example.playlistmaker.favorites.presentation.models.FavoritesScreenSt
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.util.SingleEventLiveData
 import com.example.playlistmaker.util.debounce
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel(
     private val favoritesInteractor: FavoritesInteractor,
 ) : ViewModel() {
 
-    private val screenStateLiveData = MutableLiveData<FavoritesScreenState>()
-    fun observeScreenState(): LiveData<FavoritesScreenState> = screenStateLiveData
+    private val _screenStateFlow = MutableStateFlow<FavoritesScreenState>(FavoritesScreenState.Loading)
+    val screenStateFlow = _screenStateFlow.asStateFlow()
 
-    private val onTrackClickedLiveData = SingleEventLiveData<Track>()
-    fun observeOnTrackClickedLiveData(): LiveData<Track> = onTrackClickedLiveData
+    //private val screenStateLiveData = MutableLiveData<FavoritesScreenState>()
+    //fun observeScreenState(): LiveData<FavoritesScreenState> = screenStateLiveData
+
+    private val _onTrackClickedLiveData = SingleEventLiveData<Track>()
+    fun observeOnTrackClickedLiveData(): LiveData<Track> = _onTrackClickedLiveData
 
     private val onTrackClickDebounce: (Track) -> Unit =
         debounce<Track>(ON_TRACK_CLICK_DELAY_MILLIS, viewModelScope, false) { track ->
-            onTrackClickedLiveData.value = track
+            _onTrackClickedLiveData.value = track
         }
 
     fun updateFavoriteTracks() {
@@ -38,7 +43,10 @@ class FavoritesViewModel(
     }
 
     private fun renderState(state: FavoritesScreenState) {
-        screenStateLiveData.postValue(state)
+        _screenStateFlow.update {
+            state
+        }
+        //screenStateLiveData.postValue(state)
     }
 
     private fun processResult(tracks: List<Track>) {
