@@ -3,6 +3,8 @@ package com.example.playlistmaker.di
 import com.example.playlistmaker.favorites.presentation.view_model.FavoritesViewModel
 import com.example.playlistmaker.player.presentation.mapper.PlayerPresenterTrackMapper
 import com.example.playlistmaker.player.presentation.view_model.PlayerViewModel
+import com.example.playlistmaker.playlists.presentation.mapper.PlaylistInfoMapper
+import com.example.playlistmaker.playlists.presentation.view_model.CreatePlaylistViewModel
 import com.example.playlistmaker.playlists.presentation.view_model.PlaylistsViewModel
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.view_model.SearchViewModel
@@ -28,7 +30,8 @@ val viewModelModule = module {
             track = track,
             audioPlayerInteractor = get(),
             trackMapper = get(),
-            favoritesInteractor = get()
+            favoritesInteractor = get(),
+            playlistInteractor = get()
         )
     }
 
@@ -37,10 +40,18 @@ val viewModelModule = module {
     }
 
     viewModel {
-        PlaylistsViewModel()
+        PlaylistsViewModel(playlistInteractor = get(), playlistMapper = get())
     }
 
     factory {
         PlayerPresenterTrackMapper()
+    }
+
+    viewModel {
+        CreatePlaylistViewModel(playlistInteractor = get())
+    }
+
+    factory {
+        PlaylistInfoMapper()
     }
 }

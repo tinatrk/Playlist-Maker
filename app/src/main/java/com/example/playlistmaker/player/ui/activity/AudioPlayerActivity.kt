@@ -1,14 +1,17 @@
 package com.example.playlistmaker.player.ui.activity
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -16,11 +19,16 @@ import com.example.playlistmaker.app.App.Companion.DEFAULT_STRING
 import com.example.playlistmaker.app.App.Companion.UNKNOWN_ID
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.example.playlistmaker.player.presentation.model.PlaybackState
-import com.example.playlistmaker.player.presentation.model.PlayerState
+import com.example.playlistmaker.player.presentation.model.PlayerScreenState
 import com.example.playlistmaker.player.presentation.model.PlayerTrackInfo
+import com.example.playlistmaker.player.presentation.model.PlaylistsState
 import com.example.playlistmaker.player.presentation.view_model.PlayerViewModel
+import com.example.playlistmaker.player.ui.activity.adapter.PlaylistAdapterVertical
+import com.example.playlistmaker.playlists.domain.models.Playlist
+import com.example.playlistmaker.playlists.presentation.models.AddingTrackToPlaylistState
+import com.example.playlistmaker.playlists.ui.fragment.CreatePlaylistFragment
 import com.example.playlistmaker.search.domain.models.Track
-import kotlinx.coroutines.flow.collect
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
@@ -36,6 +44,8 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private val args: AudioPlayerActivityArgs by navArgs()
 
+    private lateinit var playlistAdapter: PlaylistAdapterVertical
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
@@ -47,6 +57,18 @@ class AudioPlayerActivity : AppCompatActivity() {
             insets
         }
 
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        playlistAdapter = PlaylistAdapterVertical { playlist ->
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            viewModel.addTrackToPlaylist(playlist)
+        }
+        binding.rvPlaylists.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvPlaylists.adapter = playlistAdapter
+
         track = args.track
 
         binding.toolbarAudioPlayerScreen.setNavigationOnClickListener {
@@ -57,19 +79,68 @@ class AudioPlayerActivity : AppCompatActivity() {
             viewModel.onFavoriteClicked()
         }
 
-        //viewModel.getPlayerStateLiveData().observe(this) { playerState ->
+        binding.ibtnPlayPlayer.setOnClickListener {
+            viewModel.playerControl()
+        }
+
+        binding.ibtnAddTrackToPlaylistPlayer.setOnClickListener {
+            binding.vOverlay.isVisible = true
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            viewModel.btnAddTrackToPlaylistClicked()
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.vOverlay.isVisible = false
+                    }
+
+                    else -> {}
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.vOverlay.alpha = (slideOffset + 1).toFloat() / 2
+            }
+        })
+
+        binding.btnCreatePlaylist.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            supportFragmentManager.commit {
+                add(R.id.player_fragment_container, CreatePlaylistFragment.newInstance())
+                setReorderingAllowed(true)
+                addToBackStack(null)
+            }
+        }
+
         lifecycleScope.launch {
-            viewModel.playerStateFlow.collect{ state ->
+            viewModel.playerScreenStateFlow.collect { state ->
                 renderState(state)
             }
         }
 
-        binding.ibtnPlayPlayer.setOnClickListener {
-            viewModel.playerControl()
+        viewModel.observeAddingTrackToPlaylistState().observe(this) { state ->
+            when (state) {
+                is AddingTrackToPlaylistState.SuccessAdding -> {
+                    Toast.makeText(
+                        this,
+                        "${getString(R.string.toast_success_adding_track_to_playlist)} ${state.playlistTitle}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                is AddingTrackToPlaylistState.AlreadyExists -> Toast.makeText(
+                    this,
+                    "${getString(R.string.toast_track_already_exists_in_playlist)} ${state.playlistTitle}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
-    private fun renderState(playerState: PlayerState){
+    private fun renderState(playerState: PlayerScreenState) {
         if (playerState.isError) showPlayerError(playerState.trackInfo, playerState.curPosition)
         else {
             when (playerState.trackPlaybackState) {
@@ -87,6 +158,21 @@ class AudioPlayerActivity : AppCompatActivity() {
 
                 PlaybackState.PAUSED -> {
                     showPausedPlayer(playerState.trackInfo, playerState.curPosition)
+                }
+            }
+
+            when (playerState.playlistsState) {
+                is PlaylistsState.Idle -> {}
+                is PlaylistsState.Loading -> {
+                    showLoadingPlaylists()
+                }
+
+                is PlaylistsState.Empty -> {
+                    showEmptyPlaylists()
+                }
+
+                is PlaylistsState.Content -> {
+                    showPlaylists(playerState.playlistsState.playlists)
                 }
             }
         }
@@ -167,6 +253,25 @@ class AudioPlayerActivity : AppCompatActivity() {
             this,
             getString(R.string.message_something_went_wrong), Toast.LENGTH_LONG
         ).show()
+    }
+
+    private fun showLoadingPlaylists() {
+        binding.rvPlaylists.isVisible = false
+
+        binding.progressBarPlaylists.isVisible = true
+    }
+
+    private fun showEmptyPlaylists() {
+        binding.rvPlaylists.isVisible = false
+        binding.progressBarPlaylists.isVisible = false
+    }
+
+    private fun showPlaylists(playlists: List<Playlist>) {
+        playlistAdapter.updatePlaylists(playlists)
+
+        binding.progressBarPlaylists.isVisible = false
+
+        binding.rvPlaylists.isVisible = true
     }
 
     override fun onPause() {

@@ -3,15 +3,15 @@
     <item
         android:id="@+id/searchFragment"
         android:icon="@drawable/ic_search_24"
-        android:title="@string/search_button_text"/>
+        android:title="@string/search_screen_title" />
 
     <item
         android:id="@+id/libraryFragment"
         android:icon="@drawable/ic_library_24"
-        android:title="@string/library_button_text"/>
+        android:title="@string/library_screen_title" />
 
     <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings_24"
-        android:title="@string/settings_button_text"/>
+        android:title="@string/settings_screen_title" />
 </menu>

@@ -1,5 +1,6 @@
 package com.example.playlistmaker.player.presentation.view_model
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.app.App.Companion.UNKNOWN_ID
@@ -7,9 +8,14 @@ import com.example.playlistmaker.favorites.domain.api.interactor.FavoritesIntera
 import com.example.playlistmaker.player.domain.api.interactor.AudioPlayerInteractor
 import com.example.playlistmaker.player.presentation.mapper.PlayerPresenterTrackMapper
 import com.example.playlistmaker.player.presentation.model.PlaybackState
-import com.example.playlistmaker.player.presentation.model.PlayerState
+import com.example.playlistmaker.player.presentation.model.PlayerScreenState
 import com.example.playlistmaker.player.presentation.model.PlayerTrackInfo
+import com.example.playlistmaker.player.presentation.model.PlaylistsState
+import com.example.playlistmaker.playlists.domain.api.interactor.PlaylistInteractor
+import com.example.playlistmaker.playlists.domain.models.Playlist
+import com.example.playlistmaker.playlists.presentation.models.AddingTrackToPlaylistState
 import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.util.SingleEventLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -24,36 +30,29 @@ class PlayerViewModel(
     private var track: Track,
     private val audioPlayerInteractor: AudioPlayerInteractor,
     trackMapper: PlayerPresenterTrackMapper,
-    private val favoritesInteractor: FavoritesInteractor
+    private val favoritesInteractor: FavoritesInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private var trackInfo: PlayerTrackInfo = trackMapper.map(track)
 
-    private val _playerStateFlow = MutableStateFlow<PlayerState>(
-        PlayerState(
+    private val _playerScreenStateFlow = MutableStateFlow<PlayerScreenState>(
+        PlayerScreenState(
             isError = false,
             trackInfo = trackInfo,
             trackPlaybackState = PlaybackState.NOT_PREPARED,
             curPosition = DEFAULT_CUR_POSITION,
         )
     )
-    val playerStateFlow = _playerStateFlow.asStateFlow()
+    val playerScreenStateFlow = _playerScreenStateFlow.asStateFlow()
 
-    //private val playerStateLiveData = MutableLiveData<PlayerState>()
-    //fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
-
+    private val addingTrackToPlaylistState = SingleEventLiveData<AddingTrackToPlaylistState>()
+    fun observeAddingTrackToPlaylistState(): LiveData<AddingTrackToPlaylistState> =
+        addingTrackToPlaylistState
 
     private var timerJob: Job? = null
 
     init {
-        /*playerStateLiveData.value =
-            PlayerState(
-                isError = false,
-                trackInfo = trackInfo,
-                trackPlaybackState = PlaybackState.NOT_PREPARED,
-                curPosition = DEFAULT_CUR_POSITION,
-            )*/
-
         if (trackInfo.trackId != UNKNOWN_ID) audioPlayerInteractor.playerPrepare(
             trackInfo.previewUrl,
             { preparedCallback() },
@@ -61,27 +60,12 @@ class PlayerViewModel(
     }
 
     private fun startTimer() {
-        /*timerJob = viewModelScope.launch {
-            while ((playerStateLiveData.value?.trackPlaybackState
-                    ?: PlaybackState.NOT_PREPARED) == PlaybackState.PLAYING
-            ) {
-                delay(SET_CURRENT_TRACK_TIME_DELAY_MILLIS)
-                playerStateLiveData.value =
-                    PlayerState(
-                        isError = false,
-                        trackInfo = trackInfo,
-                        trackPlaybackState = PlaybackState.PLAYING,
-                        curPosition = progressMap(audioPlayerInteractor.getCurrentPosition())
-                    )
-
-            }
-        }*/
         timerJob = viewModelScope.launch {
-            while ((_playerStateFlow.value.trackPlaybackState) == PlaybackState.PLAYING
+            while ((_playerScreenStateFlow.value.trackPlaybackState) == PlaybackState.PLAYING
             ) {
                 delay(SET_CURRENT_TRACK_TIME_DELAY_MILLIS)
-                _playerStateFlow.update {
-                    PlayerState(
+                _playerScreenStateFlow.update {
+                    PlayerScreenState(
                         isError = false,
                         trackInfo = trackInfo,
                         trackPlaybackState = PlaybackState.PLAYING,
@@ -93,14 +77,8 @@ class PlayerViewModel(
     }
 
     private fun preparedCallback() {
-        /*playerStateLiveData.value = PlayerState(
-            isError = false,
-            trackInfo = trackInfo,
-            trackPlaybackState = PlaybackState.PREPARED,
-            curPosition = DEFAULT_CUR_POSITION
-        )*/
-        _playerStateFlow.update {
-            PlayerState(
+        _playerScreenStateFlow.update {
+            PlayerScreenState(
                 isError = false,
                 trackInfo = trackInfo,
                 trackPlaybackState = PlaybackState.PREPARED,
@@ -111,14 +89,8 @@ class PlayerViewModel(
 
     private fun completionCallback() {
         timerJob?.cancel()
-        /*playerStateLiveData.value = PlayerState(
-            isError = false,
-            trackInfo = trackInfo,
-            trackPlaybackState = PlaybackState.PREPARED,
-            curPosition = DEFAULT_CUR_POSITION
-        )*/
-        _playerStateFlow.update {
-            PlayerState(
+        _playerScreenStateFlow.update {
+            PlayerScreenState(
                 isError = false,
                 trackInfo = trackInfo,
                 trackPlaybackState = PlaybackState.PREPARED,
@@ -137,12 +109,7 @@ class PlayerViewModel(
 
     private fun playerStartCallback() {
         timerJob?.cancel()
-        /*playerStateLiveData.value = playerStateLiveData.value?.copy(
-            isError = false,
-            trackInfo = trackInfo,
-            trackPlaybackState = PlaybackState.PLAYING
-        )*/
-        _playerStateFlow.update {
+        _playerScreenStateFlow.update {
             it.copy(
                 isError = false,
                 trackInfo = trackInfo,
@@ -154,12 +121,7 @@ class PlayerViewModel(
 
     private fun playerPauseCallback() {
         timerJob?.cancel()
-        /*playerStateLiveData.value = playerStateLiveData.value?.copy(
-            isError = false,
-            trackInfo = trackInfo,
-            trackPlaybackState = PlaybackState.PAUSED
-        )*/
-        _playerStateFlow.update {
+        _playerScreenStateFlow.update {
             it.copy(
                 isError = false,
                 trackInfo = trackInfo,
@@ -170,14 +132,8 @@ class PlayerViewModel(
 
     private fun playerErrorCallback() {
         timerJob?.cancel()
-        /*playerStateLiveData.value = PlayerState(
-            isError = true,
-            trackInfo = trackInfo,
-            trackPlaybackState = PlaybackState.NOT_PREPARED,
-            curPosition = DEFAULT_CUR_POSITION
-        )*/
-        _playerStateFlow.update {
-            PlayerState(
+        _playerScreenStateFlow.update {
+            PlayerScreenState(
                 isError = true,
                 trackInfo = trackInfo,
                 trackPlaybackState = PlaybackState.NOT_PREPARED,
@@ -187,19 +143,10 @@ class PlayerViewModel(
     }
 
     fun playerPause() {
-        /*if ((playerStateLiveData.value?.trackPlaybackState == PlaybackState.PLAYING)
+        if ((_playerScreenStateFlow.value.trackPlaybackState == PlaybackState.PLAYING)
         ) {
             audioPlayerInteractor.playerPause { playerPauseCallback() }
-            playerStateLiveData.value = playerStateLiveData.value?.copy(
-                isError = false,
-                trackInfo = trackInfo,
-                trackPlaybackState = PlaybackState.PAUSED
-            )
-        }*/
-        if ((_playerStateFlow.value.trackPlaybackState == PlaybackState.PLAYING)
-        ) {
-            audioPlayerInteractor.playerPause { playerPauseCallback() }
-            _playerStateFlow.update {
+            _playerScreenStateFlow.update {
                 it.copy(
                     isError = false,
                     trackInfo = trackInfo,
@@ -231,17 +178,39 @@ class PlayerViewModel(
             track = track.copy(isFavorite = !track.isFavorite)
             trackInfo = trackInfo.copy(isFavorite = track.isFavorite)
 
-            /*playerStateLiveData.postValue(
-                playerStateLiveData.value?.copy(
-                    isError = false,
-                    trackInfo = trackInfo
-                )
-            )*/
-            _playerStateFlow.update {
+            _playerScreenStateFlow.update {
                 it.copy(
                     isError = false,
                     trackInfo = trackInfo
                 )
+            }
+        }
+    }
+
+    fun btnAddTrackToPlaylistClicked() {
+        _playerScreenStateFlow.update {
+            it.copy(playlistsState = PlaylistsState.Loading)
+        }
+        viewModelScope.launch {
+            playlistInteractor.getAllPlaylists().collect { playlists ->
+                if (playlists.isEmpty()) _playerScreenStateFlow.update {
+                    it.copy(playlistsState = PlaylistsState.Empty)
+                } else _playerScreenStateFlow.update {
+                    it.copy(playlistsState = PlaylistsState.Content(playlists))
+                }
+            }
+        }
+    }
+
+    fun addTrackToPlaylist(playlist: Playlist) {
+        if (playlist.tracksIds.contains(track.trackId)) {
+            addingTrackToPlaylistState.value =
+                AddingTrackToPlaylistState.AlreadyExists(playlist.title)
+        } else {
+            viewModelScope.launch {
+                playlistInteractor.addNewTrackToPlaylist(playlist, track)
+                addingTrackToPlaylistState.value =
+                    AddingTrackToPlaylistState.SuccessAdding(playlist.title, playlist.coverPath)
             }
         }
     }

@@ -13,22 +13,22 @@
         android:id="@+id/toolbar_library_screen"
         style="@style/ToolbarColorOnPrimaryStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        app:title="@string/library_button_text" />
+        android:layout_height="@dimen/toolbar_height_56"
+        app:title="@string/library_screen_title" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_library"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tab_layout_height"
+        android:layout_height="@dimen/tab_layout_height_48"
         android:background="?attr/colorPrimary"
-        app:tabTextAppearance="@style/TextMedium14ColorOnPrimaryStyle"
+        app:tabIndicator="@drawable/tab_indicator"
         app:tabIndicatorColor="?attr/colorOnPrimary"
-        app:tabTextColor="?attr/colorOnPrimary"
-        app:tabIndicator="@drawable/tab_indicator"/>
+        app:tabTextAppearance="@style/TextMedium14ColorOnPrimaryStyle"
+        app:tabTextColor="?attr/colorOnPrimary" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager_library"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal" />
 </LinearLayout>
