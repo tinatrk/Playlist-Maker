@@ -14,7 +14,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,6 +33,7 @@ import com.example.playlistmaker.playlists.presentation.models.PlaylistCreationS
 import com.example.playlistmaker.playlists.presentation.view_model.CreatePlaylistViewModel
 import com.example.playlistmaker.util.BindingFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
@@ -156,21 +156,22 @@ class CreatePlaylistFragment : BindingFragment<FragmentCreatePlaylistBinding>() 
             when (state) {
                 is PlaylistCreationState.SuccessCreated -> {
                     saveCoverToStorage(state.coverUri, state.filePath)
-                    Toast.makeText(
-                        requireContext(),
+                    Snackbar.make(
+                        binding.btnCreatePlaylist,
                         "${requireActivity().getString(R.string.toast_playlist)} " +
                                 "${state.playlistTitle} ${requireActivity().getString(R.string.toast_created)}",
-                        Toast.LENGTH_LONG
+                        Snackbar.LENGTH_LONG
                     ).show()
+
                     parentFragmentManager.popBackStack()
                 }
 
                 is PlaylistCreationState.AlreadyExists -> {
-                    Toast.makeText(
-                        requireContext(),
+                    Snackbar.make(
+                        binding.btnCreatePlaylist,
                         "${requireActivity().getString(R.string.toast_playlist)} " +
                                 "${state.playlistTitle} ${requireActivity().getString(R.string.toast_already_exists)}",
-                        Toast.LENGTH_LONG
+                        Snackbar.LENGTH_LONG
                     ).show()
                 }
             }

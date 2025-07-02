@@ -29,6 +29,7 @@ import com.example.playlistmaker.playlists.presentation.models.AddingTrackToPlay
 import com.example.playlistmaker.playlists.ui.fragment.CreatePlaylistFragment
 import com.example.playlistmaker.search.domain.models.Track
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
@@ -84,7 +85,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
 
         binding.ibtnAddTrackToPlaylistPlayer.setOnClickListener {
-            binding.vOverlay.isVisible = true
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             viewModel.btnAddTrackToPlaylistClicked()
         }
@@ -102,6 +102,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.vOverlay.isVisible = true
                 binding.vOverlay.alpha = (slideOffset + 1).toFloat() / 2
             }
         })
@@ -124,17 +125,19 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.observeAddingTrackToPlaylistState().observe(this) { state ->
             when (state) {
                 is AddingTrackToPlaylistState.SuccessAdding -> {
-                    Toast.makeText(
-                        this,
-                        "${getString(R.string.toast_success_adding_track_to_playlist)} ${state.playlistTitle}",
-                        Toast.LENGTH_LONG
+                    Snackbar.make(
+                        binding.rvPlaylists,
+                        "${getString(R.string.toast_success_adding_track_to_playlist)} " +
+                                state.playlistTitle,
+                        Snackbar.LENGTH_LONG
                     ).show()
                 }
 
-                is AddingTrackToPlaylistState.AlreadyExists -> Toast.makeText(
-                    this,
-                    "${getString(R.string.toast_track_already_exists_in_playlist)} ${state.playlistTitle}",
-                    Toast.LENGTH_LONG
+                is AddingTrackToPlaylistState.AlreadyExists -> Snackbar.make(
+                    binding.rvPlaylists,
+                    "${getString(R.string.toast_track_already_exists_in_playlist)} " +
+                            state.playlistTitle,
+                    Snackbar.LENGTH_LONG
                 ).show()
             }
         }

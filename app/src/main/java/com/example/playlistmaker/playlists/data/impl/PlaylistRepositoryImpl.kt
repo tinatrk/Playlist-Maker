@@ -2,6 +2,7 @@ package com.example.playlistmaker.playlists.data.impl
 
 import com.example.playlistmaker.favorites.data.AppDatabase
 import com.example.playlistmaker.playlists.data.mapper.PlaylistDbMapper
+import com.example.playlistmaker.playlists.data.mapper.TrackInPlaylistDbMapper
 import com.example.playlistmaker.playlists.domain.api.repository.PlaylistRepository
 import com.example.playlistmaker.playlists.domain.models.Playlist
 import com.example.playlistmaker.search.domain.models.Track
@@ -10,7 +11,8 @@ import kotlinx.coroutines.flow.flow
 
 class PlaylistRepositoryImpl(
     private val appDatabase: AppDatabase,
-    private val playlistMapper: PlaylistDbMapper
+    private val playlistMapper: PlaylistDbMapper,
+    private val trackMapper: TrackInPlaylistDbMapper
 ) : PlaylistRepository {
     override suspend fun createNewPlaylist(playlist: Playlist) {
         appDatabase.playlistDao().insertPlaylist(playlistMapper.map(playlist))
@@ -39,6 +41,8 @@ class PlaylistRepositoryImpl(
             playlist.copy(tracksIds = newTrackList, tracksCount = newTrackList.size)
 
         appDatabase.playlistDao().updatePlaylist(playlistMapper.map(updatedPlaylist))
+
+        appDatabase.trackInPlaylistDao().insertTrackInPlaylist(trackMapper.map(track))
     }
 
     override suspend fun deleteTrackFromPlaylist(playlist: Playlist, track: Track) {

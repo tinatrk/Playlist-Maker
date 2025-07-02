@@ -9,5 +9,8 @@
         <item name="colorOnSecondary">@color/gray_900</item>
         <item name="colorOnTertiary">@color/white</item>
         <item name="android:textColor">@null</item>
+
+        <item name="snackbarStyle">@style/snackbar_style</item>
+        <item name="snackbarTextViewStyle">@style/snackbar_text_style</item>
     </style>
 </resources>

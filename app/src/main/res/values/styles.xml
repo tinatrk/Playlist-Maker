@@ -264,4 +264,15 @@
         <item name="android:textAppearance">@style/TextRegular16BaseStyle</item>
     </style>
 
+    <style name="snackbar_style" parent="@style/Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_marginHorizontal">@dimen/indentation_8</item>
+        <item name="android:background">?attr/colorOnPrimary</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="snackbar_text_style" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:textAppearance">@style/TextRegular14ColorPrimaryStyle</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
 </resources>

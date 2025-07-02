@@ -66,7 +66,8 @@ val repositoryModule = module {
     single<PlaylistRepository> {
         PlaylistRepositoryImpl(
             appDatabase = get(),
-            playlistMapper = get()
+            playlistMapper = get(),
+            trackMapper = get()
         )
     }
 
