@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_playlist_grid"
+    style="@style/ScreenCommonStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/indentation_4"
+    android:layout_marginVertical="@dimen/indentation_8"
+    android:background="@null">
+
+    <ImageView
+        android:id="@+id/iv_playlist_cover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/playlist_cover_description"
+        app:layout_constraintDimensionRatio="h, 1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_placeholder_45" />
+
+    <TextView
+        android:id="@+id/tv_playlist_title"
+        style="@style/TextRegular12ColorOnPrimaryStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/indentation_4"
+        android:letterSpacing="0.04"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_playlist_cover"
+        tools:text="@string/playlist_title_test" />
+
+    <TextView
+        android:id="@+id/tv_playlist_tracks_count"
+        style="@style/TextRegular12ColorOnPrimaryStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:letterSpacing="0.04"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_playlist_title"
+        tools:text="@string/playlist_tracks_count_test" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

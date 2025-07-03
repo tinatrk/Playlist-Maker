@@ -6,6 +6,7 @@ import com.example.playlistmaker.favorites.data.mapper.TrackDbMapper
 import com.example.playlistmaker.favorites.domain.api.repository.FavoritesRepository
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class FavoritesRepositoryImpl(
@@ -21,15 +22,17 @@ class FavoritesRepositoryImpl(
         appDatabase.trackDao().deleteTrack(trackMapper.map(track))
     }
 
-    override fun getTrackById(trackId: Int): Flow<Track> {
-        return appDatabase.trackDao().getTrackById(trackId).map { track ->
-            if (track != null) trackMapper.map(track)
-            else TrackDbMapper.empty()
-        }
-    }
+    /*override fun getTrackById(trackId: Int): Flow<Track> = flow {
+        val track = appDatabase.trackDao().getTrackById(trackId)
+        if (track != null)
+            emit(trackMapper.map(track))
+        else emit(TrackDbMapper.empty())
 
-    override fun getAllFavoriteTracks(): Flow<List<Track>> {
-        return appDatabase.trackDao().getAllTracks().map { convertFromTrackEntity(it) }
+
+    }*/
+
+    override fun getAllFavoriteTracks(): Flow<List<Track>> = flow {
+        emit (convertFromTrackEntity(appDatabase.trackDao().getAllTracks()))
     }
 
     private fun convertFromTrackEntity(entities: List<TrackEntity>): List<Track> {
@@ -42,14 +45,14 @@ class FavoritesRepositoryImpl(
         return markedTracks
     }
 
-    override suspend fun markFavoriteTracks(tracks: List<Track>): List<Track> {
+    override fun markFavoriteTracks(tracks: List<Track>): Flow<List<Track>> = flow {
         val favoriteIds = appDatabase.trackDao().getAllTrackId()
         if (favoriteIds.isEmpty())
-            return (tracks)
+            emit (tracks)
         val markedTracks: MutableList<Track> = mutableListOf()
         for (i in tracks.indices) {
             markedTracks.add(tracks[i].copy(isFavorite = favoriteIds.contains(tracks[i].trackId)))
         }
-        return (markedTracks)
+        emit (markedTracks)
     }
 }

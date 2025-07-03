@@ -10,7 +10,8 @@ interface FavoritesRepository {
 
     fun getAllFavoriteTracks(): Flow<List<Track>>
 
-    fun getTrackById(trackId: Int): Flow<Track>
+    //fun getTrackById(trackId: Int): Flow<Track>
 
-    suspend fun markFavoriteTracks(tracks: List<Track>): List<Track>
+    //suspend fun markFavoriteTracks(tracks: List<Track>): List<Track>
+    fun markFavoriteTracks(tracks: List<Track>): Flow<List<Track>>
 }

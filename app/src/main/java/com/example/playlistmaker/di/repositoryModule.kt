@@ -8,6 +8,10 @@ import com.example.playlistmaker.favorites.data.mapper.TrackDbMapper
 import com.example.playlistmaker.favorites.domain.api.repository.FavoritesRepository
 import com.example.playlistmaker.player.data.impl.AudioPlayerRepositoryImpl
 import com.example.playlistmaker.player.domain.api.repository.AudioPlayerRepository
+import com.example.playlistmaker.playlists.data.impl.PlaylistRepositoryImpl
+import com.example.playlistmaker.playlists.data.mapper.PlaylistDbMapper
+import com.example.playlistmaker.playlists.data.mapper.TrackInPlaylistDbMapper
+import com.example.playlistmaker.playlists.domain.api.repository.PlaylistRepository
 import com.example.playlistmaker.search.data.impl.TrackRepositoryImpl
 import com.example.playlistmaker.search.data.mapper.SearchRepositoryTrackMapper
 import com.example.playlistmaker.search.domain.api.repository.TrackRepository
@@ -51,11 +55,27 @@ val repositoryModule = module {
         SearchRepositoryTrackMapper()
     }
 
-   single<FavoritesRepository>{
+    single<FavoritesRepository> {
         FavoritesRepositoryImpl(appDatabase = get(), trackMapper = get())
     }
 
     factory {
         TrackDbMapper()
+    }
+
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(
+            appDatabase = get(),
+            playlistMapper = get(),
+            trackMapper = get()
+        )
+    }
+
+    factory {
+        PlaylistDbMapper(gson = get())
+    }
+
+    factory {
+        TrackInPlaylistDbMapper()
     }
 }

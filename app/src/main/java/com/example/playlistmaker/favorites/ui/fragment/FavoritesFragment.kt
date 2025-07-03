@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
@@ -16,6 +17,7 @@ import com.example.playlistmaker.library.ui.fragment.LibraryFragmentDirections
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.adapter.TrackAdapter
 import com.example.playlistmaker.util.BindingFragment
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>() {
@@ -40,11 +42,10 @@ class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>() {
         )
         binding.rvTrackList.adapter = trackAdapter
 
-        viewModel.observeScreenState().observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is FavoritesScreenState.Loading -> showLoading()
-                is FavoritesScreenState.Empty -> showEmpty()
-                is FavoritesScreenState.Content -> showContent(state.tracks)
+        //viewModel.observeScreenState().observe(viewLifecycleOwner) { state ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.screenStateFlow.collect { state ->
+                renderState(state)
             }
         }
 
@@ -53,6 +54,14 @@ class FavoritesFragment : BindingFragment<FragmentFavoritesBinding>() {
                 track
             )
             parentFragment?.findNavController()?.navigate(action)
+        }
+    }
+
+    private fun renderState(state: FavoritesScreenState){
+        when (state) {
+            is FavoritesScreenState.Loading -> showLoading()
+            is FavoritesScreenState.Empty -> showEmpty()
+            is FavoritesScreenState.Content -> showContent(state.tracks)
         }
     }
 

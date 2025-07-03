@@ -6,7 +6,7 @@
     style="@style/ScreenCommonStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/bottom_navigation_view_height"
+    android:layout_marginBottom="@dimen/bottom_navigation_view_height_56"
     tools:context=".search.ui.fragment.SearchFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,26 +18,26 @@
             android:id="@+id/toolbar_search_screen"
             style="@style/ToolbarColorOnPrimaryStyle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_height"
+            android:layout_height="@dimen/toolbar_height_56"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/search_button_text" />
+            app:title="@string/search_screen_title" />
 
         <EditText
             android:id="@+id/search_line"
-            style="@style/EditTextColorStyle"
+            style="@style/EditTextSearchColorStyle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/edit_text_height"
+            android:layout_height="@dimen/edit_text_search_height_36"
             android:layout_marginHorizontal="@dimen/indentation_16"
             android:layout_marginVertical="@dimen/indentation_8"
             android:autofillHints="@string/search_line_desc"
             android:drawableStart="@drawable/ic_search_16"
             android:hint="@string/search_line_default"
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_search_screen"
-            android:inputType="text"/>
+            app:layout_constraintTop_toBottomOf="@id/toolbar_search_screen" />
 
         <ImageView
             android:id="@+id/clearIcon_search_line"
@@ -85,7 +85,7 @@
             app:layout_constraintTag="rv_history_list_search"
             app:layout_constraintTop_toBottomOf="@id/tv_history_title"
             app:layout_constraintVertical_bias="0.0"
-            tools:listitem="@layout/track" />
+            tools:listitem="@layout/item_track" />
 
         <Button
             android:id="@+id/btn_clear_history_search"
@@ -162,8 +162,8 @@
 
         <ProgressBar
             android:id="@+id/progress_bar_search"
-            android:layout_width="@dimen/progress_bar_size"
-            android:layout_height="@dimen/progress_bar_size"
+            android:layout_width="@dimen/progress_bar_size_44"
+            android:layout_height="@dimen/progress_bar_size_44"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/indentation_140"
             android:indeterminateTint="@color/blue_700"

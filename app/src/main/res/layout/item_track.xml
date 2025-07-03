@@ -5,15 +5,15 @@
     android:id="@+id/track"
     style="@style/ScreenCommonStyle"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/selection_item_height"
+    android:layout_height="@dimen/selection_item_height_60"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/track_art"
         style="@style/ScreenCommonStyle"
-        android:layout_width="@dimen/track_art_size"
-        android:layout_height="@dimen/track_art_size"
+        android:layout_width="@dimen/track_art_size_44"
+        android:layout_height="@dimen/track_art_size_44"
         android:layout_marginStart="@dimen/indentation_13"
         android:contentDescription="@string/artist_art_desc"
         android:scaleType="centerCrop"

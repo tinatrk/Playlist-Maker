@@ -16,7 +16,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import java.lang.reflect.Type
 
 class TrackRepositoryImpl(
@@ -59,11 +58,11 @@ class TrackRepositoryImpl(
         }
     }
 
-    override fun getHistory(): Flow<List<Track>> {
-        return getHistoryFromSP().map { markFavoriteTracks(it) }
+    override fun getHistory(): Flow<List<Track>> = flow {
+        emit(markFavoriteTracks(getHistoryFromSP()))
     }
 
-    private fun getHistoryFromSP(): Flow<List<Track>> = flow {
+    private fun getHistoryFromSP(): List<Track> {
         if (sharedPreferences != null && gson != null) {
             val json = sharedPreferences.getString(KEY_FOR_HISTORY_TRACK_LIST, null)
             val result: List<Track> = if (json != null) {
@@ -72,8 +71,8 @@ class TrackRepositoryImpl(
             } else {
                 listOf()
             }
-            emit(result)
-        } else emit(listOf())
+            return result
+        } else return listOf()
     }
 
     override suspend fun updateHistory(tracks: List<Track>) {

@@ -11,7 +11,7 @@
         <item name="trackTint">@color/blue_200</item>
     </style>
 
-    <style name="EditTextColorStyle" parent="EditTextBaseStyle">
+    <style name="EditTextSearchColorStyle" parent="EditTextSearchBaseStyle">
         <item name="android:textColorHint">?attr/colorOnSecondary</item>
         <item name="android:drawableTint">?attr/colorOnSecondary</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>

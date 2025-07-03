@@ -22,11 +22,11 @@ class FavoritesInteractorImpl(
         favoritesRepository.deleteFavoriteTrack(track)
     }
 
-    override fun getTrackById(trackId: Int): Flow<Track> {
+    /*override fun getTrackById(trackId: Int): Flow<Track> {
         return favoritesRepository.getTrackById(trackId)
-    }
+    }*/
 
-    override fun markFavoriteTracks(tracks: List<Track>): Flow<List<Track>> = flow {
-        emit(favoritesRepository.markFavoriteTracks(tracks))
+    override fun markFavoriteTracks(tracks: List<Track>): Flow<List<Track>> {
+        return favoritesRepository.markFavoriteTracks(tracks)
     }
 }

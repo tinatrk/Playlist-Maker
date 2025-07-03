@@ -1,13 +1,49 @@
 package com.example.playlistmaker.playlists.presentation.view_model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.playlists.domain.api.interactor.PlaylistInteractor
+import com.example.playlistmaker.playlists.domain.models.Playlist
+import com.example.playlistmaker.playlists.presentation.mapper.PlaylistInfoMapper
 import com.example.playlistmaker.playlists.presentation.models.PlaylistsScreenState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class PlaylistsViewModel() : ViewModel() {
-    private val screenStateLiveData: MutableLiveData<PlaylistsScreenState> =
-        MutableLiveData(PlaylistsScreenState.Empty)
+class PlaylistsViewModel(
+    private val playlistInteractor: PlaylistInteractor,
+    private val playlistMapper: PlaylistInfoMapper
+) : ViewModel() {
+    private val _screenStateFlow =
+        MutableStateFlow<PlaylistsScreenState>(PlaylistsScreenState.Loading)
+    val screenStateFlow = _screenStateFlow.asStateFlow()
 
-    fun screenStateObserve(): LiveData<PlaylistsScreenState> = screenStateLiveData
+    fun updatePlaylists() {
+        renderState(PlaylistsScreenState.Loading)
+
+        viewModelScope.launch {
+            playlistInteractor.getAllPlaylists()
+                .collect { playlists ->
+                    if (playlists.isEmpty()) {
+                        renderState(PlaylistsScreenState.Empty)
+                    } else {
+                        renderState(PlaylistsScreenState.Content(playlists))
+                    }
+                }
+        }
+    }
+
+    private fun renderState(state: PlaylistsScreenState) {
+        _screenStateFlow.update {
+            state
+        }
+    }
+
+    fun deletePlaylist(playlist: Playlist) {
+        viewModelScope.launch {
+            playlistInteractor.deletePlaylist(playlist)
+            updatePlaylists()
+        }
+    }
 }

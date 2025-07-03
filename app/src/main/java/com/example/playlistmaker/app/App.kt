@@ -6,9 +6,11 @@ import com.example.playlistmaker.di.interactorModule
 import com.example.playlistmaker.di.repositoryModule
 import com.example.playlistmaker.di.viewModelModule
 import com.example.playlistmaker.settings.domain.api.interactor.SettingsInteractor
+import com.markodevcic.peko.PermissionRequester
 import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+
 
 class App : Application() {
 
@@ -23,6 +25,8 @@ class App : Application() {
         val settingsInteractor: SettingsInteractor = getKoin().get()
 
         settingsInteractor.setSavedTheme()
+
+        PermissionRequester.initialize(applicationContext)
     }
 
     companion object {
@@ -32,5 +36,7 @@ class App : Application() {
         const val DEFAULT_STRING = "Ничего не нашлось"
         const val DEFAULT_LINK = ""
         const val DEFAULT_INT = -1
+        const val EMPTY_STRING = ""
+        const val EXTERNAL_STORAGE_NAME = "playlist_maker"
     }
 }
