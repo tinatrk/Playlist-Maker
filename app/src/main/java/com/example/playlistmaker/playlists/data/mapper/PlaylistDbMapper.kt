@@ -48,8 +48,9 @@ class PlaylistDbMapper(private val gson: Gson) {
     companion object {
         fun empty(): Playlist {
             return Playlist(
+                id = DEFAULT_INT,
                 title = DEFAULT_STRING,
-                description = DEFAULT_STRING,
+                description = EMPTY_STRING,
                 coverPath = EMPTY_STRING,
                 tracksIds = listOf(),
                 tracksCount = DEFAULT_INT

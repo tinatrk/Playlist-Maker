@@ -10,6 +10,7 @@
         <item name="colorOnTertiary">@color/white</item>
         <item name="android:textColor">@null</item>
 
+        <item name="materialAlertDialogTheme">@style/MaterialDialogTheme</item>
         <item name="snackbarStyle">@style/snackbar_style</item>
         <item name="snackbarTextViewStyle">@style/snackbar_text_style</item>
     </style>
