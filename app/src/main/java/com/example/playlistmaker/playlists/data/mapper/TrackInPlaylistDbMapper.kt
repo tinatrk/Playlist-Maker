@@ -14,7 +14,7 @@ class TrackInPlaylistDbMapper {
     fun map(track: Track): TrackInPlaylistEntity {
         return TrackInPlaylistEntity(
             trackId = track.trackId,
-            artistName = track.trackName,
+            artistName = track.artistName,
             collectionName = track.collectionName,
             trackName = track.trackName,
             artworkUrl100 = track.artworkUrl100,
@@ -30,7 +30,7 @@ class TrackInPlaylistDbMapper {
     fun map(track: TrackInPlaylistEntity): Track {
         return Track(
             trackId = track.trackId,
-            artistName = track.trackName,
+            artistName = track.artistName,
             collectionName = track.collectionName,
             trackName = track.trackName,
             artworkUrl100 = track.artworkUrl100,

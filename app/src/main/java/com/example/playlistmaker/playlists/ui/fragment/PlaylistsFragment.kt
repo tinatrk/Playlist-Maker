@@ -2,25 +2,24 @@ package com.example.playlistmaker.playlists.ui.fragment
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
+import com.example.playlistmaker.app.App.Companion.UNKNOWN_ID
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
+import com.example.playlistmaker.library.ui.fragment.LibraryFragmentDirections
 import com.example.playlistmaker.playlists.domain.models.Playlist
 import com.example.playlistmaker.playlists.presentation.models.PlaylistsScreenState
 import com.example.playlistmaker.playlists.presentation.view_model.PlaylistsViewModel
-import com.example.playlistmaker.playlists.ui.fragment.adapter.PlaylistAdapterGrid
+import com.example.playlistmaker.playlists.ui.adapter.PlaylistAdapterGrid
 import com.example.playlistmaker.util.BindingFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
 
 class PlaylistsFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
@@ -39,12 +38,18 @@ class PlaylistsFragment : BindingFragment<FragmentPlaylistsBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnNewPlaylist.setOnClickListener {
-            findNavController().navigate(R.id.action_libraryFragment_to_createPlaylistFragment)
+            findNavController().navigate(
+                R.id.action_libraryFragment_to_modifyPlaylistFragment,
+                ModifyPlaylistFragment.createArgs(UNKNOWN_ID)
+            )
         }
 
-        playlistAdapter = PlaylistAdapterGrid { element, playlist ->
-            onPlaylistLongClick(element, playlist)
-        }
+        playlistAdapter = PlaylistAdapterGrid(
+            onClickListener = { playlist ->
+                val action =
+                    LibraryFragmentDirections.actionLibraryFragmentToOnePlaylistFragment(playlist.id)
+                findNavController().navigate(action)
+            })
         binding.rvPlaylists.layoutManager =
             GridLayoutManager(requireContext(), COUNT_COLUMNS, GridLayoutManager.VERTICAL, false)
         binding.rvPlaylists.adapter = playlistAdapter
@@ -100,28 +105,6 @@ class PlaylistsFragment : BindingFragment<FragmentPlaylistsBinding>() {
         binding.progressBarPlaylists.isVisible = false
         binding.groupEmpty.isVisible = false
         binding.rvPlaylists.isVisible = true
-    }
-
-    private fun onPlaylistLongClick(view: View, playlist: Playlist): Boolean {
-
-        val popup: PopupMenu = PopupMenu(requireContext(), view)
-
-        popup.inflate(R.menu.playlist_menu)
-
-        popup.setOnMenuItemClickListener { item ->
-            when (item?.itemId) {
-                R.id.menu_item_delete -> {
-                    File(
-                        requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                        playlist.title
-                    ).delete()
-                    viewModel.deletePlaylist(playlist)
-                }
-            }
-            false
-        }
-        popup.show()
-        return true
     }
 
     override fun onStart() {

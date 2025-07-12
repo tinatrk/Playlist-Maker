@@ -3,7 +3,8 @@
     <string name="search_screen_title">Поиск</string>
     <string name="library_screen_title">Медиатека</string>
     <string name="settings_screen_title">Настройки</string>
-    <string name="create_screen_title">Новый плейлист</string>
+    <string name="create_playlist_screen_title">Новый плейлист</string>
+    <string name="edit_playlist_screen_title">Редактировать</string>
 
     <string name="dark_mode">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
@@ -106,11 +107,17 @@
     <string name="toast_success_adding_track_to_playlist">Добавлено в плейлист</string>
     <string name="toast_track_already_exists_in_playlist">Трек уже добавлен в плейлист</string>
 
-    <string name="playlist_zero_tracks">треков</string>
-    <string name="playlist_one_track">трек</string>
-    <string name="playlist_few_tracks">трека</string>
-    <string name="playlist_many_tracks">треков</string>
-    <string name="playlist_other_tracks">треков</string>
+    <string name="zero_tracks">треков</string>
+    <string name="one_track">трек</string>
+    <string name="few_tracks">трека</string>
+    <string name="many_tracks">треков</string>
+    <string name="other_tracks">треков</string>
+
+    <string name="zero_minutes">минут</string>
+    <string name="one_minute">минута</string>
+    <string name="few_minutes">минуты</string>
+    <string name="many_minutes">минут</string>
+    <string name="other_minutes">минут</string>
 
     <plurals name="plurals_1">
         <item quantity="zero">%1$d = zero</item>
@@ -128,5 +135,20 @@
         <item quantity="many">%1$d треков</item>
         <item quantity="other">%1$d треков</item>
     </plurals>
+
+    <string name="share_playlist">Поделиться</string>
+    <string name="edit_playlist">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="dialog_delete_track">Хотите удалить трек?</string>
+    <string name="dialog_delete_playlist">Хотите удалить плейлист \"</string>
+    <string name="question">\"\?</string>
+    <string name="dialog_btn_yes">Да</string>
+    <string name="dialog_btn_no">Нет</string>
+    <string name="toast_nothing_tracks_for_sharing_playlist">В этом плейлисте нет списка треков, которым можно поделиться</string>
+
+    <string name="btn_save_playlist">Сохранить</string>
+    <string name="toast_playlist_without_changes">Нет изменений для сохранения</string>
+    <string name="empty_playlist_track_list_message">В этом плейлисте нет треков</string>
+
 
 </resources>

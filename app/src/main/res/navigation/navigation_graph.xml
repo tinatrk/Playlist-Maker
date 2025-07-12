@@ -18,8 +18,16 @@
                 app:argType="com.example.playlistmaker.search.domain.models.Track" />
         </action>
         <action
-            android:id="@+id/action_libraryFragment_to_createPlaylistFragment"
-            app:destination="@id/createPlaylistFragment" />
+            android:id="@+id/action_libraryFragment_to_modifyPlaylistFragment"
+            app:destination="@id/modifyPlaylistFragment">
+        </action>
+        <action
+            android:id="@+id/action_libraryFragment_to_onePlaylistFragment"
+            app:destination="@id/onePlaylistFragment">
+            <argument
+                android:name="playlistId"
+                app:argType="integer"/>
+        </action>
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -49,8 +57,25 @@
             app:argType="com.example.playlistmaker.search.domain.models.Track" />
     </activity>
     <fragment
-        android:id="@+id/createPlaylistFragment"
-        android:name="com.example.playlistmaker.playlists.ui.fragment.CreatePlaylistFragment"
+        android:id="@+id/modifyPlaylistFragment"
+        android:name="com.example.playlistmaker.playlists.ui.fragment.ModifyPlaylistFragment"
         android:label="fragment_create_playlist"
-        tools:layout="@layout/fragment_create_playlist" />
+        tools:layout="@layout/fragment_modify_playlist">
+    </fragment>
+    <fragment
+        android:id="@+id/onePlaylistFragment"
+        android:name="com.example.playlistmaker.playlists.ui.fragment.OnePlaylistFragment"
+        android:label="fragment_one_playlist"
+        tools:layout="@layout/fragment_one_playlist" >
+        <argument
+            android:name="playlistId"
+            app:argType="integer"/>
+        <action
+            android:id="@+id/action_onePlaylistFragment_to_audioPlayerActivity"
+            app:destination="@id/audioPlayerActivity" />
+        <action
+            android:id="@+id/action_onePlaylistFragment_to_modifyPlaylistFragment"
+            app:destination="@id/modifyPlaylistFragment">
+        </action>
+    </fragment>
 </navigation>
