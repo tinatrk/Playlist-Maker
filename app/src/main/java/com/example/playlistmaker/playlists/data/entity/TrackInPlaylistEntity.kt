@@ -16,5 +16,4 @@ data class TrackInPlaylistEntity(
     val primaryGenreName: String,
     val releaseDate: String,
     val previewUrl: String,
-    val dataOfAppearanceInDB: String
 )

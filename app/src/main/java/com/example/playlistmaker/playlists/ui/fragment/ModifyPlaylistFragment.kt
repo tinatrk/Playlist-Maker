@@ -23,6 +23,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -46,7 +47,6 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
 
 open class ModifyPlaylistFragment : BindingFragment<FragmentModifyPlaylistBinding>() {
 
@@ -256,19 +256,15 @@ open class ModifyPlaylistFragment : BindingFragment<FragmentModifyPlaylistBindin
     }
 
     private fun setCoverContent(uri: String) {
-        val coverSource = try {
-            val inputStream = File(uri).inputStream()
-            BitmapFactory.decodeStream(inputStream)
-        } catch (e: IOException) {
-            uri
-        }
 
         val cornerRadiusDp = (requireActivity().resources
             .getDimension(R.dimen.corner_radius_8)).toInt()
         Glide.with(requireContext())
-            .load(coverSource)
+            .load(uri)
             .placeholder(R.drawable.create_playlist_cover)
             .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(cornerRadiusDp)))
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(binding.ivAddCover)
     }
 

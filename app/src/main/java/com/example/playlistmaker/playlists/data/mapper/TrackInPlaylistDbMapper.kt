@@ -6,9 +6,6 @@ import com.example.playlistmaker.app.App.Companion.DEFAULT_STRING
 import com.example.playlistmaker.app.App.Companion.UNKNOWN_ID
 import com.example.playlistmaker.playlists.data.entity.TrackInPlaylistEntity
 import com.example.playlistmaker.search.domain.models.Track
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class TrackInPlaylistDbMapper {
     fun map(track: Track): TrackInPlaylistEntity {
@@ -23,7 +20,6 @@ class TrackInPlaylistDbMapper {
             primaryGenreName = track.primaryGenreName,
             releaseDate = track.releaseDate,
             previewUrl = track.previewUrl,
-            dataOfAppearanceInDB = getCurData()
         )
     }
 
@@ -42,12 +38,6 @@ class TrackInPlaylistDbMapper {
         )
     }
 
-    private fun getCurData(): String {
-        val formatter = SimpleDateFormat(DATE_PATTERN, Locale.getDefault())
-        val curDate = formatter.format(Date())
-        return curDate
-    }
-
     companion object {
         fun empty(): Track {
             return Track(
@@ -63,8 +53,6 @@ class TrackInPlaylistDbMapper {
                 previewUrl = DEFAULT_LINK
             )
         }
-
-        private const val DATE_PATTERN = "yyyy-MM-dd HH:mm:ss"
     }
 
 }

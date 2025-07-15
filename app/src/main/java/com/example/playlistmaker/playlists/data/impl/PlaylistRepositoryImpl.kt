@@ -89,16 +89,9 @@ class PlaylistRepositoryImpl(
     }
 
     override fun getTracksByIds(tracksIds: List<Int>): Flow<List<Track>> = flow {
-        val allTrackEntities: List<TrackInPlaylistEntity> =
-            appDatabase.trackInPlaylistDao().getAllTracks()
-
-        val allTracks: List<Track> = allTrackEntities.map { trackMapper.map(it) }
-
-        val neededTracks: MutableList<Track> = mutableListOf()
-
-        for (track in allTracks) {
-            if (tracksIds.contains(track.trackId)) neededTracks.add(track)
-        }
+        val neededTrackEntities: List<TrackInPlaylistEntity> =
+            appDatabase.trackInPlaylistDao().getAllTracks(tracksIds)
+        val neededTracks: List<Track> = neededTrackEntities.map { trackMapper.map(it) }
 
         val sortedTracks = sortTracks(tracksIds.reversed(), neededTracks)
 

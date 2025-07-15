@@ -1,7 +1,5 @@
 package com.example.playlistmaker.playlists.ui.fragment
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Insets
 import android.os.Build
 import android.os.Bundle
@@ -17,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -35,8 +34,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
-import java.io.File
-import java.io.IOException
 import kotlin.properties.Delegates
 
 class OnePlaylistFragment : BindingFragment<FragmentOnePlaylistBinding>() {
@@ -192,17 +189,13 @@ class OnePlaylistFragment : BindingFragment<FragmentOnePlaylistBinding>() {
     }
 
     private fun setPlaylistDetails(playlistDetails: OnePlaylistDetails) {
-        val bitmap: Bitmap? = try {
-            val inputStream = File(playlistDetails.coverPath).inputStream()
-            BitmapFactory.decodeStream(inputStream)
-        } catch (e: IOException) {
-            null
-        }
 
         Glide.with(requireActivity())
-            .load(bitmap)
+            .load(playlistDetails.coverPath)
             .placeholder(R.drawable.ic_placeholder_45)
             .apply(RequestOptions().transform(CenterCrop()))
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(binding.ivCover)
 
         binding.tvPlaylistTitle.text = playlistDetails.title
@@ -225,9 +218,11 @@ class OnePlaylistFragment : BindingFragment<FragmentOnePlaylistBinding>() {
         val cornerRadiusDp =
             (requireActivity().resources.getDimension(R.dimen.corner_radius_2)).toInt()
         Glide.with(requireActivity())
-            .load(bitmap)
+            .load(playlistDetails.coverPath)
             .placeholder(R.drawable.ic_placeholder_45)
             .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(cornerRadiusDp)))
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(binding.ivPlaylistCoverMini)
         binding.tvPlaylistTitleMini.text = playlistDetails.title
         binding.tvPlaylistTracksCountMini.text = trackCountString
