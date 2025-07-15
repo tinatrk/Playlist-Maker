@@ -31,7 +31,7 @@ class PlayerPresenterTrackMapper {
     fun map(trackInfo: PlayerTrackInfo): Track {
         return Track(
             trackId = trackInfo.trackId,
-            artistName = trackInfo.trackName,
+            artistName = trackInfo.artistName,
             collectionName = trackInfo.trackName,
             trackName = trackInfo.trackName,
             artworkUrl100 = getCoverArtwork100(trackInfo.artworkUrl),

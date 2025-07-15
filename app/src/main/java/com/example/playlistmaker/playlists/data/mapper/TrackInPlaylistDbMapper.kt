@@ -6,15 +6,12 @@ import com.example.playlistmaker.app.App.Companion.DEFAULT_STRING
 import com.example.playlistmaker.app.App.Companion.UNKNOWN_ID
 import com.example.playlistmaker.playlists.data.entity.TrackInPlaylistEntity
 import com.example.playlistmaker.search.domain.models.Track
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class TrackInPlaylistDbMapper {
     fun map(track: Track): TrackInPlaylistEntity {
         return TrackInPlaylistEntity(
             trackId = track.trackId,
-            artistName = track.trackName,
+            artistName = track.artistName,
             collectionName = track.collectionName,
             trackName = track.trackName,
             artworkUrl100 = track.artworkUrl100,
@@ -23,14 +20,13 @@ class TrackInPlaylistDbMapper {
             primaryGenreName = track.primaryGenreName,
             releaseDate = track.releaseDate,
             previewUrl = track.previewUrl,
-            dataOfAppearanceInDB = getCurData()
         )
     }
 
     fun map(track: TrackInPlaylistEntity): Track {
         return Track(
             trackId = track.trackId,
-            artistName = track.trackName,
+            artistName = track.artistName,
             collectionName = track.collectionName,
             trackName = track.trackName,
             artworkUrl100 = track.artworkUrl100,
@@ -40,12 +36,6 @@ class TrackInPlaylistDbMapper {
             releaseDate = track.releaseDate,
             previewUrl = track.previewUrl
         )
-    }
-
-    private fun getCurData(): String {
-        val formatter = SimpleDateFormat(DATE_PATTERN, Locale.getDefault())
-        val curDate = formatter.format(Date())
-        return curDate
     }
 
     companion object {
@@ -63,8 +53,6 @@ class TrackInPlaylistDbMapper {
                 previewUrl = DEFAULT_LINK
             )
         }
-
-        private const val DATE_PATTERN = "yyyy-MM-dd HH:mm:ss"
     }
 
 }

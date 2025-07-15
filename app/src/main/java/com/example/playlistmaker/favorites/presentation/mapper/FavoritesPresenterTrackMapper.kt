@@ -10,11 +10,11 @@ import java.util.Locale
 class FavoritesPresenterTrackMapper {
     fun map(track: Track): FavoritesTrackInfo {
         return FavoritesTrackInfo(
-            track.trackId,
-            track.artistName,
-            track.trackName,
-            track.artworkUrl100,
-            getTrackTimeString(track.trackTimeMillis),
+            trackId = track.trackId,
+            artistName = track.artistName,
+            trackName = track.trackName,
+            artworkUrl = track.artworkUrl100,
+            trackTime = getTrackTimeString(track.trackTimeMillis),
         )
     }
 

@@ -10,16 +10,16 @@ import com.example.playlistmaker.search.domain.models.Track
 class SearchRepositoryTrackMapper {
     fun map(trackDto: TrackDto): Track {
         return Track(
-            trackDto.trackId ?: UNKNOWN_ID,
-            trackDto.artistName ?: DEFAULT_STRING,
-            trackDto.collectionName ?: DEFAULT_STRING,
-            trackDto.trackName ?: DEFAULT_STRING,
-            trackDto.artworkUrl100 ?: DEFAULT_LINK,
-            trackDto.trackTimeMillis ?: DEFAULT_INT,
-            trackDto.country ?: DEFAULT_STRING,
-            trackDto.primaryGenreName ?: DEFAULT_STRING,
-            trackDto.releaseDate ?: DEFAULT_STRING,
-            trackDto.previewUrl ?: DEFAULT_LINK
+            trackId = trackDto.trackId ?: UNKNOWN_ID,
+            artistName = trackDto.artistName ?: DEFAULT_STRING,
+            collectionName = trackDto.collectionName ?: DEFAULT_STRING,
+            trackName = trackDto.trackName ?: DEFAULT_STRING,
+            artworkUrl100 = trackDto.artworkUrl100 ?: DEFAULT_LINK,
+            trackTimeMillis = trackDto.trackTimeMillis ?: DEFAULT_INT,
+            country = trackDto.country ?: DEFAULT_STRING,
+            primaryGenreName = trackDto.primaryGenreName ?: DEFAULT_STRING,
+            releaseDate = trackDto.releaseDate ?: DEFAULT_STRING,
+            previewUrl = trackDto.previewUrl ?: DEFAULT_LINK
         )
     }
 }

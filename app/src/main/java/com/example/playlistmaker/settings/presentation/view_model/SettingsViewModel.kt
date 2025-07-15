@@ -24,7 +24,7 @@ class SettingsViewModel(
     }
 
     fun shareApp(shareAppLink: String) {
-        externalNavigatorInteractor.shareApp(shareAppLink)
+        externalNavigatorInteractor.shareLink(shareAppLink)
     }
 
     fun openSupport(targetMail: String, subjectMail: String, messageMail: String) {

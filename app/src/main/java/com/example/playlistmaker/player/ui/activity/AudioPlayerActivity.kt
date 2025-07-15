@@ -2,7 +2,6 @@ package com.example.playlistmaker.player.ui.activity
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -23,10 +22,10 @@ import com.example.playlistmaker.player.presentation.model.PlayerScreenState
 import com.example.playlistmaker.player.presentation.model.PlayerTrackInfo
 import com.example.playlistmaker.player.presentation.model.PlaylistsState
 import com.example.playlistmaker.player.presentation.view_model.PlayerViewModel
-import com.example.playlistmaker.player.ui.activity.adapter.PlaylistAdapterVertical
+import com.example.playlistmaker.player.ui.adapter.PlaylistAdapterVertical
 import com.example.playlistmaker.playlists.domain.models.Playlist
 import com.example.playlistmaker.playlists.presentation.models.AddingTrackToPlaylistState
-import com.example.playlistmaker.playlists.ui.fragment.CreatePlaylistFragment
+import com.example.playlistmaker.playlists.ui.fragment.ModifyPlaylistFragment
 import com.example.playlistmaker.search.domain.models.Track
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
@@ -107,10 +106,10 @@ class AudioPlayerActivity : AppCompatActivity() {
             }
         })
 
-        binding.btnCreatePlaylist.setOnClickListener {
+        binding.btnModifyPlaylist.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             supportFragmentManager.commit {
-                add(R.id.player_fragment_container, CreatePlaylistFragment.newInstance())
+                add(R.id.player_fragment_container, ModifyPlaylistFragment.newInstance(UNKNOWN_ID))
                 setReorderingAllowed(true)
                 addToBackStack(null)
             }
@@ -252,9 +251,9 @@ class AudioPlayerActivity : AppCompatActivity() {
         setTrackContent(trackInfo)
         binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
         binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
-        Toast.makeText(
-            this,
-            getString(R.string.message_something_went_wrong), Toast.LENGTH_LONG
+        Snackbar.make(
+            binding.ibtnPlayPlayer,
+            getString(R.string.message_something_went_wrong), Snackbar.LENGTH_LONG
         ).show()
     }
 

@@ -10,7 +10,7 @@ class ExternalNavigatorInteractorImpl(private val externalNavigator: ExternalNav
         externalNavigator.openUrl(url)
     }
 
-    override fun shareApp(link: String) {
+    override fun shareLink(link: String) {
         externalNavigator.shareLink(link)
     }
 

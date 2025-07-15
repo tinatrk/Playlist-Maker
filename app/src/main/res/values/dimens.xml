@@ -5,8 +5,10 @@
     <dimen name="text_size_13">13sp</dimen>
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
     <dimen name="text_size_19">19sp</dimen>
     <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
     <dimen name="letter_spacing_0">0</dimen>
 
     <dimen name="edit_text_search_height_36">36dp</dimen>
@@ -33,6 +35,7 @@
 
     <dimen name="indentation_1">1dp</dimen>
     <dimen name="indentation_4">4dp</dimen>
+    <dimen name="indentation_6">6dp</dimen>
     <dimen name="indentation_8">8dp</dimen>
     <dimen name="indentation_10">10dp</dimen>
     <dimen name="indentation_12">12dp</dimen>
@@ -44,9 +47,12 @@
     <dimen name="indentation_24">24dp</dimen>
     <dimen name="indentation_26">26dp</dimen>
     <dimen name="indentation_28">28dp</dimen>
+    <dimen name="indentation_29">29dp</dimen>
     <dimen name="indentation_30">30dp</dimen>
     <dimen name="indentation_32">32dp</dimen>
+    <dimen name="indentation_36">36dp</dimen>
     <dimen name="indentation_39">39dp</dimen>
+    <dimen name="indentation_40">40dp</dimen>
     <dimen name="indentation_42">42dp</dimen>
     <dimen name="indentation_46">46dp</dimen>
     <dimen name="indentation_54">54dp</dimen>
@@ -63,5 +69,7 @@
     <dimen name="corner_radius_69">69dp</dimen>
 
     <dimen name="line_width_1">1dp</dimen>
+
+    <dimen name="bottom_sheet_tracks_indentation">174dp</dimen>
 
 </resources>

@@ -85,15 +85,14 @@ class TrackRepositoryImpl(
     }
 
     private suspend fun markFavoriteTracks(tracks: List<Track>): List<Track> {
-        val ids = appDatabase.trackDao().getAllTrackId()
-        if (ids.isEmpty())
+        val favoriteTrackIds = appDatabase.trackDao().getAllTrackId()
+        if (favoriteTrackIds.isEmpty())
             return tracks
         val markedTracks: MutableList<Track> = mutableListOf()
         for (i in tracks.indices) {
-            markedTracks.add(tracks[i].copy(isFavorite = ids.contains(tracks[i].trackId)))
+            markedTracks.add(tracks[i].copy(isFavorite = favoriteTrackIds.contains(tracks[i].trackId)))
         }
         return markedTracks
-
     }
 
     companion object {

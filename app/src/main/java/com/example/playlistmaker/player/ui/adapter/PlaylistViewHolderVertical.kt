@@ -1,9 +1,10 @@
-package com.example.playlistmaker.player.ui.activity.adapter
+package com.example.playlistmaker.player.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -22,6 +23,8 @@ class PlaylistViewHolderVertical(
             .load(playlist.coverPath)
             .placeholder(R.drawable.ic_placeholder_45)
             .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(cornerRadiusDp)))
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(binding.ivPlaylistCover)
 
         binding.tvPlaylistTitle.text = playlist.title
@@ -31,13 +34,13 @@ class PlaylistViewHolderVertical(
     private fun getTrackPlurals(trackCount: Int): String {
         return when {
             (trackCount % 10 == 1) ->
-                "$trackCount ${itemView.resources.getString(R.string.playlist_one_track)}"
+                "$trackCount ${itemView.resources.getString(R.string.one_track)}"
 
             (trackCount % 10 in 2..4) ->
-                "$trackCount ${itemView.resources.getString(R.string.playlist_few_tracks)}"
+                "$trackCount ${itemView.resources.getString(R.string.few_tracks)}"
 
             else ->
-                "$trackCount ${itemView.resources.getString(R.string.playlist_other_tracks)}"
+                "$trackCount ${itemView.resources.getString(R.string.other_tracks)}"
         }
     }
 }

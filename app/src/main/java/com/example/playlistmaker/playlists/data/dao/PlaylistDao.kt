@@ -22,6 +22,9 @@ interface PlaylistDao {
     @Query("SELECT title FROM playlists_table")
     suspend fun getAllPlaylistsTitles(): List<String>
 
+    @Query("SELECT title FROM playlists_table WHERE id != :playlistId")
+    suspend fun getAllPlaylistsTitlesExceptOne(playlistId: Int): List<String>
+
     @Query("SELECT * FROM playlists_table WHERE id = :playlistId")
     suspend fun getPlaylistById(playlistId: Int): PlaylistEntity?
 

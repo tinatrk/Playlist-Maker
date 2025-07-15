@@ -13,7 +13,13 @@ interface PlaylistInteractor {
 
     suspend fun addNewTrackToPlaylist(playlist: Playlist, track: Track)
 
-    suspend fun deleteTrackFromPlaylist(playlist: Playlist, track: Track)
+    suspend fun deleteTrackFromPlaylist(playlist: Playlist, trackId: Int)
 
-    fun checkPlaylistExistence(playlistTitle: String): Flow<Boolean>
+    fun checkPlaylistExistence(playlistTitle: String, playlistId: Int): Flow<Boolean>
+
+    fun getPlaylistById(playlistId: Int): Flow<Playlist>
+
+    fun getTracksByIds(tracksIds: List<Int>): Flow<List<Track>>
+
+    suspend fun updatePlaylist(playlist: Playlist)
 }

@@ -158,6 +158,17 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="TextRegular18BaseStyle" parent="TextRegular11BaseStyle">
+        <item name="android:textSize">@dimen/text_size_18</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextRegular18ColorStyle" parent="TextRegular18BaseStyle">
+        <item name="android:textColor">@color/gray_900</item>
+        <item name="drawableTint">@color/gray_900</item>
+    </style>
+
     <style name="TextMedium19BaseStyle" parent="TextMedium14BaseStyle">
         <item name="android:textSize">@dimen/text_size_19</item>
         <item name="android:gravity">center</item>
@@ -173,6 +184,17 @@
 
     <style name="TextMedium22ColorOnPrimaryStyle" parent="TextMedium22BaseStyle">
         <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="TextBold24BaseStyle" parent="TextRegular11BaseStyle">
+        <item name="android:fontFamily">@font/ys_display_bold</item>
+        <item name="android:textSize">@dimen/text_size_24</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextBold24ColorStyle" parent="TextBold24BaseStyle">
+        <item name="android:textColor">@color/gray_900</item>
     </style>
 
     <style name="EditTextBaseStyle" parent="Widget.AppCompat.EditText">
@@ -245,25 +267,6 @@
         <item name="cursorColor">@color/blue_700</item>
     </style>
 
-    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@color/white</item>
-        <item name="android:textColor">@color/gray_900</item>
-        <item name="buttonBarNeutralButtonStyle">@style/NeutralBtnStyle</item>
-        <item name="buttonBarPositiveButtonStyle">@style/PositiveBtnStyle</item>
-    </style>
-
-    <style name="PositiveBtnStyle">
-        <item name="android:backgroundTint">@color/blue_700</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textAppearance">@style/TextRegular16BaseStyle</item>
-    </style>
-
-    <style name="NeutralBtnStyle">
-        <item name="android:backgroundTint">@color/gray_900</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textAppearance">@style/TextRegular16BaseStyle</item>
-    </style>
-
     <style name="snackbar_style" parent="@style/Widget.MaterialComponents.Snackbar">
         <item name="android:layout_marginHorizontal">@dimen/indentation_8</item>
         <item name="android:background">?attr/colorOnPrimary</item>
@@ -273,6 +276,46 @@
     <style name="snackbar_text_style" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
         <item name="android:textAppearance">@style/TextRegular14ColorPrimaryStyle</item>
         <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="MaterialDialogTheme" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/white</item>
+        <item name="buttonBarPositiveButtonStyle">@style/MaterialAlertDialog.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/MaterialAlertDialog.Button</item>
+        <item name="buttonBarNeutralButtonStyle">@style/MaterialAlertDialog.Button</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.Body.Text</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Title.Text</item>
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.Style</item>
+    </style>
+
+    <style name="MaterialAlertDialog.Style" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="shapeAppearance">@style/ShapeAppearance.Style</item>
+        <item name="backgroundInsetStart">@dimen/indentation_40</item>
+        <item name="backgroundInsetEnd">@dimen/indentation_40</item>
+    </style>
+
+    <style name="ShapeAppearance.Style" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">@dimen/corner_radius_4</item>
+    </style>
+
+    <style name="MaterialAlertDialog.Button" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/blue_700</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="MaterialAlertDialog.Body.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/gray_900</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:minHeight">@dimen/indentation_20</item>
+        <item name="android:lines">2</item>
+    </style>
+
+    <style name="MaterialAlertDialog.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/gray_900</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
     </style>
 
 </resources>

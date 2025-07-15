@@ -2,26 +2,26 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/create_playlist_screen"
+    android:id="@+id/modify_playlist_screen"
     style="@style/ScreenCommonStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".playlists.ui.fragment.CreatePlaylistFragment">
+    tools:context=".playlists.ui.fragment.ModifyPlaylistFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_create_playlist_screen"
+            android:id="@+id/toolbar_modify_playlist_screen"
             style="@style/ToolbarWithIconColorOnPrimaryStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height_56"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/create_screen_title" />
+            app:title="@string/create_playlist_screen_title" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group_add_cover"
@@ -42,7 +42,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTag="iv_add_cover"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_create_playlist_screen" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar_modify_playlist_screen" />
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -87,7 +87,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btn_create_playlist"
+            android:id="@+id/btn_modify_playlist"
             style="@style/BtnPlaylistColorStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/create_playlist_btn_size_44"

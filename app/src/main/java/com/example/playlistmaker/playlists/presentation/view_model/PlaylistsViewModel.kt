@@ -3,8 +3,6 @@ package com.example.playlistmaker.playlists.presentation.view_model
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.playlists.domain.api.interactor.PlaylistInteractor
-import com.example.playlistmaker.playlists.domain.models.Playlist
-import com.example.playlistmaker.playlists.presentation.mapper.PlaylistInfoMapper
 import com.example.playlistmaker.playlists.presentation.models.PlaylistsScreenState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,8 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PlaylistsViewModel(
-    private val playlistInteractor: PlaylistInteractor,
-    private val playlistMapper: PlaylistInfoMapper
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
     private val _screenStateFlow =
         MutableStateFlow<PlaylistsScreenState>(PlaylistsScreenState.Loading)
@@ -37,13 +34,6 @@ class PlaylistsViewModel(
     private fun renderState(state: PlaylistsScreenState) {
         _screenStateFlow.update {
             state
-        }
-    }
-
-    fun deletePlaylist(playlist: Playlist) {
-        viewModelScope.launch {
-            playlistInteractor.deletePlaylist(playlist)
-            updatePlaylists()
         }
     }
 }
