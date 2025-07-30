@@ -79,7 +79,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             viewModel.onFavoriteClicked()
         }
 
-        binding.ibtnPlayPlayer.setOnClickListener {
+        binding.btnPlayPlayer.setOnClickListener {
             viewModel.playerControl()
         }
 
@@ -223,36 +223,35 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun showNotPreparedPlayer(trackInfo: PlayerTrackInfo, curPlayerPosition: String) {
         setTrackContent(trackInfo)
-        binding.ibtnPlayPlayer.isEnabled = false
-        binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
+        binding.btnPlayPlayer.isEnabled = false
+        binding.btnPlayPlayer.setPlayingState(isPlaying = false)
         binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
     }
 
     private fun showPreparedPlayer(trackInfo: PlayerTrackInfo, curPlayerPosition: String) {
         setTrackContent(trackInfo)
-        binding.ibtnPlayPlayer.isEnabled = true
-        binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
+        binding.btnPlayPlayer.isEnabled = true
+        binding.btnPlayPlayer.setPlayingState(isPlaying = false)
         binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
     }
 
     private fun showPlayingPlayer(trackInfo: PlayerTrackInfo, curPlayerPosition: String) {
         setTrackContent(trackInfo)
-        binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_pause_84)
         binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
     }
 
     private fun showPausedPlayer(trackInfo: PlayerTrackInfo, curPlayerPosition: String) {
         setTrackContent(trackInfo)
-        binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
+        binding.btnPlayPlayer.setPlayingState(isPlaying = false)
         binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
     }
 
     private fun showPlayerError(trackInfo: PlayerTrackInfo, curPlayerPosition: String) {
         setTrackContent(trackInfo)
-        binding.ibtnPlayPlayer.setImageResource(R.drawable.ic_play_84)
+        binding.btnPlayPlayer.setPlayingState(isPlaying = false)
         binding.tvTrackCurrentTimePlayer.text = curPlayerPosition
         Snackbar.make(
-            binding.ibtnPlayPlayer,
+            binding.btnPlayPlayer,
             getString(R.string.message_something_went_wrong), Snackbar.LENGTH_LONG
         ).show()
     }

@@ -71,7 +71,7 @@
             android:layout_marginBottom="@dimen/indentation_30"
             android:ellipsize="end"
             android:maxLines="1"
-            app:layout_constraintBottom_toTopOf="@id/ibtn_play_player"
+            app:layout_constraintBottom_toTopOf="@id/btn_play_player"
             app:layout_constraintEnd_toEndOf="@id/right_border_player"
             app:layout_constraintStart_toStartOf="@id/left_border_player"
             tools:text="The Beatles The Beatles The Beatles The Beatles The Beatles The Beatles" />
@@ -84,25 +84,26 @@
             android:clickable="true"
             android:contentDescription="@string/btn_add_track_to_playlist_desc"
             android:src="@drawable/ic_playlist_23"
-            app:layout_constraintBottom_toBottomOf="@id/ibtn_play_player"
-            app:layout_constraintEnd_toStartOf="@id/ibtn_play_player"
+            app:layout_constraintBottom_toBottomOf="@id/btn_play_player"
+            app:layout_constraintEnd_toStartOf="@id/btn_play_player"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="@id/left_border_player"
-            app:layout_constraintTop_toTopOf="@id/ibtn_play_player" />
+            app:layout_constraintTop_toTopOf="@id/btn_play_player" />
 
-        <ImageButton
-            android:id="@+id/ibtn_play_player"
+        <com.example.playlistmaker.util.PlaybackButtonView
+            android:id="@+id/btn_play_player"
             android:layout_width="@dimen/btn_play_player_size_100"
             android:layout_height="@dimen/btn_play_player_size_100"
-            android:background="@null"
             android:clickable="true"
             android:contentDescription="@string/btn_play_desc"
-            android:src="@drawable/ic_play_84"
+            android:foreground="?attr/selectableItemBackground"
             app:layout_constraintBottom_toTopOf="@id/tv_track_current_time_player"
             app:layout_constraintEnd_toStartOf="@id/ibtn_like_player"
             app:layout_constraintStart_toEndOf="@id/ibtn_add_track_to_playlist_player"
             app:layout_constraintVertical_chainStyle="packed"
-            app:tint="?attr/colorOnPrimary" />
+            app:pauseImageResId="@drawable/ic_pause_84"
+            app:playImageResId="@drawable/ic_play_84"
+            app:tintColorId="?attr/colorOnPrimary" />
 
         <ImageButton
             android:id="@+id/ibtn_like_player"
@@ -113,10 +114,10 @@
             android:contentDescription="@string/btn_add_track_to_favorite_desc"
             android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/ic_like_selector_23"
-            app:layout_constraintBottom_toBottomOf="@id/ibtn_play_player"
+            app:layout_constraintBottom_toBottomOf="@id/btn_play_player"
             app:layout_constraintEnd_toEndOf="@id/right_border_player"
-            app:layout_constraintStart_toEndOf="@id/ibtn_play_player"
-            app:layout_constraintTop_toTopOf="@id/ibtn_play_player" />
+            app:layout_constraintStart_toEndOf="@id/btn_play_player"
+            app:layout_constraintTop_toTopOf="@id/btn_play_player" />
 
         <TextView
             android:id="@+id/tv_track_current_time_player"
