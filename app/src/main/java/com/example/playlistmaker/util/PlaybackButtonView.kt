@@ -68,8 +68,10 @@ class PlaybackButtonView @JvmOverloads constructor(
         when (event.action) {
             MotionEvent.ACTION_DOWN -> return true
             MotionEvent.ACTION_UP -> {
-                changeCurState()
-                performClick()
+                if (this.isEnabled) {
+                    changeCurState()
+                    performClick()
+                }
                 return true
             }
         }

@@ -90,13 +90,14 @@
     <string name="back_message">Все несохраненные данные будут потеряны</string>
     <string name="back_ok">Завершить</string>
     <string name="back_cancel">Отмена</string>
-    <string name="permission_title">Перейти в настройки приложения?</string>
-    <string name="permission_message">Для загрузки фото необходимо предоставить разрешение</string>
+    <string name="permission_open_app_setting_title">Перейти в настройки приложения?</string>
+    <string name="permission_read_media_images_message">Для загрузки фото необходимо предоставить разрешение</string>
+    <string name="permission_notifications_message">Для проигрывания трека необходимо разрешение на показ уведомлений</string>
     <string name="permission_ok">Перейти</string>
     <string name="permission_cancel">Отмена</string>
-    <string name="toast_playlist">Плейлист</string>
-    <string name="toast_created">создан</string>
-    <string name="toast_already_exists">уже существует</string>
+    <string name="snackbar_playlist">Плейлист</string>
+    <string name="snackbar_created">создан</string>
+    <string name="snackbar_already_exists">уже существует</string>
 
     <string name="playlist_title_test">Музыка для хорошего вечера</string>
     <string name="playlist_tracks_count_test">5 треков</string>
@@ -104,8 +105,8 @@
     <string name="menu_item_delete">Удалить</string>
 
     <string name="bottom_sheet_player_title">Добавить в плейлист</string>
-    <string name="toast_success_adding_track_to_playlist">Добавлено в плейлист</string>
-    <string name="toast_track_already_exists_in_playlist">Трек уже добавлен в плейлист</string>
+    <string name="snackbar_success_adding_track_to_playlist">Добавлено в плейлист</string>
+    <string name="snackbar_track_already_exists_in_playlist">Трек уже добавлен в плейлист</string>
 
     <string name="zero_tracks">треков</string>
     <string name="one_track">трек</string>
@@ -144,11 +145,17 @@
     <string name="question">\"\?</string>
     <string name="dialog_btn_yes">Да</string>
     <string name="dialog_btn_no">Нет</string>
-    <string name="toast_nothing_tracks_for_sharing_playlist">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="snackbar_nothing_tracks_for_sharing_playlist">В этом плейлисте нет списка треков, которым можно поделиться</string>
 
     <string name="btn_save_playlist">Сохранить</string>
-    <string name="toast_playlist_without_changes">Нет изменений для сохранения</string>
+    <string name="snackbar_playlist_without_changes">Нет изменений для сохранения</string>
     <string name="empty_playlist_track_list_message">В этом плейлисте нет треков</string>
 
+    <string name="snackbar_no_network_connection">Отсутствует подключение к интернету</string>
+
+    <string name="snackbar_no_notification_permission">Для проигрывания трека необходимо разрешение на показ уведомлений</string>
+    <string name="snackbar_action_open_settings">Настройки</string>
+    <string name="player_notification_channel_description">Channel for playing music</string>
+    <string name="snackbar_reload_screen_after_permission">Разрешение дано. Перезапустите экран</string>
 
 </resources>

@@ -6,8 +6,6 @@ import com.example.playlistmaker.app.App.Companion.DI_SETTINGS_SP_NAME
 import com.example.playlistmaker.favorites.data.impl.FavoritesRepositoryImpl
 import com.example.playlistmaker.favorites.data.mapper.TrackDbMapper
 import com.example.playlistmaker.favorites.domain.api.repository.FavoritesRepository
-import com.example.playlistmaker.player.data.impl.AudioPlayerRepositoryImpl
-import com.example.playlistmaker.player.domain.api.repository.AudioPlayerRepository
 import com.example.playlistmaker.playlists.data.impl.PlaylistRepositoryImpl
 import com.example.playlistmaker.playlists.data.mapper.PlaylistDbMapper
 import com.example.playlistmaker.playlists.data.mapper.TrackInPlaylistDbMapper
@@ -45,10 +43,6 @@ val repositoryModule = module {
 
     single<ExternalNavigator> {
         ExternalNavigatorImpl(androidApplication())
-    }
-
-    single<AudioPlayerRepository> {
-        AudioPlayerRepositoryImpl(mediaPlayer = get())
     }
 
     factory {
