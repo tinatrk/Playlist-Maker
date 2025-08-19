@@ -91,6 +91,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var serviceIntent: Intent
+
     private val requester = PermissionRequester.instance()
     private lateinit var permissionDialog: MaterialAlertDialogBuilder
 
@@ -126,6 +128,12 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.rvPlaylists.adapter = playlistAdapter
 
         track = args.track
+
+        serviceIntent = Intent(this, PlayerService::class.java).apply {
+            putExtra(MEDIA_PLAYER_INTENT_TRACK_URL_KEY, track.previewUrl)
+            putExtra(MEDIA_PLAYER_INTENT_TRACK_ARTIST_NAME_KEY, track.artistName)
+            putExtra(MEDIA_PLAYER_INTENT_TRACK_TITLE_KEY, track.trackName)
+        }
 
         binding.toolbarAudioPlayerScreen.setNavigationOnClickListener {
             finish()
@@ -196,8 +204,6 @@ class AudioPlayerActivity : AppCompatActivity() {
                 ).show()
             }
         }
-
-        requestNotificationPermissionAndBindService()
     }
 
     private fun renderState(playerState: PlayerScreenState) {
@@ -354,12 +360,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun bindPlayerService() {
-        val intent = Intent(this, PlayerService::class.java).apply {
-            putExtra(MEDIA_PLAYER_INTENT_TRACK_URL_KEY, track.previewUrl)
-            putExtra(MEDIA_PLAYER_INTENT_TRACK_ARTIST_NAME_KEY, track.artistName)
-            putExtra(MEDIA_PLAYER_INTENT_TRACK_TITLE_KEY, track.trackName)
-        }
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
     }
 
     private fun requestNotificationPermissionAndBindService() {
@@ -400,6 +401,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        requestNotificationPermissionAndBindService()
         viewModel.onComponentStart()
     }
 
@@ -411,15 +413,16 @@ class AudioPlayerActivity : AppCompatActivity() {
         )
     }
 
+    override fun onStop() {
+        super.onStop()
+        ContextCompat.startForegroundService(this, serviceIntent)
+        viewModel.onComponentStop()
+        unBindPlayerService()
+    }
+
     override fun onPause() {
         super.onPause()
         unregisterReceiver(networkConnectionBroadcastReceiver)
-        viewModel.onComponentPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unBindPlayerService()
     }
 
     private companion object {

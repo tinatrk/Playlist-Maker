@@ -16,6 +16,7 @@ import com.example.playlistmaker.playlists.presentation.models.AddingTrackToPlay
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.util.SingleEventLiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -44,10 +45,11 @@ class PlayerViewModel(
         addingTrackToPlaylistState
 
     private var mediaPlayerControl: MediaPlayerControl? = null
+    private var mediaPlayerControlJob: Job? = null
 
     fun setMediaPlayerControl(mediaPlayerControl: MediaPlayerControl) {
         this.mediaPlayerControl = mediaPlayerControl
-        viewModelScope.launch {
+        mediaPlayerControlJob = viewModelScope.launch {
             mediaPlayerControl.getPlayerState().collect { newPlayerState ->
                 _playerScreenStateFlow.update {
                     it.copy(
@@ -60,6 +62,7 @@ class PlayerViewModel(
     }
 
     fun removeMediaPlayerControl() {
+        mediaPlayerControlJob?.cancel()
         mediaPlayerControl = null
     }
 
@@ -77,18 +80,23 @@ class PlayerViewModel(
         }
     }
 
-    fun onComponentPause() {
+    fun onComponentStop() {
         if (playerScreenStateFlow.value.playerState is PlayerState.Playing)
             mediaPlayerControl?.startForeground()
     }
 
     fun onComponentStart() {
+        stopForeground()
+    }
+
+    private fun stopForeground() {
         if (playerScreenStateFlow.value.playerState is PlayerState.Playing)
             mediaPlayerControl?.stopForeground()
     }
 
     override fun onCleared() {
         super.onCleared()
+        stopForeground()
         mediaPlayerControl = null
     }
 

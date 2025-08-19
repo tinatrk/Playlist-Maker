@@ -62,23 +62,6 @@ class PlayerService : Service(), MediaPlayerControl {
         return binder
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        releasePlayer()
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return super.onStartCommand(intent, flags, startId)
-    }
-
-    override fun onRebind(intent: Intent?) {
-        super.onRebind(intent)
-    }
-
-    override fun onUnbind(intent: Intent?): Boolean {
-        return super.onUnbind(intent)
-    }
-
     private fun initMediaPlayer() {
         if (trackUrl.isEmpty()) return
 
@@ -173,6 +156,7 @@ class PlayerService : Service(), MediaPlayerControl {
 
     override fun stopForeground() {
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+        stopSelf()
     }
 
     private fun checkPermissions(): Boolean {
@@ -188,6 +172,11 @@ class PlayerService : Service(), MediaPlayerControl {
 
     inner class PlayerServiceBinder : Binder() {
         fun getService(): PlayerService = this@PlayerService
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        releasePlayer()
     }
 
     private companion object {
