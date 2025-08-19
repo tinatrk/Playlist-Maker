@@ -1,20 +1,26 @@
 package com.example.playlistmaker.search.ui.fragment
 
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
+import com.example.playlistmaker.app.App.Companion.NETWORK_CONNECTIVITY_CHANGED_ACTION
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.search.domain.models.ErrorType
 import com.example.playlistmaker.search.domain.models.Track
@@ -23,7 +29,10 @@ import com.example.playlistmaker.search.presentation.view_model.SearchViewModel
 import com.example.playlistmaker.search.ui.adapter.TrackAdapter
 import com.example.playlistmaker.search.ui.model.ErrorInfo
 import com.example.playlistmaker.util.BindingFragment
-import kotlinx.coroutines.flow.collect
+import com.example.playlistmaker.util.NetworkConnectionBroadcastReceiver
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.markodevcic.peko.PermissionRequester
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,6 +44,18 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
 
+    private val networkConnectionBroadcastReceiver = object : NetworkConnectionBroadcastReceiver() {
+        override fun showNetworkConnectionLack() {
+            Snackbar.make(
+                binding.root,
+                getString(R.string.snackbar_no_network_connection),
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+    }
+    private val requester = PermissionRequester.instance()
+    private lateinit var permissionDialog: MaterialAlertDialogBuilder
+
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -44,6 +65,14 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        permissionDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.permission_open_app_setting_title))
+            .setMessage(getString(R.string.permission_notifications_message))
+            .setNeutralButton(getString(R.string.permission_cancel)) { dialog, which -> }
+            .setPositiveButton(getString(R.string.permission_ok)) { dialog, which ->
+                openAppSettings()
+            }
 
         initHistoryAdapter()
 
@@ -90,7 +119,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             viewModel.searchTrack()
         }
 
-        //viewModel.observeScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.screenStateFlow.collect { state ->
                 renderState(state)
@@ -284,10 +312,32 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
     }
 
+    private fun openAppSettings() {
+        val intent =
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.data =
+            Uri.fromParts(INTENT_SETTINGS_SCHEME, requireContext().packageName, null)
+        requireContext().startActivity(intent)
+    }
+
     override fun onStart() {
         super.onStart()
         viewModel.updateSearchResults()
         viewModel.updateHistory()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ContextCompat.registerReceiver(
+            requireContext(), networkConnectionBroadcastReceiver,
+            IntentFilter(NETWORK_CONNECTIVITY_CHANGED_ACTION), ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireContext().unregisterReceiver(networkConnectionBroadcastReceiver)
     }
 
     override fun onDestroyView() {
@@ -299,5 +349,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private companion object {
         const val STRING_DEF_VALUE = ""
+        const val INTENT_SETTINGS_SCHEME = "package"
     }
 }

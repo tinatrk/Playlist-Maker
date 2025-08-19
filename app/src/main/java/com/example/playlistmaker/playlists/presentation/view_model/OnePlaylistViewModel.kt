@@ -127,7 +127,7 @@ class OnePlaylistViewModel(
 
     fun sharePlaylist() {
         if (playlist.tracksIds.isEmpty()) toastLiveData.value =
-            resourceProvider.getString(R.string.toast_nothing_tracks_for_sharing_playlist)
+            resourceProvider.getString(R.string.snackbar_nothing_tracks_for_sharing_playlist)
         else {
             externalNavigatorInteractor.shareLink(getMessageForSharing())
         }

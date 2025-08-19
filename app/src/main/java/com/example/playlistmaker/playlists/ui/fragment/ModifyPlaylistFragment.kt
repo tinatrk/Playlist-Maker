@@ -105,8 +105,8 @@ open class ModifyPlaylistFragment : BindingFragment<FragmentModifyPlaylistBindin
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backCallback)
 
         permissionDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(requireContext().getString(R.string.permission_title))
-            .setMessage(requireContext().getString(R.string.permission_message))
+            .setTitle(requireContext().getString(R.string.permission_open_app_setting_title))
+            .setMessage(requireContext().getString(R.string.permission_read_media_images_message))
             .setNeutralButton(requireContext().getString(R.string.permission_cancel)) { dialog, which -> }
             .setPositiveButton(requireContext().getString(R.string.permission_ok)) { dialog, which ->
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
@@ -162,8 +162,8 @@ open class ModifyPlaylistFragment : BindingFragment<FragmentModifyPlaylistBindin
 
                     Snackbar.make(
                         binding.btnModifyPlaylist,
-                        "${requireActivity().getString(R.string.toast_playlist)} " +
-                                "${state.playlistTitle} ${requireActivity().getString(R.string.toast_created)}",
+                        "${requireActivity().getString(R.string.snackbar_playlist)} " +
+                                "${state.playlistTitle} ${requireActivity().getString(R.string.snackbar_created)}",
                         Snackbar.LENGTH_LONG
                     ).show()
 
@@ -173,8 +173,8 @@ open class ModifyPlaylistFragment : BindingFragment<FragmentModifyPlaylistBindin
                 is PlaylistModificationState.AlreadyExists -> {
                     Snackbar.make(
                         binding.btnModifyPlaylist,
-                        "${requireActivity().getString(R.string.toast_playlist)} " +
-                                "${state.playlistTitle} ${requireActivity().getString(R.string.toast_already_exists)}",
+                        "${requireActivity().getString(R.string.snackbar_playlist)} " +
+                                "${state.playlistTitle} ${requireActivity().getString(R.string.snackbar_already_exists)}",
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
@@ -186,7 +186,7 @@ open class ModifyPlaylistFragment : BindingFragment<FragmentModifyPlaylistBindin
 
                 is PlaylistModificationState.NothingChanged -> Snackbar.make(
                     binding.btnModifyPlaylist,
-                    requireActivity().getString(R.string.toast_playlist_without_changes),
+                    requireActivity().getString(R.string.snackbar_playlist_without_changes),
                     Snackbar.LENGTH_LONG
                 ).show()
             }

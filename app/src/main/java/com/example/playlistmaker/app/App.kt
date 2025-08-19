@@ -38,5 +38,9 @@ class App : Application() {
         const val DEFAULT_INT = -1
         const val EMPTY_STRING = ""
         const val EXTERNAL_STORAGE_NAME = "playlist_maker"
+        const val NETWORK_CONNECTIVITY_CHANGED_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
+        const val MEDIA_PLAYER_INTENT_TRACK_URL_KEY = "track_url"
+        const val MEDIA_PLAYER_INTENT_TRACK_ARTIST_NAME_KEY = "track_artist_name"
+        const val MEDIA_PLAYER_INTENT_TRACK_TITLE_KEY = "track_title"
     }
 }

@@ -310,7 +310,7 @@
         <item name="android:textColor">@color/gray_900</item>
         <item name="android:singleLine">false</item>
         <item name="android:minHeight">@dimen/indentation_20</item>
-        <item name="android:lines">2</item>
+        <item name="android:lines">3</item>
     </style>
 
     <style name="MaterialAlertDialog.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">

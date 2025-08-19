@@ -1,7 +1,6 @@
 package com.example.playlistmaker.di
 
 import android.content.Context
-import android.media.MediaPlayer
 import androidx.room.Room
 import com.example.playlistmaker.app.App.Companion.DI_HISTORY_SP_NAME
 import com.example.playlistmaker.app.App.Companion.DI_SETTINGS_SP_NAME
@@ -49,10 +48,6 @@ val dataModule = module {
 
     single<NetworkClient> {
         RetrofitNetworkClient(get(), androidApplication())
-    }
-
-    factory {
-        MediaPlayer()
     }
 
     single {
