@@ -77,6 +77,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private var isPlayerServiceConnected: Boolean = false
+    private var isForegroundServiceNeeded: Boolean = false
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -214,21 +215,27 @@ class AudioPlayerActivity : AppCompatActivity() {
         else {
             when (playerState.playerState) {
                 is PlayerState.Default -> {
+                    isForegroundServiceNeeded = false
                     showNotPreparedPlayer(playerState.trackInfo, playerState.playerState)
                 }
 
                 is PlayerState.Prepared -> {
+                    isForegroundServiceNeeded = false
                     showPreparedPlayer(playerState.trackInfo, playerState.playerState)
                 }
 
                 is PlayerState.Playing -> {
+                    isForegroundServiceNeeded = true
                     showPlayingPlayer(playerState.trackInfo, playerState.playerState)
                 }
 
-                is PlayerState.Paused -> showPausedPlayer(
-                    playerState.trackInfo,
-                    playerState.playerState
-                )
+                is PlayerState.Paused -> {
+                    isForegroundServiceNeeded = false
+                    showPausedPlayer(
+                        playerState.trackInfo,
+                        playerState.playerState
+                    )
+                }
             }
 
             when (playerState.playlistsState) {
@@ -382,7 +389,9 @@ class AudioPlayerActivity : AppCompatActivity() {
                         }
                     }
             }
-        } else bindPlayerService()
+        } else {
+            bindPlayerService()
+        }
     }
 
     private fun openAppSettings() {
@@ -395,8 +404,9 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun unBindPlayerService() {
-        if (isPlayerServiceConnected)
+        if (isPlayerServiceConnected) {
             unbindService(serviceConnection)
+        }
     }
 
     override fun onStart() {
@@ -415,8 +425,10 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        ContextCompat.startForegroundService(this, serviceIntent)
-        viewModel.onComponentStop()
+        if (isForegroundServiceNeeded) {
+            ContextCompat.startForegroundService(this, serviceIntent)
+            viewModel.onComponentStop()
+        }
         unBindPlayerService()
     }
 

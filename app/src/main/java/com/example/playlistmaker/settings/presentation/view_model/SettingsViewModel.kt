@@ -11,16 +11,18 @@ class SettingsViewModel(
     private val settingsInteractor: SettingsInteractor
 ) : ViewModel() {
 
-    private val isDefaultThemeDarkLiveData = SingleEventLiveData<Boolean>()
+    private val isThemeDarkLiveData = SingleEventLiveData<Boolean>()
 
     init {
-        isDefaultThemeDarkLiveData.value = settingsInteractor.getTheme()
+        val theme = settingsInteractor.getTheme()
+        isThemeDarkLiveData.value = theme
     }
 
-    fun getIsDefaultThemeDarkLiveData(): LiveData<Boolean> = isDefaultThemeDarkLiveData
+    fun getIsThemeDarkLiveData(): LiveData<Boolean> = isThemeDarkLiveData
 
     fun changeTheme(isDarkThemeOn: Boolean) {
         settingsInteractor.setAndSaveTheme(isDarkThemeOn)
+        isThemeDarkLiveData.value = isDarkThemeOn
     }
 
     fun shareApp(shareAppLink: String) {

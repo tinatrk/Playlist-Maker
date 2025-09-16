@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -41,6 +42,7 @@ android {
 
     buildFeatures{
         viewBinding = true
+        compose = true
     }
 
     room {
@@ -71,4 +73,12 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
     implementation(libs.peko)
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.activity.compose)
+    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.androidx.runtime.livedata)
+    implementation(libs.coil.compose)
 }

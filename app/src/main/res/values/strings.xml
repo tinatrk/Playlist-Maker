@@ -158,4 +158,7 @@
     <string name="player_notification_channel_description">Channel for playing music</string>
     <string name="snackbar_reload_screen_after_permission">Разрешение дано. Перезапустите экран</string>
 
+    <string name="open_player_desc">Открыть экран с деталями трека</string>
+    <string name="placeholder_text">Placeholder</string>
+
 </resources>
