@@ -45,6 +45,8 @@ class PlayerService : Service(), MediaPlayerControl {
     private val playerState = _playerState.asStateFlow()
     private var timerJob: Job? = null
 
+    private var isServiceInForeground = false
+
     override fun onCreate() {
         super.onCreate()
         mediaPlayer = MediaPlayer()
@@ -58,7 +60,6 @@ class PlayerService : Service(), MediaPlayerControl {
         trackTitle = intent?.getStringExtra(MEDIA_PLAYER_INTENT_TRACK_TITLE_KEY) ?: EMPTY_STRING
 
         initMediaPlayer()
-
         return binder
     }
 
@@ -146,6 +147,7 @@ class PlayerService : Service(), MediaPlayerControl {
             stopSelf()
             return
         }
+        isServiceInForeground = true
         ServiceCompat.startForeground(
             this,
             SERVICE_NOTIFICATION_ID,
@@ -155,7 +157,11 @@ class PlayerService : Service(), MediaPlayerControl {
     }
 
     override fun stopForeground() {
-        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+
+        if (isServiceInForeground) {
+            isServiceInForeground = false
+            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+        }
         stopSelf()
     }
 
@@ -175,8 +181,8 @@ class PlayerService : Service(), MediaPlayerControl {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         releasePlayer()
+        super.onDestroy()
     }
 
     private companion object {

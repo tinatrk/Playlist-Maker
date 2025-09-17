@@ -1,354 +1,43 @@
 package com.example.playlistmaker.search.ui.fragment
 
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.content.res.Configuration
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.R
-import com.example.playlistmaker.app.App.Companion.NETWORK_CONNECTIVITY_CHANGED_ACTION
-import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.search.domain.models.ErrorType
+import com.example.playlistmaker.composeAppTheme.AppTheme
 import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.presentation.model.SearchScreenState
-import com.example.playlistmaker.search.presentation.view_model.SearchViewModel
-import com.example.playlistmaker.search.ui.adapter.TrackAdapter
-import com.example.playlistmaker.search.ui.model.ErrorInfo
-import com.example.playlistmaker.util.BindingFragment
-import com.example.playlistmaker.util.NetworkConnectionBroadcastReceiver
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
-import com.markodevcic.peko.PermissionRequester
-import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.example.playlistmaker.search.ui.compose.SearchScreen
 
 
-class SearchFragment : BindingFragment<FragmentSearchBinding>() {
+class SearchFragment : Fragment() {
 
-    private val viewModel: SearchViewModel by viewModel()
-
-    private lateinit var trackAdapter: TrackAdapter
-    private lateinit var historyAdapter: TrackAdapter
-
-    private val networkConnectionBroadcastReceiver = object : NetworkConnectionBroadcastReceiver() {
-        override fun showNetworkConnectionLack() {
-            Snackbar.make(
-                binding.root,
-                getString(R.string.snackbar_no_network_connection),
-                Snackbar.LENGTH_LONG
-            ).show()
-        }
-    }
-    private val requester = PermissionRequester.instance()
-    private lateinit var permissionDialog: MaterialAlertDialogBuilder
-
-    override fun createBinding(
+    override fun onCreateView(
         inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentSearchBinding {
-        return FragmentSearchBinding.inflate(inflater, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        permissionDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.permission_open_app_setting_title))
-            .setMessage(getString(R.string.permission_notifications_message))
-            .setNeutralButton(getString(R.string.permission_cancel)) { dialog, which -> }
-            .setPositiveButton(getString(R.string.permission_ok)) { dialog, which ->
-                openAppSettings()
-            }
-
-        initHistoryAdapter()
-
-        binding.clearIconSearchLine.setOnClickListener {
-            viewModel.clearSearchRequest()
-        }
-
-        binding.searchLine.setOnFocusChangeListener { _, hasFocus ->
-            viewModel.onSearchLineFocusChanged(hasFocus)
-        }
-
-        val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.onSearchLineTextChanged(s.toString())
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        }
-        binding.searchLine.addTextChangedListener(textWatcher)
-
-
-        binding.btnClearHistorySearch.setOnClickListener {
-            viewModel.clearHistory()
-        }
-
-        trackAdapter = TrackAdapter {
-            onTrackClicked(it)
-        }
-        binding.rvTrackListSearch.layoutManager = LinearLayoutManager(
-            requireContext(), LinearLayoutManager.VERTICAL, false
-        )
-        binding.rvTrackListSearch.adapter = trackAdapter
-        binding.rvTrackListSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (binding.searchLine.hasFocus())
-                    clearFocusEditText()
-            }
-        })
-
-        binding.btnErrorSearch.setOnClickListener {
-            viewModel.searchTrack()
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.screenStateFlow.collect { state ->
-                renderState(state)
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val composeView = ComposeView(requireContext())
+        composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                AppTheme {
+                    activity?.let {
+                        SearchScreen(
+                            navigateToAudioPlayerScreen = ::navigateToAudioPlayerScreen
+                        )
+                    }
+                }
             }
         }
-
-        viewModel.observeOnTrackClickedLiveData().observe(viewLifecycleOwner) { track ->
-            openPlayer(track)
-        }
+        return composeView
     }
 
-    private fun renderState(screenState: SearchScreenState){
-        when (screenState) {
-            is SearchScreenState.Default -> {
-                showDefaultState()
-            }
-
-            is SearchScreenState.EnteringRequest -> {
-                showEnteringRequest()
-            }
-
-            is SearchScreenState.Loading -> {
-                showLoading()
-            }
-
-            is SearchScreenState.Content -> {
-                showContent(screenState.tracks)
-            }
-
-            is SearchScreenState.Error -> {
-                showError(screenState.errorType)
-            }
-
-            is SearchScreenState.History -> {
-                showHistory(screenState.tracks)
-            }
-
-            is SearchScreenState.OnTrackClickedEvent -> {
-                openPlayer(screenState.track)
-            }
-        }
-    }
-
-    private fun initHistoryAdapter() {
-        historyAdapter = TrackAdapter {
-            onTrackClicked(it)
-        }
-        binding.rvHistoryListSearch.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rvHistoryListSearch.adapter = historyAdapter
-    }
-
-    private fun showDefaultState() {
-        clearFocusEditText()
-        binding.searchLine.setText(STRING_DEF_VALUE)
-        trackAdapter.clearTracks()
-
-        binding.progressBarSearch.isVisible = false
-        binding.clearIconSearchLine.isVisible = false
-        binding.rvTrackListSearch.isVisible = false
-        binding.groupErrorSearch.isVisible = false
-        binding.groupHistory.isVisible = false
-        binding.btnErrorSearch.isVisible = false
-    }
-
-    private fun showHistory(tracks: List<Track>) {
-        historyAdapter.updateTracks(tracks)
-        trackAdapter.clearTracks()
-
-        binding.progressBarSearch.isVisible = false
-        binding.clearIconSearchLine.isVisible = false
-        binding.rvTrackListSearch.isVisible = false
-        binding.groupErrorSearch.isVisible = false
-        binding.btnErrorSearch.isVisible = false
-
-        binding.groupHistory.isVisible = true
-    }
-
-    private fun showEnteringRequest() {
-        binding.groupHistory.isVisible = false
-        binding.groupErrorSearch.isVisible = false
-        binding.progressBarSearch.isVisible = false
-        binding.rvTrackListSearch.isVisible = false
-        binding.btnErrorSearch.isVisible = false
-
-        binding.clearIconSearchLine.isVisible = true
-    }
-
-    private fun showLoading() {
-        binding.groupHistory.isVisible = false
-        binding.groupErrorSearch.isVisible = false
-        binding.rvTrackListSearch.isVisible = false
-        binding.btnErrorSearch.isVisible = false
-
-        binding.clearIconSearchLine.isVisible = true
-        binding.progressBarSearch.isVisible = true
-    }
-
-    private fun showContent(tracks: List<Track>) {
-        trackAdapter.updateTracks(tracks)
-        binding.rvTrackListSearch.scrollToPosition(0)
-
-        binding.groupHistory.isVisible = false
-        binding.groupErrorSearch.isVisible = false
-        binding.progressBarSearch.isVisible = false
-        binding.btnErrorSearch.isVisible = false
-
-        binding.clearIconSearchLine.isVisible = true
-        binding.rvTrackListSearch.isVisible = true
-    }
-
-    private fun showError(errorType: ErrorType) {
-        val errorInfo = getErrorInfo(errorType)
-        binding.tvErrorSearch.text = errorInfo.errorMessage
-        binding.ivErrorSearch.setImageResource(errorInfo.errorImageId)
-
-        binding.groupHistory.isVisible = false
-        binding.progressBarSearch.isVisible = false
-        binding.rvTrackListSearch.isVisible = false
-
-        binding.clearIconSearchLine.isVisible = true
-        binding.groupErrorSearch.isVisible = true
-        binding.btnErrorSearch.isVisible = errorInfo.isNeedUpdateBtn
-    }
-
-    private fun getErrorInfo(errorType: ErrorType): ErrorInfo {
-        when (errorType) {
-            is ErrorType.EmptyResult -> {
-                return ErrorInfo(
-                    requireActivity().getString(R.string.message_nothing_found),
-                    getErrorImageIdAccordingTheme(
-                        R.drawable.ic_placeholder_nothing_found_lm_120,
-                        R.drawable.ic_placeholder_nothing_found_dm_120
-                    ),
-                    false
-                )
-            }
-
-            is ErrorType.NoNetworkConnection -> {
-                return ErrorInfo(
-                    requireActivity().getString(R.string.message_bad_connection),
-                    getErrorImageIdAccordingTheme(
-                        R.drawable.ic_placeholder_bad_connection_lm_120,
-                        R.drawable.ic_placeholder_bad_connection_dm_120
-                    ),
-                    true
-                )
-            }
-
-            is ErrorType.BadRequest, is ErrorType.InternalServerError -> {
-                return ErrorInfo(
-                    requireActivity().getString(R.string.message_something_went_wrong),
-                    getErrorImageIdAccordingTheme(
-                        R.drawable.ic_placeholder_nothing_found_lm_120,
-                        R.drawable.ic_placeholder_nothing_found_dm_120
-                    ),
-                    false
-                )
-            }
-        }
-    }
-
-    private fun getErrorImageIdAccordingTheme(imageIdLightMode: Int, imageIdDarkMode: Int): Int {
-        return when (requireActivity().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES -> imageIdDarkMode
-
-            Configuration.UI_MODE_NIGHT_NO -> imageIdLightMode
-
-            else -> imageIdDarkMode
-        }
-    }
-
-    private fun onTrackClicked(track: Track) {
-        viewModel.onTrackClicked(track)
-    }
-
-    private fun openPlayer(track: Track) {
-        clearFocusEditText()
-        val action = SearchFragmentDirections.actionSearchFragmentToAudioPlayerActivity(
-            track
-        )
-        findNavController().navigate(action)
-    }
-
-    private fun clearFocusEditText() {
-        if (binding.searchLine.hasFocus()) {
-            val inputMethodManager =
-                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(binding.searchLine.windowToken, 0)
-            binding.searchLine.clearFocus()
-        }
-    }
-
-    private fun openAppSettings() {
-        val intent =
-            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.data =
-            Uri.fromParts(INTENT_SETTINGS_SCHEME, requireContext().packageName, null)
-        requireContext().startActivity(intent)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.updateSearchResults()
-        viewModel.updateHistory()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        ContextCompat.registerReceiver(
-            requireContext(), networkConnectionBroadcastReceiver,
-            IntentFilter(NETWORK_CONNECTIVITY_CHANGED_ACTION), ContextCompat.RECEIVER_NOT_EXPORTED
-        )
-    }
-
-    override fun onPause() {
-        super.onPause()
-        requireContext().unregisterReceiver(networkConnectionBroadcastReceiver)
-    }
-
-    override fun onDestroyView() {
-        binding.rvTrackListSearch.clearOnScrollListeners()
-        binding.rvHistoryListSearch.adapter = null
-        binding.rvTrackListSearch.adapter = null
-        super.onDestroyView()
-    }
-
-    private companion object {
-        const val STRING_DEF_VALUE = ""
-        const val INTENT_SETTINGS_SCHEME = "package"
+    fun navigateToAudioPlayerScreen(track: Track) {
+        val action = SearchFragmentDirections.actionSearchFragmentToAudioPlayerActivity(track)
+        parentFragment?.findNavController()?.navigate(action)
     }
 }

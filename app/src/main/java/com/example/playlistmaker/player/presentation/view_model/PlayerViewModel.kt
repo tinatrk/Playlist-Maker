@@ -81,8 +81,9 @@ class PlayerViewModel(
     }
 
     fun onComponentStop() {
-        if (playerScreenStateFlow.value.playerState is PlayerState.Playing)
+        if (playerScreenStateFlow.value.playerState is PlayerState.Playing) {
             mediaPlayerControl?.startForeground()
+        }
     }
 
     fun onComponentStart() {
@@ -90,13 +91,18 @@ class PlayerViewModel(
     }
 
     private fun stopForeground() {
-        if (playerScreenStateFlow.value.playerState is PlayerState.Playing)
+        if (playerScreenStateFlow.value.playerState is PlayerState.Playing) {
             mediaPlayerControl?.stopForeground()
+        }
     }
 
     override fun onCleared() {
         super.onCleared()
-        stopForeground()
+
+        if (playerScreenStateFlow.value.playerState is PlayerState.Playing) {
+            stopForeground()
+        }
+        mediaPlayerControlJob?.cancel()
         mediaPlayerControl = null
     }
 

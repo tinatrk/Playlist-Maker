@@ -1,8 +1,10 @@
 package com.example.playlistmaker.search.domain.models
 
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import kotlinx.parcelize.Parcelize
 
+@Immutable
 @Parcelize
 data class Track(
     val trackId: Int,
