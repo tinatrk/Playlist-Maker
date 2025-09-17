@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
-import com.example.playlistmaker.settings.ui.compose.SettingsScreen
 import com.example.playlistmaker.composeAppTheme.AppTheme
-import org.koin.androidx.compose.koinViewModel
+import com.example.playlistmaker.settings.ui.compose.SettingsScreen
 
 class SettingsFragment : Fragment() {
 
@@ -24,7 +23,7 @@ class SettingsFragment : Fragment() {
             setContent {
                 AppTheme {
                     activity?.let {
-                        SettingsScreen(viewModel = koinViewModel())
+                        SettingsScreen()
                     }
                 }
             }

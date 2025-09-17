@@ -28,9 +28,10 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.commonComposeUi.Toolbar
 import com.example.playlistmaker.composeAppTheme.AppTheme
 import com.example.playlistmaker.settings.presentation.view_model.SettingsViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel) {
+fun SettingsScreen(viewModel: SettingsViewModel = koinViewModel()) {
     val isThemeDarkState by viewModel.getIsThemeDarkLiveData().observeAsState()
 
     Scaffold(

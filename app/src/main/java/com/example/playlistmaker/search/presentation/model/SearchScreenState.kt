@@ -1,9 +1,11 @@
 package com.example.playlistmaker.search.presentation.model
 
+import androidx.compose.runtime.Immutable
 import com.example.playlistmaker.search.domain.models.ErrorType
 import com.example.playlistmaker.search.domain.models.Track
 
-sealed class SearchScreenState(val searchText: String = "") {
+@Immutable
+sealed class SearchScreenState( val searchText: String = "") {
     data object Default : SearchScreenState()
     data class History(val tracks: List<Track>) : SearchScreenState()
     data class EnteringRequest(val text: String) : SearchScreenState(text)

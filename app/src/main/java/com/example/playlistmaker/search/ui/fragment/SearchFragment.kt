@@ -8,10 +8,9 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.playlistmaker.search.ui.compose.SearchScreen
 import com.example.playlistmaker.composeAppTheme.AppTheme
 import com.example.playlistmaker.search.domain.models.Track
-import org.koin.androidx.compose.koinViewModel
+import com.example.playlistmaker.search.ui.compose.SearchScreen
 
 
 class SearchFragment : Fragment() {
@@ -28,7 +27,6 @@ class SearchFragment : Fragment() {
                 AppTheme {
                     activity?.let {
                         SearchScreen(
-                            viewModel = koinViewModel(),
                             navigateToAudioPlayerScreen = ::navigateToAudioPlayerScreen
                         )
                     }

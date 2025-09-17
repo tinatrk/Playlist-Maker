@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -23,9 +24,10 @@ import coil.compose.AsyncImage
 import com.example.playlistmaker.R
 import com.example.playlistmaker.composeAppTheme.AppTheme
 import com.example.playlistmaker.playlists.domain.models.Playlist
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun PlaylistsGrid(playlists: List<Playlist>, onPlaylistClick: (Int) -> Unit) {
+fun PlaylistsGrid(playlists: ImmutableList<Playlist>, onPlaylistClick: (Int) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier
@@ -61,7 +63,17 @@ fun PlaylistsGridItem(playlist: Playlist, onPlaylistClick: (Int) -> Unit) {
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
-        TrackPluralsText(playlist.tracksCount)
+        Text(
+            text = pluralStringResource(
+                R.plurals.track_plurals,
+                playlist.tracksCount,
+                playlist.tracksCount
+            ),
+            style = AppTheme.typography.caption,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
     }
 }
 
@@ -78,7 +90,7 @@ fun PlaylistCover(url: String, modifier: Modifier) {
 }
 
 @Composable
-fun TrackPluralsText(trackCount: Int) {
+fun TrackPluralsText(tracksCount: Int) {
 
     val oneTrack = stringResource(R.string.one_track)
     val fewTracks = stringResource(R.string.few_tracks)
@@ -86,14 +98,14 @@ fun TrackPluralsText(trackCount: Int) {
 
     val trackCountString = remember {
         when {
-            (trackCount % 10 == 1) ->
-                "$trackCount $oneTrack"
+            (tracksCount % 10 == 1) ->
+                "$tracksCount $oneTrack"
 
-            (trackCount % 10 in 2..4) ->
-                "$trackCount $fewTracks"
+            (tracksCount % 10 in 2..4) ->
+                "$tracksCount $fewTracks"
 
             else ->
-                "$trackCount $manyTracks"
+                "$tracksCount $manyTracks"
         }
     }
 

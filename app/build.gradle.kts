@@ -81,4 +81,6 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.coil.compose)
+    implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 }

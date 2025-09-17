@@ -1,5 +1,8 @@
 package com.example.playlistmaker.playlists.domain.models
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class Playlist(
     val id: Int = 0,
     val title: String,

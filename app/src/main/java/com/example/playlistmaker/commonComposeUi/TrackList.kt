@@ -27,11 +27,12 @@ import coil.compose.AsyncImage
 import com.example.playlistmaker.R
 import com.example.playlistmaker.composeAppTheme.AppTheme
 import com.example.playlistmaker.search.domain.models.Track
+import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun TrackList(tracks: List<Track>, onTrackClick: (Track) -> Unit) {
+fun TrackList(tracks: ImmutableList<Track>, onTrackClick: (Track) -> Unit) {
     LazyColumn(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier.padding(top = 16.dp)
@@ -121,7 +122,7 @@ fun TrackCoverMini(url: String) {
 
 @Composable
 fun TrackListWithButton(
-    tracks: List<Track>,
+    tracks: ImmutableList<Track>,
     onTrackClick: (Track) -> Unit,
     buttonTitle: String,
     onButtonClick: () -> Unit

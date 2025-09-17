@@ -24,13 +24,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.playlistmaker.R
-import com.example.playlistmaker.playlists.ui.compose.PlaylistsScreen
 import com.example.playlistmaker.commonComposeUi.Toolbar
 import com.example.playlistmaker.composeAppTheme.AppTheme
 import com.example.playlistmaker.favorites.ui.compose.FavoritesScreen
+import com.example.playlistmaker.playlists.ui.compose.PlaylistsScreen
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LibraryScreen(
@@ -119,12 +118,10 @@ fun LibraryScreen(
             ) { page ->
                 when (page) {
                     LibraryTabs.Favorites.ordinal -> FavoritesScreen(
-                        viewModel = koinViewModel(),
                         navigateToAudioPlayerScreen = navigateToAudioPlayerScreen
                     )
 
                     LibraryTabs.Playlists.ordinal -> PlaylistsScreen(
-                        viewModel = koinViewModel(),
                         navigateToModifyPlaylistScreen = navigateToModifyPlaylistScreen,
                         navigateToOnePlaylistScreen = navigateToOnePlaylistScreen
                     )

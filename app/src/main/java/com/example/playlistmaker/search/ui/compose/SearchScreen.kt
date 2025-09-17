@@ -15,7 +15,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleStartEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.playlistmaker.R
 import com.example.playlistmaker.commonComposeUi.CommonButton
 import com.example.playlistmaker.commonComposeUi.CustomTextField
@@ -42,13 +42,17 @@ import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.model.NavigationEvent
 import com.example.playlistmaker.search.presentation.model.SearchScreenState
 import com.example.playlistmaker.search.presentation.view_model.SearchViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SearchScreen(
-    viewModel: SearchViewModel, navigateToAudioPlayerScreen: (Track) -> Unit
+    viewModel: SearchViewModel = koinViewModel(),
+    navigateToAudioPlayerScreen: (Track) -> Unit
 ) {
-    val screenState by viewModel.screenStateFlow.collectAsState()
-    val navigationState = viewModel.navigationEvent.collectAsState(initial = null)
+    val screenState by viewModel.screenStateFlow.collectAsStateWithLifecycle()
+    val navigationState = viewModel.navigationEvent.collectAsStateWithLifecycle(initialValue = null)
 
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
@@ -123,7 +127,7 @@ fun SearchScreen(
 
                 is SearchScreenState.Content -> {
                     TrackList(
-                        tracks = (screenState as SearchScreenState.Content).tracks,
+                        tracks = (screenState as SearchScreenState.Content).tracks.toImmutableList(),
                         onTrackClick = viewModel::onTrackClicked
                     )
                 }
@@ -137,7 +141,7 @@ fun SearchScreen(
 
                 is SearchScreenState.History -> {
                     SearchHistoryBlock(
-                        tracks = (screenState as SearchScreenState.History).tracks,
+                        tracks = (screenState as SearchScreenState.History).tracks.toImmutableList(),
                         onTrackClick = viewModel::onTrackClicked,
                         onClearHistoryClick = viewModel::clearHistory
                     )
@@ -187,7 +191,7 @@ fun SearchScreenError(errorType: ErrorType, onUpdateClick: () -> Unit) {
 
 @Composable
 fun SearchHistoryBlock(
-    tracks: List<Track>, onTrackClick: (Track) -> Unit, onClearHistoryClick: () -> Unit
+    tracks: ImmutableList<Track>, onTrackClick: (Track) -> Unit, onClearHistoryClick: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),

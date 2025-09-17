@@ -2,10 +2,10 @@ package com.example.playlistmaker.favorites.ui.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.LifecycleStartEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.playlistmaker.R
 import com.example.playlistmaker.commonComposeUi.ErrorMessageWithIcon
 import com.example.playlistmaker.commonComposeUi.LoadingProgressBar
@@ -14,14 +14,16 @@ import com.example.playlistmaker.favorites.presentation.models.FavoritesScreenSt
 import com.example.playlistmaker.favorites.presentation.models.NavigationEvent
 import com.example.playlistmaker.favorites.presentation.view_model.FavoritesViewModel
 import com.example.playlistmaker.search.domain.models.Track
+import kotlinx.collections.immutable.toImmutableList
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun FavoritesScreen(
-    viewModel: FavoritesViewModel,
+    viewModel: FavoritesViewModel = koinViewModel(),
     navigateToAudioPlayerScreen: (Track) -> Unit
 ) {
-    val screenState by viewModel.screenStateFlow.collectAsState()
-    val navigationState = viewModel.navigationEvent.collectAsState(initial = null)
+    val screenState by viewModel.screenStateFlow.collectAsStateWithLifecycle()
+    val navigationState = viewModel.navigationEvent.collectAsStateWithLifecycle(initialValue = null)
 
     LifecycleStartEffect(Unit) {
         viewModel.updateFavoriteTracks()
@@ -47,7 +49,7 @@ fun FavoritesScreen(
 
         is FavoritesScreenState.Content -> {
             TrackList(
-                (screenState as FavoritesScreenState.Content).tracks,
+                (screenState as FavoritesScreenState.Content).tracks.toImmutableList(),
                 viewModel::onTrackClicked
             )
         }
